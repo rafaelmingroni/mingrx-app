@@ -16,6 +16,9 @@ colors:
   scene-selected: "#33283f"
   scene-selected-ink: "#f0e6ff"
   violet-field: "#21192f"
+  surface-raised: "#1b1d29"
+  surface-blue: "#121b2b"
+  blue: "#a8c8ff"
 typography:
   display:
     fontFamily: "Satoshi, Arial, sans-serif"
@@ -49,6 +52,7 @@ rounded:
   control: "6px"
   image: "12px"
   frame: "14px"
+  card: "14px"
 spacing:
   control-gap: "12px"
   compact: "20px"
@@ -56,6 +60,13 @@ spacing:
   section-gap: "35px"
   wide-gap: "48px"
   story-gap: "80px"
+motion:
+  duration-quick: "160ms"
+  duration-scene: "360ms"
+  duration-reveal: "440ms"
+  ease-out: "cubic-bezier(.16,1,.3,1)"
+shadows:
+  stage: "0 24px 70px -35px #0009"
 components:
   button-primary:
     backgroundColor: "{colors.primary}"
@@ -94,12 +105,12 @@ components:
 
 **Creative North Star: "Seu grupo de amigos, em cena"**
 
-O sistema de mingrx.site coloca o uso social real em primeiro plano: fundo quase preto, tipografia clara e generosa, violeta sólido nas ações e capturas autênticas do produto. A apresentação é expressiva, direta e sem ornamentação em movimento.
+O sistema de mingrx.site coloca o uso social real em primeiro plano: fundo quase preto, tipografia clara e generosa, violeta sólido nas ações e capturas autênticas do produto. A apresentação institucional premium usa grafite, violeta e azul, hierarquia editorial, bento e movimento sutil com CSS e IntersectionObserver. A solicitação atual do usuário substitui a orientação anterior de ausência de animações.
 
 Este documento governa somente o site público, incluindo início, convites, suporte e páginas de leitura. Não substitui o CSS nem a identidade de componentes do aplicativo Windows. A direção escrita já foi aprovada; os tokens registram a implementação concluída.
 
 **Key Characteristics:**
-- Fundo escuro com limites finos e campos tonais.
+- Fundo grafite com limites finos, superfícies violetas e azuis e sombra restrita ao palco real do produto.
 - Satoshi de peso substancial e controles de cantos curtos.
 - Demonstrações reais identificadas e interações deliberadas.
 
@@ -113,7 +124,7 @@ O violeta de marca aparece no download, nos destaques tipográficos, nos links d
 
 ### Neutral
 
-Canvas e surface distinguem página e contêiner. Ink identifica títulos e ações; muted organiza descrições. Border delimita navegação, sumários e conteúdo sem sombras. As cenas selecionadas têm seu próprio par tonal.
+Canvas e surface distinguem página e contêiner. Ink identifica títulos e ações; muted organiza descrições. Border delimita navegação, sumários e conteúdo. Surface-raised permite elevação tonal; surface-blue e blue dão contraste à chamada e ao compartilhamento. As cenas selecionadas têm seu próprio par tonal.
 
 **The Solid Action Rule.** A ação principal usa violeta sólido; nunca um gradiente.
 
@@ -129,15 +140,19 @@ Títulos têm quebra balanceada. Em telas até 540px, o título inicial usa 42px
 
 A largura principal é limitada a 1240px, com 40px de margem lateral no desktop. Os pontos de adaptação são 1100px, 850px e 540px: margens laterais passam a 32px, 24px e 20px. A navegação fixa ocupa 82px no desktop e 74px até 850px.
 
-Passagens de produto alternam imagem e texto em duas colunas; tornam-se uma coluna até 850px. O ritmo das seções passa de 112px para 75px e 65px. Passos e tópicos de suporte tornam-se uma coluna até 540px. Não transformar todas as passagens em cartões iguais.
+O hero usa duas colunas no desktop: título à esquerda, descrição e ações à direita, com captura real em largura integral abaixo. Até 850px o conteúdo se empilha. O bento tem dois cartões amplos e três compactos; até 850px os compactos se reorganizam e até 540px todos ocupam uma coluna. O showcase tem visual sticky à esquerda e quatro etapas à direita, sem interceptar a rolagem nativa; até 850px usa apresentação estática em sequência, com imagens nas duas primeiras etapas. O ritmo das seções passa de 112px para 75px e 65px. Passos e tópicos de suporte tornam-se uma coluna até 540px. Não transformar todas as passagens em cartões iguais.
 
 As páginas legais usam largura máxima de 1100px, sumário de 200px e artigo em coluna fluida, com intervalo de 75px. Até 850px, o sumário entra no fluxo antes do artigo; o título permanece fora do disclosure. Convites usam um contêiner de até 660px.
 
-As capturas mantêm acesso à imagem completa. No telefone, a regra final usa altura automática e `object-fit: contain` nas cenas e figuras de história, preservando todo o conteúdo após a revisão dos recortes.
+As capturas mantêm acesso à imagem completa. No telefone, o hero mostra recortes reais de detalhe em um quadro de proporção 430/164 com `object-fit: contain`; o link para a captura completa continua disponível. O showcase móvel evita repetir imagens nas etapas de tela e comunidade.
 
 ## Elevation & Depth
 
-Não há sombras, halos ou animação de entrada. Profundidade vem do contraste entre canvas, superfícies, campos violetas e bordas finas. Hover e abertura de disclosures mudam estado imediatamente; não há autoplay. A preferência por movimento reduzido desativa transições e preserva rolagem automática padrão.
+A sombra `stage` (`0 24px 70px -35px #0009`) destaca somente a moldura do produto. Ações e cartões têm hover discreto, sem halos. Os tokens de duração são quick 160ms, scene 360ms e reveal 440ms; a curva de saída é `cubic-bezier(.16,1,.3,1)`. A chegada do palco usa 500ms com atraso de 120ms; disclosures usam 200ms.
+
+Conteúdo é visível por padrão. IntersectionObserver adiciona revelações uma única vez e só acompanha o showcase quando ele se aproxima da viewport. O acompanhamento usa listeners passivos e requestAnimationFrame, sem scroll hijack. As imagens do showcase alternam opacidade e escala discreta; abas usam View Transitions quando suportadas. Não há autoplay, rolagem imposta ou dependência de animação para ler.
+
+`prefers-reduced-motion: reduce` remove animações, transições, transformações de hover e sticky; a narrativa permanece legível. Até 850px, o showcase também dispensa sticky e acompanhamento de etapas.
 
 ## Shapes
 
@@ -145,13 +160,13 @@ Controles usam cantos curtos; figuras e blocos de contato usam o raio image, e a
 
 ## Components
 
-**Botões.** Primary destaca download ou abertura do aplicativo; secondary oferece o caminho alternativo. Ambos têm altura mínima de 52px; a variante compacta tem 44px. O link textual sublinhado tem alvo mínimo de 44px. Hover altera cor/preenchimento; botões em operação ficam desabilitados, com opacidade .7 e cursor de espera.
+**Botões.** Primary destaca download ou abertura do aplicativo; secondary oferece o caminho alternativo. Ambos têm altura mínima de 52px; a variante compacta tem 44px. O link textual sublinhado tem alvo mínimo de 44px. Hover altera cor/preenchimento e desloca o botão em 2px; botões em operação ficam desabilitados, com opacidade .7 e cursor de espera.
 
 **Foco e seleção.** O foco visível usa contorno violeta de 3px e afastamento de 5px. A seleção de texto usa o mesmo violeta com tinta escura. O skip link aparece ao receber foco; alvos de navegação programática não recebem contorno artificial.
 
 **Navegação.** Links discretos clareiam em hover. Até 850px, o botão Menu alterna `aria-expanded` e abre links em coluna. Escape fecha e devolve foco ao botão; clique externo, navegação e retorno ao desktop fecham o menu.
 
-**Cenas.** Duas abas, Conversas e Em chamada, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco. Não há rotação automática. As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
+**Cenas.** Duas abas, Conversas e Em chamada, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco. Não há rotação automática. O showcase tem quatro etapas (conversas, chamada, tela e comunidade), mas reutiliza somente duas capturas reais. A etapa de compartilhamento declara explicitamente que a imagem mostra controles, não uma transmissão de tela. As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
 
 **Leitura e disclosure.** FAQ usa `details/summary` nativos, divisórias e símbolo de mais que gira ao abrir. O sumário legal é outro disclosure real: abre inicialmente em larguras acima de 850px; em telas menores inicia recolhido. Os tópicos de suporte são links de tarefa com divisórias, sem campos de formulário.
 
@@ -165,6 +180,6 @@ Controles usam cantos curtos; figuras e blocos de contato usam o raio image, e a
 - Do manter download, convite e leitura compreensíveis também no telefone.
 
 ### Don't:
-- Don't usar gradientes, cápsulas, halos ou animações decorativas.
+- Don't usar gradientes, cápsulas, halos, animação excessiva, cursor especial ou scroll hijack.
 - Don't inventar depoimentos, métricas, retratos ou diferenciação do produto.
 - Don't aplicar estes tokens ao aplicativo Windows como se fossem seu sistema existente.

@@ -46,7 +46,12 @@
     if (focus) selected.focus();
   };
   sceneTabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => activateScene(tab.dataset.scene));
+    tab.addEventListener('click', () => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (document.startViewTransition && !reduce) {
+        document.startViewTransition(() => activateScene(tab.dataset.scene));
+      } else activateScene(tab.dataset.scene);
+    });
     tab.addEventListener('keydown', event => {
       const destinations = {ArrowRight:(index+1)%sceneTabs.length, ArrowLeft:(index-1+sceneTabs.length)%sceneTabs.length, Home:0, End:sceneTabs.length-1};
       if (!(event.key in destinations)) return;
@@ -70,6 +75,73 @@
       if (fallback) fallback.hidden = false;
     } finally { button.disabled = false; }
   }));
+
+  // Native scroll is never intercepted. Pick the story nearest the viewing line.
+  const mediaQuery = query => window.matchMedia?.(query) || {matches: false, addEventListener() {}};
+  const stories = [...document.querySelectorAll('[data-showcase-step]')];
+  const showcase = document.querySelector('.showcase-layout');
+  const desktopMotion = mediaQuery('(min-width: 851px) and (prefers-reduced-motion: no-preference)');
+  let showcaseObserver;
+  let revealObserver;
+  let frame = 0;
+  const selectStory = () => {
+    frame = 0;
+    const line = window.innerHeight * .5;
+    const nearest = stories.reduce((best, story) => {
+      const rect = story.getBoundingClientRect();
+      const distance = Math.abs(rect.top + rect.height / 2 - line);
+      return !best || distance < best.distance ? {story, distance} : best;
+    }, null)?.story;
+    if (!nearest) return;
+    stories.forEach(story => story.classList.toggle('is-active', story === nearest));
+    document.querySelectorAll('[data-showcase-image]').forEach(image => {
+      image.classList.toggle('is-active', image.dataset.showcaseImage === nearest.dataset.showcaseStep);
+    });
+    const caption = document.querySelector('.showcase-caption');
+    if (caption) caption.textContent = nearest.dataset.caption;
+  };
+  const scheduleStory = () => { if (!frame) frame = requestAnimationFrame(selectStory); };
+  const stopShowcase = () => {
+    window.removeEventListener('scroll', scheduleStory);
+    window.removeEventListener('resize', scheduleStory);
+    if (frame) cancelAnimationFrame(frame);
+    frame = 0;
+  };
+  const configureShowcase = () => {
+    if (!showcase) return;
+    stopShowcase();
+    showcaseObserver?.disconnect();
+    if (!showcase || !desktopMotion.matches || !('IntersectionObserver' in window)) return;
+    showcaseObserver = new IntersectionObserver(entries => {
+      stopShowcase();
+      if (entries.some(entry => entry.isIntersecting)) {
+        window.addEventListener('scroll', scheduleStory, {passive: true});
+        window.addEventListener('resize', scheduleStory, {passive: true});
+        scheduleStory();
+      }
+    }, {rootMargin: '120px 0px'});
+    showcaseObserver.observe(showcase);
+  };
+  desktopMotion.addEventListener('change', configureShowcase);
+  configureShowcase();
+
+  // Content stays visible with no JS, unsupported observers, or reduced motion.
+  const reducedMotion = mediaQuery('(prefers-reduced-motion: reduce)');
+  const configureReveals = () => {
+    revealObserver?.disconnect();
+    document.querySelectorAll('.reveal-in').forEach(element => element.classList.remove('reveal-in'));
+    if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
+    revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('reveal-in');
+        revealObserver.unobserve(entry.target);
+      });
+    }, {threshold: .12});
+    document.querySelectorAll('.features-heading,.feature-card,.showcase-heading,.start-section .section-heading,.privacy-section,.faq .section-heading').forEach(element => revealObserver.observe(element));
+  };
+  reducedMotion.addEventListener('change', configureReveals);
+  configureReveals();
 
   const year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());

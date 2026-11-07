@@ -70,7 +70,7 @@ app.whenReady().then(async()=>{
     assert(await js("document.fonts.check('750 32px Satoshi')&&[...document.fonts].some(font=>font.family==='Satoshi'&&font.status==='loaded')"),'The locally hosted Satoshi font must load');
     for(let i=0;i<100;i++){if(await js("document.querySelector('.release-note').textContent.includes('Mingrx 3.2.')"))break;await wait(50);}
     const layout=await js(`(()=>({width:innerWidth,overflow:document.documentElement.scrollWidth>innerWidth+1,images:[...document.images].filter(img=>{const r=img.getBoundingClientRect();return r.width>0&&r.top<innerHeight&&r.bottom>0}).every(img=>img.complete&&img.naturalWidth>0),heading:document.querySelector('h1').textContent,version:document.querySelector('.release-note').textContent,animations:document.getAnimations().length,radii:[...document.querySelectorAll('.button,.menu-button')].map(el=>parseFloat(getComputedStyle(el).borderTopLeftRadius)),download:document.querySelector('.download-link').href}))()`);
-    assert.equal(layout.width,width);assert(!layout.overflow,`Horizontal overflow at ${width}`);assert(layout.images,`Missing image at ${width}`);assert.equal(layout.animations,0);assert(layout.radii.every(radius=>radius<=8));assert.match(layout.version,/Mingrx 3\.2\./);assert.match(layout.download,/releases\/download\/v3\.2\.0\/Mingrx-Setup-3\.2\.0-x64\.exe$/);
+    assert.equal(layout.width,width);assert(!layout.overflow,`Horizontal overflow at ${width}`);assert(layout.images,`Missing image at ${width}`);assert(await js("document.getAnimations().every(animation=>animation.effect.getTiming().iterations!==Infinity)"),'Decorative animation must never run indefinitely');assert(layout.radii.every(radius=>radius<=8));assert.match(layout.version,/Mingrx 3\.2\./);assert.match(layout.download,/releases\/download\/v3\.2\.0\/Mingrx-Setup-3\.2\.0-x64\.exe$/);
     assert(await js("[...document.images].every(img=>img.hasAttribute('alt'))&&document.querySelector('.product-image img').alt.length>30"),'Image alternatives are missing');
     if(width===1440){
       const colors=await js("(()=>{const body=getComputedStyle(document.body),copy=getComputedStyle(document.querySelector('.hero-description')),button=getComputedStyle(document.querySelector('.hero-actions .button-primary'));return{body:body.color,bg:body.backgroundColor,muted:copy.color,button:button.color,buttonBg:button.backgroundColor}})()");
@@ -88,6 +88,7 @@ app.whenReady().then(async()=>{
       await press('Enter');assert(!(await js("document.querySelector('details').open")),'Enter must close the FAQ');
     }
     if(width<=850){
+      assert(await js("(()=>{const heading=document.querySelector('.features-heading h2').getBoundingClientRect(),copy=document.querySelector('.features-heading p').getBoundingClientRect();return copy.top>=heading.bottom&&heading.width>=innerWidth*.7})()"),'Mobile feature introduction must stack without squeezing its heading');
       await js("document.querySelector('.menu-button').focus()");await press('Space');
       assert(await js("document.querySelector('.menu-button').getAttribute('aria-expanded')==='true'&&getComputedStyle(document.querySelector('.topnav')).display==='flex'"));
       await press('Escape');
@@ -109,6 +110,17 @@ app.whenReady().then(async()=>{
     if(width===1440)await capture('desktop.png');if(width===390)await capture('mobile.png');
     console.log(`Site ${width}px: layout, images, live version, rectangular buttons and navigation passed`);
   }
+  win.setContentSize(1440,1000);await win.loadURL(origin+'/');
+  for(const index of [0,1,2,3]){
+    await js(`document.querySelectorAll('.showcase-step')[${index}].scrollIntoView({block:'center'});void 0`);await wait(450);
+    assert(await js(`(()=>{const step=document.querySelectorAll('.showcase-step')[${index}];return step.classList.contains('is-active')&&document.querySelector('[data-showcase-image="'+step.dataset.showcaseStep+'"]').classList.contains('is-active')})()`),'Native scroll must select the corresponding actual capture');
+  }
+  if(!win.webContents.debugger.isAttached())win.webContents.debugger.attach('1.3');
+  await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+  await win.loadURL(origin+'/');await wait(100);
+  assert(await js('document.getAnimations().length===0'),'Reduced motion must disable entrance and reveal animation');
+  assert(await js("getComputedStyle(document.querySelector('.showcase-visual')).position==='static'"),'Reduced motion must remove sticky motion');
+  await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[]});
   win.setContentSize(1440,1000);await win.loadURL(origin+'/');win.webContents.setZoomFactor(2);await wait(100);
   assert(await js('document.documentElement.scrollWidth<=innerWidth+1'),'Content must reflow at 200% zoom');win.webContents.setZoomFactor(1);
   for(const page of ['privacy.html','terms.html','support.html','accessibility.html','about.html','invite.html?invite=BAD','404.html']){
