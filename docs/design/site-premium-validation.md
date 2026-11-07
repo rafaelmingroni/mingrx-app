@@ -111,3 +111,18 @@ Foi introduzida uma configuração de ESLint exclusivamente para o site. A execu
 
 
 A medição posterior às novas funções está em `expandedBrief` no JSON: mediana de três execuções, desktop LCP 1,468s e layout shift 0; mobile LCP 1,196s e layout shift 0. As maiores interações amostradas tiveram medianas 64ms e 48ms. Continuam sendo resultados locais, não INP de campo, sujeitos à carga do executor. A correção de alturas afeta apenas viewports curtos e não altera as duas viewports desse benchmark.
+
+
+## Direção espacial aprovada por imagem
+
+A solicitação mais recente substitui a direção anterior por um hero espacial: personagem fictício sentado em uma encosta, lua com monograma M, grafite/azul-noturno, iluminação violeta e ações arredondadas. Esta imagem específica prevalece sobre as restrições anteriores de gradientes, formas de botão e ausência de ilustração. PRODUCT.md, DESIGN.md, tokens e contratos de validação foram atualizados para refletir essa autorização, preservando as proteções sobre prova social e evidência real do produto.
+
+Foi criada uma ilustração via image_gen usando a imagem do usuário como referência. A arte não contém UI/textos promocionais embutidos; título, botões e links são HTML acessível. A pessoa é uma figura ficcional sem identidade ou depoimento. As capturas autênticas do aplicativo continuam separadas e identificadas logo abaixo, na galeria, bento e showcase. A marca oficial e os links do app continuam preservados.
+
+Arquivo original gerado: 1672×941. WebP desktop 72.424 bytes; WebP menor 27.758 bytes. São apenas redimensionamentos/codificações da arte, sem compositar capturas ou inventar funcionalidade. Prompt completo, origem e SHA-256 foram registrados em `site/assets/mingrx-orbit.prompt.txt` e `mingrx-orbit.provenance.json`. O validador confere os hashes e limites de payload, além de continuar verificando as capturas reais separadamente.
+
+Desktop: hero com texto à esquerda e cena à direita. Até 850px: texto e ações primeiro, arte em faixa própria abaixo, evitando corte do personagem ou sobreposição de texto. Os demais componentes foram harmonizados em superfícies azul-noturnas e ações violeta. Não há estrelas animadas, autoplay ou efeitos contínuos.
+
+Após esta substituição foram executados ESLint, build, validação/convites, suíte Electron, matriz Chromium em 320,390,540,768,850,1024,1280 e1440px, e axe nas telas cobertas. Todos passaram. As capturas desktop/mobile e página completa foram examinadas; a revisão independente recomendou `ship`, sem correções materiais. O revisor não recebeu o mock inline como arquivo local; o agente principal comparou a referência da conversa com os renders e o revisor recebeu a direção detalhada e a arte gerada.
+
+Última medição controlada (`orbit` no JSON): LCP mediano 1,440s desktop/1,392s mobile, layout shift0/0 e maior interação amostrada48ms em ambas. Não é INP de campo nem promessa de desempenho em produção. Medidas anteriores permanecem registradas como histórico. O projeto não ganhou dependência de runtime.

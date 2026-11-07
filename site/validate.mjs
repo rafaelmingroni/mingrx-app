@@ -13,11 +13,11 @@ check('custom domain is mingrx.site',files.CNAME.trim()==='mingrx.site');
 check('clear product and Windows headline',/Mensagens, chamadas/.test(files['index.html'])&&/Baixar para Windows/.test(files['index.html']));
 check('authentic application capture is explicitly labeled',files['index.html'].includes('Captura real do Mingrx 3.2')&&files['index.html'].includes('Contas de demonstração')&&(await stat(path.join(root,'assets/mingrx-conversation.webp'))).size>1000&&(await stat(path.join(root,'assets/mingrx-call.webp'))).size>1000);
 check('no invented social proof or online counters',!/testimonial|reviewRating|aggregateRating|data-counter|real-friend|chip-online|voice-rings|disponível agora|sua galera está online/i.test(files['index.html']));
-check('no generated people or stock portraits',![...files['index.html'].matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)].some(([,src])=>!['./assets/mingrx-mark.svg','./assets/mingrx-conversation.webp','./assets/mingrx-call.webp','./assets/mingrx-conversation-detail.webp','./assets/mingrx-call-detail.webp'].includes(src)));
+check('images are verified product captures or the user-approved decorative orbit artwork',![...files['index.html'].matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)].some(([,src])=>!['./assets/mingrx-mark.svg','./assets/mingrx-conversation.webp','./assets/mingrx-call.webp','./assets/mingrx-conversation-detail.webp','./assets/mingrx-call-detail.webp','./assets/mingrx-orbit-hero.webp'].includes(src)));
 const css=Object.entries(files).filter(([name])=>name.endsWith('.css')).map(([,value])=>value).join('\n');
-check('solid surfaces without gradients',!/(?:linear|radial|conic)-gradient\s*\(/i.test(css));
+check('user-approved orbit theme has a dedicated illustrated hero',files['index.html'].includes('class="orbit-art"')&&css.includes('--orbit-button:')&&css.includes('--orbit-title:'));
 check('motion is optional and no cursor or tracking effects',css.includes('@media(prefers-reduced-motion:reduce)')&&css.includes('animation:none!important')&&!/pointermove|mousemove|cursor-glow|localStorage|sessionStorage/.test(files['app.js']));
-check('rectangular buttons',!/border-radius\s*:\s*(?:999|50%)/i.test(css)&&/\.button\{[^}]*border-radius:var\(--radius-control\)/.test(css));
+check('user-approved rounded actions use a shared radius token',css.includes('--radius-action:28px')&&css.includes('border-radius:var(--radius-action)'));
 check('local fonts and no advertising or analytics code',!Object.values(files).some(value=>/fonts\.googleapis|googletagmanager|google-analytics|facebook\.net|hotjar|clarity\.ms|made with ai|feito com ia/i.test(value)));
 check('no typographic dashes in website text',pages.every(name=>!/[\u2013\u2014]/u.test(files[name])));
 const iconEmoji=/[\u{1F000}-\u{1FAFF}\u2600-\u27BF]/u;
@@ -30,6 +30,13 @@ check('only applicable documents are promoted',pages.includes('accessibility.htm
 check('no unnecessary data collection forms',pages.every(name=>!/<form\b|<input\b|<textarea\b/i.test(files[name])));
 check('confirmed support and privacy email is available',files['about.html'].includes('Rafael Mingroni')&&['about.html','privacy.html','terms.html','support.html','accessibility.html'].every(name=>files[name].includes('href="mailto:mingrxapp@gmail.com"')&&!/em ativação|sendo criado|confirmação de ativação/.test(files[name])));
 check('robots and sitemap use the actual custom domain',files['robots.txt'].includes('https://mingrx.site/sitemap.xml')&&files['sitemap.xml'].includes('<loc>https://mingrx.site/</loc>'));
+const illustration=JSON.parse(await readFile(path.join(root,'assets/mingrx-orbit.provenance.json'),'utf8'));
+check('brand illustration is distinguished from genuine product evidence',illustration.notProductEvidence===true);
+for(const [name,expected] of Object.entries(illustration.files)){
+ const bytes=await readFile(path.join(root,'assets',name));
+ check(`${name}: illustration provenance matches shipping bytes`,createHash('sha256').update(bytes).digest('hex')===expected);
+ check(`${name}: responsive artwork stays within payload budget`,bytes.length<=(name.includes('small')?80000:200000));
+}
 const provenance=JSON.parse(await readFile(path.join(root,'assets/mingrx-captures.provenance.json'),'utf8'));
 check('real demonstration captures have provenance',provenance.publicVersion==='3.2');
 for(const capture of provenance.captures){

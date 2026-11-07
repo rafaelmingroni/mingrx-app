@@ -1,57 +1,47 @@
-# Mingrx — direção institucional premium
+# Mingrx — direção Orbit concluída
 
-## Escopo e intenção
+## Autoridade e escopo
 
-Redesign completo do site público, mantendo HTML, CSS e JavaScript estáticos, rotas existentes e hospedagem atual. Não altera backend, aplicativo Windows, release ou deploy. A solicitação explícita do usuário autoriza movimento sutil e substitui a orientação antiga de ausência de animações em DESIGN.md. PRODUCT.md permanece a referência de capacidades e compromissos de marca.
+A referência cósmica mais recente, fornecida e aprovada pelo usuário, define o novo mundo visual: pessoa fictícia sentada na crista rochosa, grande lua com borda violeta e M luminoso, céu navy, título branco com “compartilhe” violeta e ações arredondadas em gradiente. Ela substitui a antiga composição editorial e os vetos a gradientes, cápsulas e ilustração. Satoshi e a marca permanecem, conforme PRODUCT.md atualizado.
 
-## Direção implementada
+A direção está implementada no site público estático, incluindo linguagem compartilhada de convites, suporte e páginas legais. Não altera backend, aplicativo Windows, release, domínio ou deploy. A ilustração ficcional é marca, sem representar usuário real, testemunho ou interface. As provas do aplicativo continuam sendo capturas genuínas.
 
-Grafite escuro, violeta sólido e azul; Satoshi e marca reconhecível preservadas. Hero editorial: título à esquerda, descrição e ações à direita, captura real em largura integral abaixo. Bento com dois cartões amplos e três compactos. Ação principal de download oficial clara, com alternativa de copiar o endereço no celular. Convites, suporte e páginas legais mantêm linguagem visual compartilhada e leitura acessível.
+## Composição e tokens atuais
 
-O showcase tem quatro etapas: conversas, chamada, compartilhamento de tela e comunidade. Há somente duas capturas reais: conversa/comunidade e chamada, com contas de demonstração. A imagem de chamada mostra controles de compartilhamento; a etapa correspondente explicita que uma transmissão de tela não está representada. Não foram inventados depoimentos, métricas, evidência visual ou diferenciação competitiva. A proveniência está em site/assets/mingrx-captures.provenance.json. O usuário dispensou a captura dedicada de transmissão de tela ("prossiga sem isso"); a ressalva continua explícita no site.
+`.orbit-hero` reúne copy à esquerda e arte preenchendo o palco, com gamer e lua à direita. O título “Converse, jogue” / “e compartilhe.” usa Satoshi 500, clamp(48px,5.25vw,76px), entrelinha1.07 e tracking-.035em; o destaque usa750 e chega a80px acima de1600px. Até850px, copy e arte se empilham; a arte tem420px, reduzidos a330px até540px. A galeria real saiu da abertura e ocupa `.product-intro` abaixo do hero, com título próprio.
 
-## Tokens e comportamento
+A base é canvas #070b17, surface #11172a, soft #0c1122, ink #f4f2ff, muted #bfc0d5 e border #28304b. Acento #b894ff, surface-raised #1b2240, surface-blue #101b35 e violet-field #11112b. A ação usa base #6c27d9, hover #7e35ed e tinta branca. `--orbit-button` é linear-gradient(135deg,#8a35fa,#6424df); `--orbit-title` é linear-gradient(110deg,#8e65f7,#c47bff). Primary e download do header usam radius-action28px; demais controles mantêm6px e cards14px. Sombra do palco real: 0 30px 80px -50px #6543b866.
 
-DESIGN.md contém os tokens YAML duráveis; .impeccable/design.json preserva schemaVersion 2 e registra os mesmos novos tokens nas extensões. Cores: surface-raised #1b1d29, surface-blue #121b2b e blue #a8c8ff. Raios: card 14px, control 6px. Espaço: panel 32px (24px no telefone). Tempos: quick 160ms, scene 360ms, reveal 440ms, disclosure 240ms, dialog 200ms. Curva: cubic-bezier(.16,1,.3,1). Sombra do palco: 0 24px 70px -35px #0009.
+Os tokens duráveis estão no YAML de DESIGN.md e no JSON schemaVersion2. Permanecem body16px, small14px, caption12px e label13px; space-1..8 são8,12,16,24,32,48,80,112px; panel32px (24px no telefone), border-default1px solid var(--line). Motion: quick160ms, scene360ms, reveal440ms, disclosure240ms, dialog200ms; ease-out cubic-bezier(.16,1,.3,1).
 
-CSS e IntersectionObserver fornecem revelações únicas e transições discretas. Conteúdo permanece visível por padrão; não há autoplay nem interceptação da rolagem. O showcase usa sticky nativo no desktop, acompanhamento passivo e requestAnimationFrame. Até 850px a narrativa é estática; até 540px o bento vira uma coluna. Reduced motion remove animações, transições, transformações de hover e sticky. Abas, menu e disclosures preservam teclado, foco e semântica nativa.
+## Arte e evidência
 
-## Conclusão da segunda passagem
+A arte decorativa foi gerada por image_gen com a referência aprovada. Desktop WebP1672×941 tem cerca de72KB; pequeno1000×563, cerca de28KB. O picture tem aria-hidden e alt vazio; textos e controles são HTML. [Proveniência](../../site/assets/mingrx-orbit.provenance.json) conserva caminho original, transformações e SHA-256; [prompt](../../site/assets/mingrx-orbit.prompt.txt) conserva a instrução. Foram feitos apenas resize e codificação WebP.
 
-A seção dedicada `#download` apresenta Windows 10/11 de 64 bits, instalador oficial pelo GitHub Releases, ajuda de instalação e limitações de plataforma. A arquitetura x64 foi conferida no instalador. O cartão de perfil inclui status personalizável, verificado em `desktop/src/v1.js:149`. A navegação interna acompanha a seção ativa com `aria-current="location"`.
+Continuam existindo duas capturas reais do renderer Mingrx3.2 com contas de demonstração: conversa/comunidade e chamada. Três abas — Conversas, Em chamada e Comunidades — reutilizam essas duas imagens, com teclado, Home/End, alternativas e legendas próprias. A transmissão de tela não é demonstrada pela captura de chamada: a legenda explicita que mostra controles. O usuário dispensou a captura dedicada (“prossiga sem isso”); não existe quarta aba fictícia.
 
-A inspeção de capturas usa `<dialog>` nativo, com Fechar, Escape, clique no backdrop e restauração de foco. Status informa carga e falha; o link à imagem original permanece disponível. Cliques modificados e falta de `showModal` preservam a navegação original. CSS anima entrada e saída com display/overlay discretos quando suportados; reduced motion remove o movimento.
+## Comportamento preservado
 
-A troca das abas usa WAAPI por ponteiro e teclado, sem depender de View Transitions. A captura anterior fica em uma cópia inerte enquanto a nova decodifica, com `aria-busy` no palco durante a espera; foco e pointerenter antecipam a carga. A FAQ mantém `details/summary`, com interpolação progressiva de altura em navegadores compatíveis.
+O bento tem dois cartões amplos e três compactos, todos com SVG. O showcase tem quatro âncoras nativas com aria-current=step e wrapper sticky reunindo progresso e imagem no desktop. Mobile oculta a imagem persistente e usa fluxo estático; reduced motion remove sticky e movimento. A sincronização da etapa permanece em todas as larguras. Scroll passivo e requestAnimationFrame não interceptam a rolagem.
 
-`site/build.mjs` prepara a fonte verificada, valida HTML e convites e copia somente arquivos públicos para saída estática separada. O benchmark de `site/test-performance.cjs` mede cenários locais controlados com cache frio e limites de CPU/rede; não representa INP de campo, dados de produção ou pontuação Lighthouse. Resultados e números finais de performance são registrados separadamente pela verificação principal.
+Abas usam crossfade WAAPI, imagem anterior inerte enquanto a nova decodifica, aria-busy e preload por foco/ponteiro; indicador móvel acompanha seleção e ResizeObserver. O diálogo nativo oferece Fechar, Escape, backdrop, restauração de foco, tooltip acessível, status de erro e link original. Menu móvel usa160ms e inert imediato ao fechar. FAQ mantém details/summary com interpolate-size progressivo. Conteúdo é visível por padrão; não há efeitos infinitos, cursor especial ou runtime JavaScript adicional nesta direção.
 
-## Verificação e limites
+Download dedicado informa Windows10/11 x64 e GitHub Releases oficial, com fallback antes da consulta de versão. Cópia usa disabled, aria-busy e rótulo temporário, com URL selecionável na falha. Perfil menciona status personalizável verificado no aplicativo. Limitações reais de criptografia e ausência de app para celular/navegador permanecem explícitas.
 
-A implementação foi verificada pela suíte Electron existente e por inspeção Playwright em oito larguras, incluindo navegação, abas, responsividade e movimento reduzido; as rotas foram preservadas. O detector foi tentado, mas seu launcher não estava disponível: não há relatório de detector concluído. Não houve publicação ou alteração de release.
+## Pesquisa e cronologia
 
-A segunda revisão independente concluiu disposição de entrega sem problemas materiais. Axe verificou WCAG 2 A/AA, 2.1 e 2.2 na home, diálogo aberto, suporte, privacidade e convite inválido, em 1440px e 390px, sem violações automáticas. Itens classificados como incompletos continuam exigindo avaliação manual; isso não constitui certificação integral de conformidade. A suíte Electron inclui abertura do diálogo por teclado, Escape com restauração de foco e origem oficial do download dedicado.
+A pesquisa anterior permanece em [site-reference-research.md](site-reference-research.md), como material histórico suplementar. DESIGN.md e capturas de Intercom, Dimension, Notion e Vercel no Refero foram examinados na continuação após a primeira implementação. HTML oficial complementar foi obtido, mas o navegador encontrou falha TLS; não se afirma observação dinâmica de animações externas. A referência cósmica posterior do usuário prevalece sobre essa pesquisa.
 
-## Acabamento e prévia local
+## Verificação e prévia
 
-Os tokens compartilhados de texto são body 16px, small 14px, caption 12px e label 13px. A escala space-1 a space-8 é 8, 12, 16, 24, 32, 48, 80 e 112px; border-default usa 1px solid var(--line), e radius-control centraliza 6px. O rodapé tem grid e ritmo explícitos, títulos de grupo de 14px e links de 13px, com reorganização para telefone.
+A revisão independente da direção Orbit concluiu SHIP sem correções materiais. Electron, inspeção Playwright em oito larguras e axe passaram. As verificações automáticas de acessibilidade não substituem itens manuais incompletos. ESLint10.14 foi aprovado somente no site; não foram adicionadas dependências de runtime de produção. O detector Impeccable foi tentado, mas o launcher estava ausente; não há sucesso de detector alegado.
 
-O indicador das abas se move de fato: CSS usa --tab-x/--tab-width, recalculados por seleção, ResizeObserver e fontes prontas. A entrada e saída do menu móvel usam 160ms; inert bloqueia interação assim que fecha. Fechar a captura oferece tooltip acessível “Fechar (Esc)” por hover/foco. A cópia do endereço mostra “Copiando link…”, disabled e aria-busy enquanto aguarda a API, restaurando o botão no término.
+No laboratório controlado, LCP foi1,44s no desktop e1,392s no mobile, CLS0 em ambos e amostras de interação48ms. São medições locais, sem alegação de INP de campo ou pontuação Lighthouse.
 
-Para revisar o build de produção localmente, na raiz do repositório:
+Na raiz do repositório:
 
 ```sh
 node site/build.mjs && node site/preview.mjs
 ```
 
-Acesse http://127.0.0.1:4173/. O servidor aceita somente GET/HEAD, serve a saída estática preparada em work/site-preview e não publica o site. A verificação de prévia cobriu rotas, scripts, fonte, resposta 404 para recurso ausente e 405 para método não aceito. Ctrl+C encerra a prévia. A entrega em branch e eventual PR de rascunho são etapas separadas; este documento não afirma que um PR já foi criado. Não há merge em main nem deploy implícitos.
-
-## Briefing ampliado: galeria, progresso e pesquisa
-
-A galeria tem três abas: Conversas, Em chamada e Comunidades, com setas, Home e End em toda a sequência. Comunidades reutiliza a captura verdadeira já disponível de conversa/comunidade, com legenda e alternativa textual próprias. Continuam existindo somente duas capturas distintas. A captura dedicada de transmissão permanece dispensada; não existe uma quarta aba fictícia de compartilhamento. Os dois cartões amplos do bento também recebem ícones SVG, completando a iconografia dos cinco cartões.
-
-O wrapper `.showcase-display` reúne os quatro links nativos de progresso e a imagem no sticky de desktop. As âncoras Mensagens, Chamadas, Tela e Comunidades levam às etapas correspondentes; a etapa mais próxima da linha central recebe `aria-current="step"` em todas as larguras. No mobile o wrapper fica estático e a imagem persistente fica oculta; com movimento reduzido o sticky também é removido. A navegação e a narrativa preservam o fluxo e a rolagem nativos.
-
-A pesquisa auditável está em [site-reference-research.md](site-reference-research.md). Nesta continuação, após a implementação inicial, foram lidos quatro DESIGN.md do Refero Styles e examinadas suas capturas: [Intercom](https://styles.refero.design/style/12255b63-e506-4bc1-a4cd-d05487de32f3), [Dimension](https://styles.refero.design/style/fbcf9cbb-7c6b-449d-862a-bce521a8ab1d), [Notion](https://styles.refero.design/style/2bf4c61f-de10-4614-ba1b-20c0453bd2a9) e [Vercel](https://styles.refero.design/style/f24daf3a-d43f-4dec-85a9-8ac1d5148a03). Os materiais do catálogo são interpretações, não código oficial. Aplicaram-se hierarquia editorial, apresentação do produto, progresso narrativo, ritmo e bordas; Satoshi, tema escuro e evidência real do Mingrx prevalecem.
-
-HTML oficial de Linear, Raycast, Vercel, shadcn/ui e Motion foi acessado, mas o navegador falhou na validação TLS. Não se afirma observação dinâmica de animações externas. CSS, WAAPI e IntersectionObserver continuam suficientes para esta implementação estática; não houve inclusão de dependências de runtime em produção. A verificação agora inclui execução aprovada de ESLint 10.14 somente nos arquivos do site, além da checagem de sintaxe anterior.
+A prévia serve somente o build estático em http://127.0.0.1:4173/, aceita GET/HEAD e não publica o site. Rotas, scripts, fonte,404 e405 foram verificados. Ctrl+C encerra. Branch/PR de rascunho são etapas separadas; não se afirma aqui sua criação nem merge em main ou deploy.

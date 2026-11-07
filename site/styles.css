@@ -313,3 +313,83 @@ button,input{caret-color:var(--accent)}
 @media(prefers-reduced-motion:reduce){.showcase-display{position:static}}
 
 @media(min-width:851px) and (max-height:700px){.showcase-display .showcase-frame{max-height:calc(100svh - 250px)}}
+
+/* User-approved Orbit direction: moon, gamer, navy and violet. */
+:root{--bg:#070b17;--paper:#11172a;--soft:#0c1122;--ink:#f4f2ff;--muted:#bfc0d5;--line:#28304b;--accent:#b894ff;--button-bg:#6c27d9;--button-hover:#7e35ed;--button-ink:#fff;--surface-raised:#1b2240;--surface-blue:#101b35;--violet-field:#11112b;--radius-action:28px;--orbit-button:linear-gradient(135deg,#8a35fa,#6424df);--orbit-title:linear-gradient(110deg,#8e65f7,#c47bff)}
+::selection{background:#6930c9;color:#fff}
+.skip-link{background:#6c27d9;color:#fff}
+.site-header{background:#070b17;border-bottom:1px solid #1a2034}
+.header-inner{gap:40px}
+.brand{font-weight:800;letter-spacing:-.035em}
+.button-primary,.header-download{border-radius:var(--radius-action);color:#fff;background-color:var(--button-bg);background-image:var(--orbit-button);border-color:#a77cff40;box-shadow:inset 0 1px #d8b9ff33,0 8px 24px -14px #7131eb}
+.button-primary:hover,.header-download:hover{background-color:var(--button-hover);background-image:linear-gradient(135deg,#9e4cff,#7633ee);color:#fff}
+.header-download{min-width:124px}
+.orbit-hero{position:relative;isolation:isolate;min-height:min(820px,calc(100svh - 82px));display:grid;align-items:center;overflow:clip;background:#060914}
+.orbit-art{position:absolute;inset:0;z-index:-1;display:block}
+.orbit-art img{height:100%;width:100%;object-fit:cover;object-position:center center}
+.orbit-content{padding-block:90px 110px}
+.orbit-copy{width:53%;max-width:640px}
+.orbit-tagline{font-size:11px;letter-spacing:.32em;color:#c4a3ff;font-weight:650;margin-bottom:26px}
+.orbit-copy h1{font-size:clamp(48px,5.25vw,76px);font-weight:500;letter-spacing:-.035em;line-height:1.07;text-wrap:initial}
+.orbit-copy h1 span{font-weight:750;color:#b184ff;background-image:var(--orbit-title);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.orbit-copy .hero-description{font-size:18px;line-height:1.65;max-width:44ch;margin:26px 0 0;color:#deddec}
+.orbit-copy .hero-actions{justify-content:flex-start;gap:28px;margin-top:34px}
+.orbit-copy .button-primary{min-height:56px;padding:15px 25px;font-size:14px}
+.orbit-explore{display:inline-flex;align-items:center;gap:12px;min-height:52px;font-size:14px;font-weight:650;text-decoration:none;color:#f4f2ff}
+.explore-icon{width:42px;height:42px;display:grid;place-items:center;border:1px solid #9691af;border-radius:50%;transition:background-color var(--duration-quick),border-color var(--duration-quick)}
+.orbit-explore:hover .explore-icon{background:#6424df44;border-color:var(--accent)}
+.orbit-benefits{list-style:none;display:grid;grid-template-columns:repeat(3,max-content);gap:32px;margin:42px 0 0;padding:24px 0 0;border-top:1px solid #a9a1da18;color:#f1eefb}
+.orbit-benefits li{display:flex;align-items:center;gap:10px;font-size:13px}
+.orbit-benefits svg{width:21px;height:21px;color:#d5c9ff}
+.orbit-copy .release-note{font-size:12px;margin-top:26px;color:#c2bdd3}
+.orbit-copy .download-origin{font-size:11px;color:#b6b1c9;margin-top:4px}
+.premium-home .product-intro{padding-top:72px}
+.product-intro-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
+.product-intro-heading h2{font-size:clamp(34px,3.8vw,52px);max-width:18ch}
+.product-intro-heading p{font-size:15px;line-height:1.8;color:var(--muted)}
+.premium-home .product-intro .product-stage{margin-top:36px;background:#0d1224;box-shadow:0 30px 80px -50px #6543b866}
+.orbit-home .feature-messages{background:#14162b}
+.orbit-home .feature-voice{background:#101c34}
+.orbit-home .feature-card:hover{border-color:#6c5694;background-color:#171d35}
+.orbit-home .scene-tabs button[aria-selected='true']{color:#e5d5ff}
+.orbit-home .download-panel{background:linear-gradient(145deg,#181830,#10192d)}
+.premium-home.orbit-home .closing{background:linear-gradient(90deg,#0e1025f0,#10142bf5),url('./assets/mingrx-orbit-hero-small.webp') right center/cover;border-color:var(--line)}
+@media(prefers-reduced-motion:no-preference){
+ .orbit-tagline,.orbit-copy h1{animation:premium-arrive var(--duration-reveal) var(--ease-out) both}
+ .orbit-copy .hero-description{animation:premium-arrive var(--duration-reveal) 50ms var(--ease-out) both}
+ .orbit-copy .hero-actions{animation:premium-arrive var(--duration-reveal) 90ms var(--ease-out) both}
+ .orbit-benefits{animation:premium-arrive var(--duration-reveal) 130ms var(--ease-out) both}
+}
+@media(min-width:1600px){.orbit-hero{min-height:860px}.orbit-copy h1{font-size:80px}.orbit-content{width:min(1440px,calc(100% - 120px))}}
+@media(min-width:851px) and (max-width:1100px){.orbit-copy{width:56%}.orbit-copy h1{font-size:56px}.orbit-copy .hero-description{font-size:16px;max-width:36ch}.orbit-copy .hero-actions{gap:16px;flex-wrap:wrap}.orbit-benefits{gap:18px}.orbit-benefits li{font-size:12px}.orbit-content{padding-block:60px 80px}}
+@media(min-width:851px) and (max-height:700px){.orbit-hero{min-height:620px}.orbit-content{padding-block:52px 72px}.orbit-copy h1{font-size:58px}}
+@media(max-width:850px){
+ .orbit-hero{min-height:0;display:flex;flex-direction:column;align-items:stretch}
+ .orbit-content{padding-block:46px 0;position:relative;z-index:1}
+ .orbit-copy{width:100%;max-width:650px}.orbit-copy h1{font-size:clamp(46px,7.5vw,64px)}
+ .orbit-art{position:relative;inset:auto;z-index:0;height:420px;order:2;margin-top:-20px}
+ .orbit-art img{object-position:right center}
+ .orbit-copy .hero-description{font-size:17px;max-width:43ch}
+ .orbit-copy .hero-actions{justify-content:flex-start;flex-direction:row;gap:24px}
+ .orbit-benefits{gap:28px;margin-top:30px;padding-top:22px}
+ .orbit-copy .release-note{margin-top:20px}
+ .product-intro-heading{display:block}.product-intro-heading p{margin-top:20px}
+ .premium-home .product-intro{padding-top:50px}
+}
+@media(max-width:540px){
+ .orbit-content{padding-top:36px}.orbit-tagline{font-size:9px;letter-spacing:.25em;margin-bottom:22px}
+ .orbit-copy h1{font-size:clamp(38px,10.5vw,56px);line-height:1.08}
+ .orbit-copy .hero-description{font-size:16px;line-height:1.7;margin-top:22px}
+ .orbit-copy .hero-actions{gap:12px;margin-top:26px;align-items:flex-start;flex-direction:column}
+ .orbit-copy .button-primary{width:100%;min-height:54px}
+ .orbit-explore{min-height:48px;font-size:13px}.explore-icon{width:36px;height:36px}
+ .orbit-benefits{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px;padding-top:20px}
+ .orbit-benefits li{flex-direction:column;align-items:flex-start;gap:8px;font-size:11px}
+ .orbit-benefits svg{width:19px;height:19px}
+ .orbit-copy .release-note{margin-top:20px;font-size:11px}.orbit-copy .download-origin{font-size:11px}
+ .orbit-copy .pc-link{display:block;margin-top:6px}.orbit-copy .pc-link .text-link{font-size:12px}
+ .orbit-art{height:330px;margin-top:-12px}
+ .product-intro-heading h2{font-size:36px}.product-intro-heading p{font-size:14px;margin-top:16px}
+ .premium-home .product-intro .product-stage{margin-top:28px}
+}
+@media(prefers-reduced-motion:reduce){.orbit-tagline,.orbit-copy h1,.orbit-copy .hero-description,.orbit-copy .hero-actions,.orbit-benefits{animation:none}}

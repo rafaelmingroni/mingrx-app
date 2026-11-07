@@ -22,8 +22,8 @@
   <link rel="icon" href="./assets/mingrx-mark.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
   <link rel="preload" href="./assets/fonts/satoshi-variable.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="./styles.css?v=20261107-premium">
-  <script src="./app.js?v=20261107-premium" defer>
+  <link rel="stylesheet" href="./styles.css?v=20261107-orbit">
+  <script src="./app.js?v=20261107-orbit" defer>
 </script>
 </head>
 <body>
@@ -34,20 +34,22 @@
 <nav class="topnav" id="main-nav" aria-label="Navegação principal"><a href="#recursos">O aplicativo</a><a href="#comecar">Como começar</a><a href="#download">Download</a><a href="./support.html">Suporte</a></nav>
 <a class="button button-small button-secondary header-download download-link" href="https://github.com/rafaelmingroni/mingrx-app/releases/latest">Baixar o Mingrx<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg></a>
 </div></header>
-<main class="premium-home" id="conteudo" tabindex="-1">
-<section class="hero shell" aria-labelledby="hero-title">
-<div class="hero-copy"><h1 id="hero-title">Mensagens, chamadas.<span>Seu grupo, junto.</span></h1>
-<p class="hero-description">Do primeiro oi à última partida. Converse com seus amigos e compartilhe uma tela, uma ideia ou o momento.</p>
-<div class="hero-actions"><a class="button button-primary download-link" href="https://github.com/rafaelmingroni/mingrx-app/releases/latest">Baixar para Windows<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg></a><a class="text-link" href="#recursos">Ver o aplicativo<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16m-6-6 6 6 6-6"/></svg></a></div>
-<p class="release-note" aria-live="polite">Gratuito para Windows 10 e 11.</p><p class="download-origin">Instalador oficial pelo GitHub. Aplicativo para Windows.</p>
+<main class="premium-home orbit-home" id="conteudo" tabindex="-1">
+<section class="orbit-hero" aria-labelledby="hero-title">
+<picture class="orbit-art" aria-hidden="true"><source media="(max-width: 850px)" srcset="./assets/mingrx-orbit-hero-small.webp"><img src="./assets/mingrx-orbit-hero.webp" width="1672" height="941" alt="" fetchpriority="high" decoding="async"></picture>
+<div class="shell orbit-content"><div class="orbit-copy"><p class="orbit-tagline">SEU GRUPO, MAIS PERTO</p><h1 id="hero-title">Converse, jogue<br>e <span>compartilhe.</span></h1><p class="hero-description">Mensagens, chamadas de voz, compartilhamento de tela e comunidades em um só lugar.</p>
+<div class="hero-actions"><a class="button button-primary download-link" href="https://github.com/rafaelmingroni/mingrx-app/releases/latest">Baixar para Windows<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg></a><a class="orbit-explore" href="#recursos"><span class="explore-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span>Explorar recursos</a></div>
+<ul class="orbit-benefits"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H9l-5 4V4Z"/></svg>Mensagens</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3"/></svg>Voz e tela</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m2-17a3 3 0 0 1 0 6m2 11v-3a6 6 0 0 0-3-5"/></svg>Comunidades</li></ul>
+<p class="release-note" aria-live="polite">Gratuito para Windows 10 e 11.</p><p class="download-origin">Instalador oficial pelo GitHub.</p>
 <div class="pc-link"><button class="text-link" type="button" data-copy-site>Copiar link para abrir no PC<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg></button><p class="copy-status" role="status"></p><p class="copy-fallback" hidden>Copie este endereço: <a href="https://mingrx.site/">https://mingrx.site/</a></p></div>
-</div>
+</div></div></section>
+<section class="hero shell product-intro" aria-labelledby="product-title"><div class="product-intro-heading"><h2 id="product-title">O seu lugar de encontro.</h2><p>Conheça o Mingrx por dentro.<br>Capturas reais, no seu ritmo.</p></div>
 <div class="product-stage" id="recursos" tabindex="-1">
 <div class="stage-toolbar"><div class="scene-tabs" role="tablist" aria-label="Veja o Mingrx em uso">
 <button type="button" id="tab-conversation" role="tab" aria-selected="true" aria-controls="scene-conversation" data-scene="conversation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></svg>Conversas</button>
 <button type="button" id="tab-call" role="tab" aria-selected="false" aria-controls="scene-call" tabindex="-1" data-scene="call"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3m-4 0h8"/></svg>Em chamada</button><button type="button" id="tab-community" role="tab" aria-selected="false" aria-controls="scene-community" tabindex="-1" data-scene="community"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M9 3 7 21M17 3l-2 18"/></svg>Comunidades</button></div><span class="demo-label">No aplicativo de verdade.</span></div>
 <div class="scene-panels"><figure id="scene-conversation" class="scene-panel" role="tabpanel" aria-labelledby="tab-conversation" tabindex="0">
-<a data-preview class="product-image" href="./assets/mingrx-conversation.webp" target="_blank" rel="noopener" aria-label="Ampliar captura real de uma conversa de demonstração no Mingrx"><picture><source media="(max-width: 540px)" srcset="./assets/mingrx-conversation-detail.webp"><img src="./assets/mingrx-conversation.webp" width="1440" height="960" fetchpriority="high" alt="Conversa em um canal do Mingrx, com mensagens e canais de uma comunidade de demonstração."></picture></a>
+<a data-preview class="product-image" href="./assets/mingrx-conversation.webp" target="_blank" rel="noopener" aria-label="Ampliar captura real de uma conversa de demonstração no Mingrx"><picture><source media="(max-width: 540px)" srcset="./assets/mingrx-conversation-detail.webp"><img src="./assets/mingrx-conversation.webp" width="1440" height="960" loading="lazy" alt="Conversa em um canal do Mingrx, com mensagens e canais de uma comunidade de demonstração."></picture></a>
 <figcaption><span>Captura real do Mingrx 3.2. Contas de demonstração, sem conversas de usuários.</span><a data-preview href="./assets/mingrx-conversation.webp" target="_blank" rel="noopener">Ver captura completa<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6m0-6-8 8M10 4H4v16h16v-6"/></svg></a></figcaption>
 </figure>
 <figure id="scene-call" class="scene-panel" role="tabpanel" aria-labelledby="tab-call" tabindex="0" hidden>

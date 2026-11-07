@@ -38,7 +38,8 @@ The current app is distributed through GitHub Releases with automatic updates. A
 - Use Satoshi for the website typography, explicitly requested by Rafael.
 - Preserve the Mingrx name and existing recognizable logo.
 - Preserve a dark presentation. The user rejected a white website and now finds the current composition too simple and conservative.
-- Avoid purple gradients, pill buttons, fabricated reviews/counts/metrics, fake AI portraits, excessive animation, cursor effects and vague promises.
+- Latest user-approved visual direction is a supplied cosmic concept: fictional seated gamer on a rock ridge, violet-lit moon with M mark, navy sky, restrained violet gradients and rounded primary actions. This explicitly replaces the earlier no-purple-gradient / no-pill-button preference.
+- Preserve genuine application captures separately from the decorative brand illustration. No fabricated reviews/counts/metrics, testimonials, excessive animation, cursor effects or vague performance/privacy promises.
 - Solid brand violet is present in the logo and application; it has not been prohibited.
 - Pinterest board supplied as inspiration, not as an instruction to copy another brand: https://br.pinterest.com/en_juliao/sites-modernos/.
 

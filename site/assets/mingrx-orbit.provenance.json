@@ -1,0 +1,14 @@
+{
+  "type": "generated decorative brand illustration",
+  "reference": "User-supplied approved Mingrx moon/gamer website concept, conversation on 2026-11-07",
+  "generator": "image_gen",
+  "original": "/workspace/generated_images/exec-67d18ef3-9ffb-4c5a-a1f0-305b7ac5aa32.png",
+  "notProductEvidence": true,
+  "content": "Anonymous fictional gamer on rocky ridge, violet-lit moon with M monogram. No screenshot, testimonial or actual user depicted.",
+  "transformations": "Resize and WebP encoding only, no compositing or UI text in image.",
+  "files": {
+    "mingrx-orbit-hero.webp": "aec1f92ceea2f3de012e50cfbab11a04db20d78ad9715ef7507c38a0a2d365cc",
+    "mingrx-orbit-hero-small.webp": "adc907c5c2657af57eaf186a1a35b497800d8ebef7941c0f3b59a246d4f3edc0"
+  },
+  "promptFile": "mingrx-orbit.prompt.txt"
+}

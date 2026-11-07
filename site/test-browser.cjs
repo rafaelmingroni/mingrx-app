@@ -70,7 +70,7 @@ app.whenReady().then(async()=>{
     assert(await js("document.fonts.check('750 32px Satoshi')&&[...document.fonts].some(font=>font.family==='Satoshi'&&font.status==='loaded')"),'The locally hosted Satoshi font must load');
     for(let i=0;i<100;i++){if(await js("document.querySelector('.release-note').textContent.includes('Mingrx 3.2.')"))break;await wait(50);}
     const layout=await js(`(()=>({width:innerWidth,overflow:document.documentElement.scrollWidth>innerWidth+1,images:[...document.images].filter(img=>{const r=img.getBoundingClientRect();return r.width>0&&r.top<innerHeight&&r.bottom>0}).every(img=>img.complete&&img.naturalWidth>0),heading:document.querySelector('h1').textContent,version:document.querySelector('.release-note').textContent,animations:document.getAnimations().length,radii:[...document.querySelectorAll('.button,.menu-button')].map(el=>parseFloat(getComputedStyle(el).borderTopLeftRadius)),download:document.querySelector('.download-link').href}))()`);
-    assert.equal(layout.width,width);assert(!layout.overflow,`Horizontal overflow at ${width}`);assert(layout.images,`Missing image at ${width}`);assert(await js("document.getAnimations().every(animation=>animation.effect.getTiming().iterations!==Infinity)"),'Decorative animation must never run indefinitely');assert(layout.radii.every(radius=>radius<=8));assert.match(layout.version,/Mingrx 3\.2\./);assert.match(layout.download,/releases\/download\/v3\.2\.0\/Mingrx-Setup-3\.2\.0-x64\.exe$/);
+    assert.equal(layout.width,width);assert(!layout.overflow,`Horizontal overflow at ${width}`);assert(layout.images,`Missing image at ${width}`);assert(await js("document.getAnimations().every(animation=>animation.effect.getTiming().iterations!==Infinity)"),'Decorative animation must never run indefinitely');assert(layout.radii.every(radius=>radius<=32));assert.match(layout.version,/Mingrx 3\.2\./);assert.match(layout.download,/releases\/download\/v3\.2\.0\/Mingrx-Setup-3\.2\.0-x64\.exe$/);
     assert(await js("[...document.images].every(img=>img.hasAttribute('alt'))&&document.querySelector('.product-image img').alt.length>30"),'Image alternatives are missing');
     if(width===1440){
       const colors=await js("(()=>{const body=getComputedStyle(document.body),copy=getComputedStyle(document.querySelector('.hero-description')),button=getComputedStyle(document.querySelector('.hero-actions .button-primary'));return{body:body.color,bg:body.backgroundColor,muted:copy.color,button:button.color,buttonBg:button.backgroundColor}})()");
@@ -112,7 +112,7 @@ app.whenReady().then(async()=>{
       assert(await js("document.querySelector('.pc-link .copy-fallback').hidden&&document.querySelector('.pc-link .copy-status').textContent.includes('Link copiado')"),'Clipboard success must announce completion');
     }
     if(width===1440)await capture('desktop.png');if(width===390)await capture('mobile.png');
-    console.log(`Site ${width}px: layout, images, live version, rectangular buttons and navigation passed`);
+    console.log(`Site ${width}px: layout, images, live version, consistent action shapes and navigation passed`);
   }
   win.setContentSize(1440,1000);await win.loadURL(origin+'/');
   for(const index of [0,1,2,3]){

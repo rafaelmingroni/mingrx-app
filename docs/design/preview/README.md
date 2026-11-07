@@ -1,6 +1,6 @@
 # Prévia do redesign Mingrx
 
-Capturas do site implementado, com imagens autênticas do aplicativo e conteúdo de demonstração. São evidências de navegador, não composições conceituais.
+Direção atual: cena espacial aprovada pelo usuário, com personagem sentado, lua com M e violeta/azul. As imagens abaixo são capturas do site implementado no navegador. A ilustração decorativa do hero é distinta das capturas autênticas do aplicativo, que seguem identificadas com conteúdo de demonstração.
 
 ## Desktop
 

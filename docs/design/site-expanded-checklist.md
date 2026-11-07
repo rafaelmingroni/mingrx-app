@@ -48,3 +48,10 @@ Nenhuma dependência foi adicionada ao runtime do site. ESLint é uma ferramenta
 - O CLI do Impeccable não foi instalado neste executor; o skill e revisões foram utilizados, sem alegar um detector bem-sucedido.
 - Não foram verificadas animações ao vivo dos sites de referência cujo navegador rejeitou o certificado. Os DESIGN.md/capturas do catálogo foram acessados e examinados por caminhos com TLS verificado.
 - A nova versão não foi publicada no domínio. Essa ação depende de autorização conforme o briefing.
+
+
+## Atualização visual posterior: conceito espacial do usuário
+
+A última imagem fornecida pelo usuário substitui o mundo visual anterior. A implementação atual adota personagem ficcional sentado na encosta, lua com M, céu noturno e violeta/azul. O hero agora é uma cena de marca; as capturas reais seguem na seção imediatamente seguinte. As condições antigas de hero apenas com screenshot, botões retangulares e ausência de gradiente não devem ser usadas para julgar a direção nova explicitamente aprovada.
+
+O estado funcional e a preservação do escopo da matriz acima continuam válidos. Arte decorativa e prova real do aplicativo têm proveniências distintas. A nova medição está no bloco `orbit` do relatório de performance, e o registro completo desta passagem está em [Validação](site-premium-validation.md#direção-espacial-aprovada-por-imagem).
