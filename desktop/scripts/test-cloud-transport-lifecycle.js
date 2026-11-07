@@ -81,6 +81,7 @@ async function main() {
   let installHistory;
   context.require = name => {
     if (name === './chat-history') return installHistory;
+    if (name === './server-deletion') return require('../src/server-deletion');
     if (name === 'firebase/firestore' || name === 'firebase/database') return F;
     throw new Error(`Unexpected module: ${name}`);
   };

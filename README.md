@@ -17,9 +17,9 @@
 Ele reúne comunidades, canais de texto e voz, mensagens privadas, webcam, compartilhamento de tela, presença e perfis em um único aplicativo para Windows. O projeto nasceu como Banana Cord e evoluiu para Mingrx preservando o caminho de atualização dos usuários existentes.
 
 <!-- mingrx-version:begin -->
-> **Mingrx 3.2.1** · Versão técnica: `3.2.1`
+> **Mingrx 3.2.2** · Versão técnica: `3.2.2`
 >
-> [Notas desta versão](RELEASE_NOTES-3.2.1.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
+> [Notas desta versão](RELEASE_NOTES-3.2.2.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
 >
 > Projeto pessoal de **Rafael Mingroni**.
 <!-- mingrx-version:end -->
@@ -143,6 +143,10 @@ O protocolo antigo `bananacord://` também continua aceito por compatibilidade, 
 - opção de áudio do sistema alinhada ao checkbox e recuperação sem áudio quando a captura de áudio não está disponível;
 - prévia local protegida contra efeito espelho recursivo;
 - monitoramento de RTT durante chamadas.
+
+### Exclusão de comunidade
+
+O dono confirma o nome antes de excluir a comunidade. A limpeza remove primeiro os dados dos canais, chamadas e convites, mantendo seu vínculo até a conclusão para permitir uma nova tentativa após interrupções. Novas gravações ficam bloqueadas durante a exclusão. Membros e administradores não podem excluir a comunidade de outra pessoa.
 
 ### Personalização
 
