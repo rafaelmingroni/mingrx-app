@@ -95,6 +95,8 @@ motion:
   duration-disclosure: "240ms"
   duration-dialog: "200ms"
   duration-tooltip: "120ms"
+  duration-stagger: "40ms"
+  orbit-depth: "8px"
   ease-out: "cubic-bezier(.16,1,.3,1)"
 shadows:
   stage: "0 30px 80px -50px #6543b866"
@@ -172,11 +174,13 @@ As capturas mantêm acesso à imagem completa. No telefone, a galeria abaixo do 
 
 ## Elevation & Depth
 
-A sombra do palco de produto é `0 30px 80px -50px #6543b866`. Botões têm borda e luz interna discretas; a lua e a iluminação violeta pertencem à arte estática. Ações e cartões têm hover discreto. Os tokens de duração são quick 160ms, scene 360ms e reveal 440ms; a curva de saída é `cubic-bezier(.16,1,.3,1)`. O título do hero entra em 440ms; descrição atrasa 50ms, ações 90ms e a prova real 130ms. A prova usa opacidade 0→1, escala .99→1 e deslocamento de 16px; a arte permanece estática. A chegada da galeria usa 500ms com atraso de 120ms. O disclosure usa 240ms para interpolar altura quando `interpolate-size` está disponível, além da entrada de conteúdo existente em 200ms. O diálogo usa 200ms para entrada e saída nativas com transições discretas de display e overlay quando suportadas.
+A sombra do palco de produto é `0 30px 80px -50px #6543b866`. Botões têm borda e luz interna discretas; a lua e a iluminação violeta pertencem à ilustração decorativa. Ações e cartões têm hover discreto. Os tokens de duração são quick 160ms, scene 360ms e reveal 440ms; a curva de saída é `cubic-bezier(.16,1,.3,1)`. O título do hero entra em 440ms; descrição atrasa 50ms, ações 90ms e a prova real 130ms. A prova usa opacidade 0→1, escala .99→1 e deslocamento de 16px; as capturas não recebem parallax. A galeria entra pela mesma revelação de seção em 440ms. O disclosure usa 240ms para interpolar altura quando `interpolate-size` está disponível, além da entrada de conteúdo existente em 200ms. O diálogo usa 200ms para entrada e saída nativas com transições discretas de display e overlay quando suportadas.
 
-Conteúdo é visível por padrão. IntersectionObserver adiciona revelações uma única vez e só acompanha o showcase quando ele se aproxima da viewport. O acompanhamento usa listeners passivos e requestAnimationFrame, sem scroll hijack. As imagens do showcase alternam opacidade e escala discreta; as abas usam crossfade com Web Animations API, sem depender de View Transitions. A imagem anterior permanece em uma cópia inerte e oculta à acessibilidade durante a decodificação da próxima; o palco sinaliza `aria-busy` enquanto aguarda. Foco ou pointerenter antecipa a carga. Erros mantêm os links originais disponíveis; movimento reduzido ou ausência da API resulta em troca direta. Não há autoplay, rolagem imposta ou dependência de animação para ler.
+Conteúdo é visível por padrão. IntersectionObserver adiciona revelações uma única vez: opacidade 0→1 e deslocamento vertical de 16px em 440ms. WeakSet e unobserve preservam essa condição mesmo após mudanças de preferência de movimento; elementos que contêm foco não animam. Galeria, showcase, download, FAQ e filhos do rodapé estão entre os alvos, além de headings e cards. Cards alternam atrasos de 40/80ms no desktop; no mobile os atrasos são zero. Sem JavaScript ou IntersectionObserver, o conteúdo permanece visível. O showcase só é acompanhado quando se aproxima da viewport. O acompanhamento usa listeners passivos e requestAnimationFrame, sem scroll hijack. As imagens do showcase alternam opacidade e escala discreta; as abas usam crossfade com Web Animations API, sem depender de View Transitions. A imagem anterior permanece em uma cópia inerte e oculta à acessibilidade durante a decodificação da próxima; o palco sinaliza `aria-busy` enquanto aguarda. Foco ou pointerenter antecipa a carga. Erros mantêm os links originais disponíveis; movimento reduzido ou ausência da API resulta em troca direta. Não há autoplay, rolagem imposta ou dependência de animação para ler.
 
 `prefers-reduced-motion: reduce` remove animações, transições, transformações de hover e sticky; a narrativa permanece legível. Até 850px, o showcase também dispensa sticky e oculta o visual persistente; a narrativa e os quatro links de progresso ficam no fluxo nativo. A etapa mais próxima da linha central e `aria-current="step"` continuam sincronizados em todas as larguras, inclusive com movimento reduzido, sem animação ou rolagem imposta.
+
+A profundidade da arte Orbit usa parallax decorativo limitado a 8px (`--orbit-depth`), apenas a partir de 851px, com no-preference e enquanto o hero está próximo da viewport. IntersectionObserver ativa listeners passivos de scroll/resize; requestAnimationFrame é agendado por eventos, sem loop contínuo. `will-change` existe somente durante a atividade; escala 1.025 evita bordas expostas. Mobile e reduced motion removem listeners, profundidade e transformações. A rolagem permanece nativa e as capturas ficam sem parallax.
 
 ## Shapes
 

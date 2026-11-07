@@ -36,6 +36,7 @@
   const desktopMotion = mediaQuery('(min-width: 851px) and (prefers-reduced-motion: no-preference)');
   let showcaseObserver;
   let revealObserver;
+  const revealedElements = new WeakSet();
   let frame = 0;
   const selectStory = () => {
     frame = 0;
@@ -91,14 +92,50 @@
     revealObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('reveal-in');
         revealObserver.unobserve(entry.target);
+        if(revealedElements.has(entry.target))return;
+        revealedElements.add(entry.target);
+        if(!entry.target.contains(document.activeElement))entry.target.classList.add('reveal-in');
       });
     }, {threshold: .12});
-    document.querySelectorAll('.features-heading,.feature-card,.showcase-heading,.start-section .section-heading,.privacy-section,.faq .section-heading').forEach(element => revealObserver.observe(element));
+    document.querySelectorAll('.product-intro-heading,.product-intro .product-stage,.features-heading,.feature-card,.showcase-heading,.showcase-frame,.start-section .section-heading,.download-copy,.download-panel,.privacy-section,.faq .section-heading,.faq-list,.footer-brand,.footer-links').forEach(element => revealObserver.observe(element));
   };
   reducedMotion.addEventListener('change', configureReveals);
   configureReveals();
+
+  // Decorative depth only: bounded to 8px, desktop/no-preference, and visible hero.
+  const decoration=document.querySelector('.orbit-art');
+  const depthMedia=mediaQuery('(min-width:851px) and (prefers-reduced-motion:no-preference)');
+  let depthObserver,depthFrame=0;
+  const updateDepth=()=>{
+    depthFrame=0;
+    const hero=decoration?.closest('.orbit-hero');
+    if(!hero)return;
+    const rect=hero.getBoundingClientRect();
+    const distance=parseFloat(getComputedStyle(hero).getPropertyValue('--orbit-depth'))||8;
+    const progress=Math.max(0,Math.min(1,-rect.top/Math.max(rect.height,1)));
+    decoration.style.setProperty('--orbit-parallax',`${(progress*distance).toFixed(2)}px`);
+  };
+  const scheduleDepth=()=>{if(!depthFrame)depthFrame=requestAnimationFrame(updateDepth);};
+  const stopDepth=()=>{
+    window.removeEventListener('scroll',scheduleDepth);window.removeEventListener('resize',scheduleDepth);
+    if(depthFrame)cancelAnimationFrame(depthFrame);depthFrame=0;
+    decoration?.classList.remove('parallax-active');
+  };
+  const configureDepth=()=>{
+    if(!decoration)return;
+    stopDepth();depthObserver?.disconnect();decoration.style.removeProperty('--orbit-parallax');
+    if(!depthMedia.matches||!('IntersectionObserver' in window))return;
+    depthObserver=new IntersectionObserver(entries=>{
+      stopDepth();
+      if(entries.some(entry=>entry.isIntersecting)){
+        decoration.classList.add('parallax-active');
+        window.addEventListener('scroll',scheduleDepth,{passive:true});window.addEventListener('resize',scheduleDepth,{passive:true});scheduleDepth();
+      }
+    },{rootMargin:'100px 0px'});
+    depthObserver.observe(decoration.closest('.orbit-hero'));
+  };
+  depthMedia.addEventListener('change',configureDepth);configureDepth();
 
   const sectionLinks = [...document.querySelectorAll('.topnav a[href^="#"]')];
   if ('IntersectionObserver' in window && sectionLinks.length) {

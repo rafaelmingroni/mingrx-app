@@ -2206,5 +2206,438 @@
         ]
       }
     ]
+  },
+  "motion": {
+    "kind": "controlled-lab",
+    "source": "/workspace/mingrx-app/site",
+    "conditions": {
+      "runs": 3,
+      "coldCache": true,
+      "cpuSlowdown": 4,
+      "latencyMs": 150,
+      "downloadBytesPerSecond": 200000,
+      "uploadBytesPerSecond": 100000,
+      "releaseApi": "blocked; official static fallback retained"
+    },
+    "notes": [
+      "LCP and cumulative unexpected layout shift measured in a controlled Chromium lab.",
+      "interactionMax is the maximum observed Event Timing duration from two trusted sample clicks, not field INP.",
+      "No production deployment or field performance claim."
+    ],
+    "summary": [
+      {
+        "scenario": "desktop",
+        "lcpMs": 1504,
+        "cls": 0,
+        "sampleInteractionMs": 48
+      },
+      {
+        "scenario": "mobile",
+        "lcpMs": 1368,
+        "cls": 0,
+        "sampleInteractionMs": 40
+      }
+    ],
+    "runs": [
+      {
+        "scenario": "desktop",
+        "run": 1,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "lcp": 1504,
+        "cls": 0,
+        "interactionMax": 48,
+        "longTasks": 0,
+        "resources": [
+          {
+            "name": "/assets/fonts/satoshi-variable.woff2",
+            "bytes": 42888,
+            "duration": 1070
+          },
+          {
+            "name": "/components.js",
+            "bytes": 11903,
+            "duration": 452
+          },
+          {
+            "name": "/styles.css",
+            "bytes": 44620,
+            "duration": 1098
+          },
+          {
+            "name": "/app.js",
+            "bytes": 9996,
+            "duration": 422
+          },
+          {
+            "name": "/assets/mingrx-mark.svg",
+            "bytes": 657,
+            "duration": 271
+          },
+          {
+            "name": "/assets/mingrx-conversation.webp",
+            "bytes": 59302,
+            "duration": 1388
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero.webp",
+            "bytes": 72724,
+            "duration": 1418
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero-small.webp",
+            "bytes": 28058,
+            "duration": 371
+          },
+          {
+            "name": "/assets/mingrx-conversation-detail.webp",
+            "bytes": 12038,
+            "duration": 266
+          },
+          {
+            "name": "/assets/mingrx-call-detail.webp",
+            "bytes": 13214,
+            "duration": 282
+          },
+          {
+            "name": "/assets/mingrx-call.webp",
+            "bytes": 32330,
+            "duration": 314
+          }
+        ]
+      },
+      {
+        "scenario": "desktop",
+        "run": 2,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "lcp": 1500,
+        "cls": 0,
+        "interactionMax": 48,
+        "longTasks": 0,
+        "resources": [
+          {
+            "name": "/assets/fonts/satoshi-variable.woff2",
+            "bytes": 42888,
+            "duration": 1059
+          },
+          {
+            "name": "/styles.css",
+            "bytes": 44620,
+            "duration": 1096
+          },
+          {
+            "name": "/components.js",
+            "bytes": 11903,
+            "duration": 442
+          },
+          {
+            "name": "/app.js",
+            "bytes": 9996,
+            "duration": 411
+          },
+          {
+            "name": "/assets/mingrx-mark.svg",
+            "bytes": 657,
+            "duration": 257
+          },
+          {
+            "name": "/assets/mingrx-conversation.webp",
+            "bytes": 59302,
+            "duration": 1381
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero.webp",
+            "bytes": 72724,
+            "duration": 1426
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero-small.webp",
+            "bytes": 28058,
+            "duration": 391
+          },
+          {
+            "name": "/assets/mingrx-conversation-detail.webp",
+            "bytes": 12038,
+            "duration": 264
+          },
+          {
+            "name": "/assets/mingrx-call-detail.webp",
+            "bytes": 13214,
+            "duration": 278
+          },
+          {
+            "name": "/assets/mingrx-call.webp",
+            "bytes": 32330,
+            "duration": 311
+          }
+        ]
+      },
+      {
+        "scenario": "desktop",
+        "run": 3,
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "lcp": 1668,
+        "cls": 0,
+        "interactionMax": 40,
+        "longTasks": 0,
+        "resources": [
+          {
+            "name": "/assets/fonts/satoshi-variable.woff2",
+            "bytes": 42888,
+            "duration": 1068
+          },
+          {
+            "name": "/styles.css",
+            "bytes": 44620,
+            "duration": 1076
+          },
+          {
+            "name": "/components.js",
+            "bytes": 11903,
+            "duration": 446
+          },
+          {
+            "name": "/app.js",
+            "bytes": 9996,
+            "duration": 414
+          },
+          {
+            "name": "/assets/mingrx-mark.svg",
+            "bytes": 657,
+            "duration": 269
+          },
+          {
+            "name": "/assets/mingrx-conversation.webp",
+            "bytes": 59302,
+            "duration": 1402
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero.webp",
+            "bytes": 72724,
+            "duration": 1431
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero-small.webp",
+            "bytes": 28058,
+            "duration": 408
+          },
+          {
+            "name": "/assets/mingrx-conversation-detail.webp",
+            "bytes": 12038,
+            "duration": 266
+          },
+          {
+            "name": "/assets/mingrx-call-detail.webp",
+            "bytes": 13214,
+            "duration": 282
+          },
+          {
+            "name": "/assets/mingrx-call.webp",
+            "bytes": 32330,
+            "duration": 316
+          }
+        ]
+      },
+      {
+        "scenario": "mobile",
+        "run": 1,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "lcp": 1356,
+        "cls": 0,
+        "interactionMax": 32,
+        "longTasks": 0,
+        "resources": [
+          {
+            "name": "/assets/fonts/satoshi-variable.woff2",
+            "bytes": 42888,
+            "duration": 986
+          },
+          {
+            "name": "/styles.css",
+            "bytes": 44620,
+            "duration": 1014
+          },
+          {
+            "name": "/components.js",
+            "bytes": 11903,
+            "duration": 443
+          },
+          {
+            "name": "/app.js",
+            "bytes": 9996,
+            "duration": 412
+          },
+          {
+            "name": "/assets/mingrx-mark.svg",
+            "bytes": 657,
+            "duration": 255
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero-small.webp",
+            "bytes": 28058,
+            "duration": 787
+          },
+          {
+            "name": "/assets/mingrx-conversation.webp",
+            "bytes": 59302,
+            "duration": 1139
+          },
+          {
+            "name": "/assets/mingrx-call.webp",
+            "bytes": 32330,
+            "duration": 377
+          },
+          {
+            "name": "/assets/mingrx-conversation-detail.webp",
+            "bytes": 12038,
+            "duration": 271
+          },
+          {
+            "name": "/assets/mingrx-call-detail.webp",
+            "bytes": 13214,
+            "duration": 218
+          }
+        ]
+      },
+      {
+        "scenario": "mobile",
+        "run": 2,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "lcp": 1368,
+        "cls": 0,
+        "interactionMax": 40,
+        "longTasks": 0,
+        "resources": [
+          {
+            "name": "/assets/fonts/satoshi-variable.woff2",
+            "bytes": 42888,
+            "duration": 1006
+          },
+          {
+            "name": "/styles.css",
+            "bytes": 44620,
+            "duration": 1026
+          },
+          {
+            "name": "/components.js",
+            "bytes": 11903,
+            "duration": 439
+          },
+          {
+            "name": "/app.js",
+            "bytes": 9996,
+            "duration": 402
+          },
+          {
+            "name": "/assets/mingrx-mark.svg",
+            "bytes": 657,
+            "duration": 190
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero-small.webp",
+            "bytes": 28058,
+            "duration": 834
+          },
+          {
+            "name": "/assets/mingrx-conversation.webp",
+            "bytes": 59302,
+            "duration": 1141
+          },
+          {
+            "name": "/assets/mingrx-call.webp",
+            "bytes": 32330,
+            "duration": 374
+          },
+          {
+            "name": "/assets/mingrx-conversation-detail.webp",
+            "bytes": 12038,
+            "duration": 267
+          },
+          {
+            "name": "/assets/mingrx-call-detail.webp",
+            "bytes": 13214,
+            "duration": 220
+          }
+        ]
+      },
+      {
+        "scenario": "mobile",
+        "run": 3,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "lcp": 1380,
+        "cls": 0,
+        "interactionMax": 40,
+        "longTasks": 0,
+        "resources": [
+          {
+            "name": "/assets/fonts/satoshi-variable.woff2",
+            "bytes": 42888,
+            "duration": 987
+          },
+          {
+            "name": "/styles.css",
+            "bytes": 44620,
+            "duration": 1018
+          },
+          {
+            "name": "/components.js",
+            "bytes": 11903,
+            "duration": 455
+          },
+          {
+            "name": "/app.js",
+            "bytes": 9996,
+            "duration": 425
+          },
+          {
+            "name": "/assets/mingrx-mark.svg",
+            "bytes": 657,
+            "duration": 268
+          },
+          {
+            "name": "/assets/mingrx-orbit-hero-small.webp",
+            "bytes": 28058,
+            "duration": 784
+          },
+          {
+            "name": "/assets/mingrx-conversation.webp",
+            "bytes": 59302,
+            "duration": 1144
+          },
+          {
+            "name": "/assets/mingrx-call.webp",
+            "bytes": 32330,
+            "duration": 377
+          },
+          {
+            "name": "/assets/mingrx-conversation-detail.webp",
+            "bytes": 12038,
+            "duration": 270
+          },
+          {
+            "name": "/assets/mingrx-call-detail.webp",
+            "bytes": 13214,
+            "duration": 215
+          }
+        ]
+      }
+    ]
   }
 }

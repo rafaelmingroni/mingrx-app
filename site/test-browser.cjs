@@ -121,6 +121,14 @@ app.whenReady().then(async()=>{
     console.log(`Site ${width}px: layout, images, live version, consistent action shapes and navigation passed`);
   }
   win.setContentSize(1440,1000);await win.loadURL(origin+'/');
+  await js('document.fonts.ready');
+  await js("scrollTo(0,document.querySelector('.orbit-hero').offsetHeight*.4);void 0");await wait(150);
+  assert(await js("(()=>{const art=document.querySelector('.orbit-art'),value=parseFloat(art.style.getPropertyValue('--orbit-parallax'));return art.classList.contains('parallax-active')&&value>0&&value<=8})()"),'Desktop decorative depth must stay bounded to 8px');
+  await js("window.__revealCount=0;const card=document.querySelector('.feature-card');card.addEventListener('animationstart',event=>{if(event.target===card&&event.animationName==='scroll-arrive')window.__revealCount++});card.scrollIntoView({block:'center'});void 0");await wait(600);
+  assert.equal(await js('window.__revealCount'),1,'A card must receive one real reveal animation');
+  await js('scrollTo(0,0);void 0');await wait(100);
+  await js("document.querySelector('.feature-card').scrollIntoView({block:'center'});void 0");await wait(150);
+  assert.equal(await js('window.__revealCount'),1,'Scrolling back must not restart a previously revealed card');
   for(const index of [0,1,2,3]){
     await js(`document.querySelectorAll('.showcase-step')[${index}].scrollIntoView({block:'center'});void 0`);await wait(450);
     assert(await js(`(()=>{const step=document.querySelectorAll('.showcase-step')[${index}];return step.classList.contains('is-active')&&document.querySelector('[data-showcase-image="'+step.dataset.showcaseStep+'"]').classList.contains('is-active')})()`),'Native scroll must select the corresponding actual capture');
@@ -158,6 +166,7 @@ app.whenReady().then(async()=>{
   await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   await wait(150);
   assert(await js('document.getAnimations().length===0'),'Switching to reduced motion must cancel an in-progress UI transition');
+  assert(await js("!document.querySelector('.orbit-art').classList.contains('parallax-active')&&getComputedStyle(document.querySelector('.orbit-art img')).transform==='none'"),'Reduced motion must disable decorative depth and its active layer');
   await win.loadURL(origin+'/');await wait(100);
   assert(await js('document.getAnimations().length===0'),'Reduced motion must disable entrance and reveal animation');
   assert(await js("getComputedStyle(document.querySelector('.showcase-visual')).position==='static'"),'Reduced motion must remove sticky motion');

@@ -24,7 +24,7 @@ Continuam existindo duas capturas reais do renderer Mingrx3.2 com contas de demo
 
 O bento tem dois cartões amplos e três compactos, todos com SVG. O showcase tem quatro âncoras nativas com aria-current=step e wrapper sticky reunindo progresso e imagem no desktop. Mobile oculta a imagem persistente e usa fluxo estático; reduced motion remove sticky e movimento. A sincronização da etapa permanece em todas as larguras. Scroll passivo e requestAnimationFrame não interceptam a rolagem.
 
-Abas usam crossfade WAAPI, imagem anterior inerte enquanto a nova decodifica, aria-busy e preload por foco/ponteiro; indicador móvel acompanha seleção e ResizeObserver. O diálogo nativo oferece Fechar, Escape, backdrop, restauração de foco, tooltip acessível, status de erro e link original. Menu móvel usa160ms e inert imediato ao fechar. FAQ mantém details/summary com interpolate-size progressivo. Conteúdo é visível por padrão; não há efeitos infinitos, cursor especial ou runtime JavaScript adicional nesta direção.
+Abas usam crossfade WAAPI, imagem anterior inerte enquanto a nova decodifica, aria-busy e preload por foco/ponteiro; indicador móvel acompanha seleção e ResizeObserver. O diálogo nativo oferece Fechar, Escape, backdrop, restauração de foco, tooltip acessível, status de erro e link original. Menu móvel usa160ms e inert imediato ao fechar. FAQ mantém details/summary com interpolate-size progressivo. Conteúdo é visível por padrão; não há efeitos infinitos, cursor especial ou dependência adicional de runtime.
 
 Download dedicado informa Windows10/11 x64 e GitHub Releases oficial, com fallback antes da consulta de versão. Cópia usa disabled, aria-busy e rótulo temporário, com URL selecionável na falha. Perfil menciona status personalizável verificado no aplicativo. Limitações reais de criptografia e ausência de app para celular/navegador permanecem explícitas.
 
@@ -36,7 +36,7 @@ A pesquisa anterior permanece em [site-reference-research.md](site-reference-res
 
 A revisão independente da direção Orbit concluiu SHIP sem correções materiais. Electron, inspeção Playwright em oito larguras e axe passaram. As verificações automáticas de acessibilidade não substituem itens manuais incompletos. ESLint10.14 foi aprovado somente no site; não foram adicionadas dependências de runtime de produção. O detector Impeccable foi tentado, mas o launcher estava ausente; não há sucesso de detector alegado.
 
-No laboratório controlado, LCP foi1,596s no desktop e1,372s no mobile, CLS0 em ambos e amostras de interação56ms/40ms, respectivamente. São medições locais, sem alegação de INP de campo ou pontuação Lighthouse.
+No laboratório controlado, LCP foi1,504s no desktop e1,368s no mobile, CLS0 em ambos e amostras de interação48ms/40ms, respectivamente. São medições locais, sem alegação de INP de campo ou pontuação Lighthouse.
 
 Na raiz do repositório:
 
@@ -52,4 +52,10 @@ A prévia serve somente o build estático em http://127.0.0.1:4173/, aceita GET/
 
 Tooltips usam popover manual no top layer quando disponível, clamp/flip na viewport, foco/hover e fechamento por Escape, scroll/resize ou diálogo. Cards e accordions são padrões nativos HTML/CSS. Tokens novos: duration-tooltip120ms, shadow-card-hover0 12px 28px -20px #8d64cc66, card-border-hover#6c5694, control-py13px, control-px23px, space-card28px e compact24px.
 
-A chegada da prova real usa440ms com atraso130ms, opacidade0→1, escala.99→1 e deslocamento16px; descrição50ms e ações90ms seguem o título. A arte fica estática. Legendas da galeria reservam128px/140px nos breakpoints móveis, sem cortar texto. Testes confirmaram variação de palco menor que2px, duas galerias independentes com IDs próprios e remontagem sem duplicação, tooltip na viewport e cancelamento ao ativar reduced motion durante transição. Lint, build, Electron, oito larguras e axe passaram; revisão independente sem achados materiais. O escopo permanece na mesma branch/PR45, sem produção, backend ou aplicativo alterados.
+A chegada da prova real usa440ms com atraso130ms, opacidade0→1, escala.99→1 e deslocamento16px; descrição50ms e ações90ms seguem o título. A arte decorativa recebe profundidade limitada conforme a regra de movimento abaixo; as capturas não recebem parallax. Legendas da galeria reservam128px/140px nos breakpoints móveis, sem cortar texto. Testes confirmaram variação de palco menor que2px, duas galerias independentes com IDs próprios e remontagem sem duplicação, tooltip na viewport e cancelamento ao ativar reduced motion durante transição. Lint, build, Electron, oito larguras e axe passaram; revisão independente sem achados materiais. O escopo permanece na mesma branch/PR45, sem produção, backend ou aplicativo alterados.
+
+## Movimento final
+
+Revelações de seção usam opacidade 0→1 e deslocamento de 16px em440ms. WeakSet e unobserve garantem execução única, inclusive após alternar reduced motion; elementos contendo foco pulam a animação. Foram incluídos galeria, showcase, download, FAQ e filhos do rodapé. Sem JavaScript/IntersectionObserver o conteúdo permanece visível. Cards têm stagger40/80ms no desktop e zero no mobile; microinterações continuam160ms e crossfade360ms.
+
+A arte Orbit usa parallax de no máximo8px (`orbit-depth`), apenas em desktop>=851px/no-preference e perto do hero visível. IO controla ativação; listeners passivos de scroll/resize agendam rAF apenas por eventos, sem loop contínuo. Will-change é temporário e escala1.025 evita bordas. Mobile/reduced motion removem listeners e profundidade; scroll nativo e capturas estáticas preservados. Nenhuma dependência foi adicionada. A revisão final de movimento concluiu entrega sem regressões materiais; verificações existentes passaram.

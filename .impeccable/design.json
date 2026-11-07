@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-07T22:03:22.966069+00:00",
+  "generatedAt": "2026-11-07T22:19:20.344626+00:00",
   "title": "Design System: Mingrx — mingrx.site",
   "extensions": {
     "colorMeta": {
@@ -97,7 +97,7 @@
       {
         "name": "duration-reveal",
         "value": "440ms",
-        "purpose": "Revelação única por IntersectionObserver; conteúdo visível por padrão."
+        "purpose": "Opacidade0→1 e translateY16px em440ms, uma vez por WeakSet/unobserve mesmo após troca de preferência; não anima elemento contendo foco."
       },
       {
         "name": "ease-out",
@@ -118,6 +118,11 @@
         "name": "duration-tooltip",
         "value": "120ms",
         "purpose": "Entrada de tooltip reutilizável, viewport clamp e top layer popover quando disponível."
+      },
+      {
+        "name": "duration-stagger",
+        "value": "40ms",
+        "purpose": "Cards em40/80ms no desktop; atrasos zero no mobile."
       }
     ],
     "breakpoints": [
@@ -157,9 +162,11 @@
       "Direção atual Orbit: referência cósmica mais recente do usuário substitui ação sólida, veto a gradientes/cápsulas e antigo hero dividido.",
       "Arte ficcional decorativa separada das duas capturas reais; proveniência e prompt em site/assets/mingrx-orbit.provenance.json e mingrx-orbit.prompt.txt.",
       "Componentes próprios em site/components.js: mount(scope) idempotente por WeakMap, tabs(root).select e setButtonBusy preservando rótulo/disabled originais. Contratos: docs/design/site-components.md.",
-      "Hero Orbit agora inclui captura real inteira sob as ações, largura460px, antes da arte no mobile; galeria completa permanece em product-intro. Arte estática alinhada à direita com overlay no desktop.",
+      "Hero Orbit agora inclui captura real inteira sob as ações, largura460px, antes da arte no mobile; galeria completa permanece em product-intro. Arte decorativa alinhada à direita com overlay no desktop.",
       "Tooltips reutilizáveis com popover manual quando disponível, limite de viewport, flip vertical e fechamento Escape/scroll; navegação e diálogos têm instâncias por raiz.",
-      "Teste de duas galerias independentes/remontagem, altura de palco com variação inferior a2px, tooltip na viewport e cancelamento WAAPI ao ativar reduced motion aprovados."
+      "Teste de duas galerias independentes/remontagem, altura de palco com variação inferior a2px, tooltip na viewport e cancelamento WAAPI ao ativar reduced motion aprovados.",
+      "Parallax da arte Orbit limitado a8px no desktop>=851/no-preference e hero próximo da viewport; IO ativa listeners passivos com rAF por eventos e will-change somente ativo. Escala1.025 evita bordas. Mobile/reduced motion removem listeners; capturas sem parallax.",
+      "Revelações incluem galeria, showcase, download, FAQ e filhos do rodapé; conteúdo visível sem JS/IO, WeakSet garante execução única e foco interno pula animação."
     ],
     "tokens": {
       "surface-raised": "#1b2240",
@@ -205,7 +212,9 @@
       "control-py": "13px",
       "control-px": "23px",
       "space-card": "28px",
-      "space-card-compact": "24px"
+      "space-card-compact": "24px",
+      "orbit-depth": "8px",
+      "duration-stagger": "40ms"
     },
     "shortViewportShowcase": {
       "minTop": "110px",
@@ -285,7 +294,7 @@
     "northStar": "Converse, jogue e compartilhe — no universo Mingrx",
     "overview": "Direção Orbit concluída a partir da referência cósmica aprovada pelo usuário: navy, lua violeta com M luminoso e gamer fictício em rocha. Satoshi, headline branca com compartilhe em gradiente violeta e ações arredondadas. Arte decorativa separada da captura real inteira sob as ações e da galeria completa abaixo; arquitetura estática e fatos do produto preservados.",
     "keyCharacteristics": [
-      "Hero cósmico com copy e captura genuína sob CTA à esquerda, arte estática à direita; composição empilhada no mobile.",
+      "Hero cósmico com copy e captura genuína sob CTA à esquerda, arte decorativa com profundidade limitada à direita; composição empilhada no mobile.",
       "Ações em gradiente violeta com tinta branca e raio28px; controles6px e cards14px.",
       "Duas capturas reais em três vistas de galeria, bento e showcase nativo."
     ],

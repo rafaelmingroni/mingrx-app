@@ -208,8 +208,7 @@ button,input{caret-color:var(--accent)}
  .premium-home .hero h1{animation:premium-arrive var(--duration-reveal) var(--ease-out) both}
  .premium-home .hero-description{animation:premium-arrive var(--duration-reveal) 50ms var(--ease-out) both}
  .premium-home .hero-actions{animation:premium-arrive var(--duration-reveal) 90ms var(--ease-out) both}
- .premium-home .product-stage{animation:premium-arrive 500ms 120ms var(--ease-out) both}
- .reveal-in{animation:premium-arrive var(--duration-reveal) var(--ease-out) both}
+ .reveal-in{animation:scroll-arrive var(--duration-reveal) var(--reveal-delay,0ms) var(--ease-out) both}
 }
 @media(min-width:851px) and (max-height:700px){.showcase-visual{top:110px}.showcase-step{min-height:460px}}
 @media(max-width:1100px){.premium-home .hero-copy{gap:36px}.premium-home .hero h1{font-size:54px}.premium-home .hero-actions{gap:12px;flex-wrap:wrap}.showcase-layout{gap:36px}.feature-card{padding:var(--space-card-compact)}.feature-card h3{font-size:21px}}
@@ -420,3 +419,16 @@ button,input{caret-color:var(--accent)}
 @media(prefers-reduced-motion:no-preference){.orbit-proof{animation:proof-arrive var(--duration-reveal) 130ms var(--ease-out) both}}
 
 :root{--control-py:13px;--control-px:23px;--space-card:28px;--space-card-compact:24px}
+
+/* One-time section reveals and restrained decorative depth. No hidden default state. */
+:root{--orbit-depth:8px;--duration-stagger:40ms}
+@keyframes scroll-arrive{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.bento-grid .feature-card:nth-child(2),.bento-grid .feature-card:nth-child(4),.download-panel{--reveal-delay:var(--duration-stagger)}
+.bento-grid .feature-card:nth-child(5){--reveal-delay:calc(var(--duration-stagger) * 2)}
+@media(min-width:851px) and (prefers-reduced-motion:no-preference){
+ .orbit-art{overflow:hidden}
+ .orbit-art img{transform:translate3d(0,var(--orbit-parallax,0px),0) scale(1.025)}
+ .orbit-art.parallax-active img{will-change:transform}
+}
+@media(max-width:850px){.bento-grid .feature-card:nth-child(n),.download-panel{--reveal-delay:0ms}}
+@media(prefers-reduced-motion:reduce){.orbit-art img{transform:none}.reveal-in{animation:none!important}}

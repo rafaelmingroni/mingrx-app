@@ -143,3 +143,18 @@ Foi corrigida na primeira inspeção uma altura intrínseca que ampliava/cortava
 Foram executados novamente lint, build, validação, convites, Electron, matriz Chromium e axe. A auditoria automatizada não reportou violações nos cenários cobertos; contraste no hero com imagem/gradiente exige avaliação manual e apareceu como verificação incompleta. Os pares principais de texto/botão passaram na medida de contraste do teste Electron, sem declarar certificação completa. A revisão independente recomendou ship no escopo examinado.
 
 Medição local final desta passagem (`components` no JSON): LCP mediano1,596s desktop/1,372s mobile; layout shift0/0; maior interação amostrada56/40ms. São dados de laboratório, não INP de campo. [Contratos e exemplos reutilizáveis](site-components.md).
+
+
+## Download, FAQ e sistema de movimento — itens 6.5 a 8
+
+Download preserva Windows 10/11 x64, resolução de asset oficial e fallback para releases/latest; não anuncia macOS/Linux. FAQ mantém details/summary nativos e expansão progressiva. Páginas legais, suporte e contato existentes continuam preservados. Os testes de convites exercitam API indisponível e URL de download maliciosa, sem executar instaladores.
+
+Reveal de opacidade 0→1 e deslocamento de 16px por 440ms agora cobre títulos, cards, galeria, showcase, download, FAQ e os grupos do rodapé. A sequência dos cards em desktop usa 40/80ms; mobile remove a defasagem. WeakSet e unobserve garantem uma execução por elemento, inclusive ao alternar a preferência de movimento. Um elemento contendo o foco não recebe entrada que o ocultaria. Sem JavaScript ou IntersectionObserver o conteúdo permanece visível. O teste conta animationstart e confirma que voltar pelo scroll não repete a animação.
+
+Apenas a arte decorativa do hero ganha profundidade de até 8px. Em desktop e sem redução de movimento, o observer ativa listeners passivos de scroll/resize enquanto o hero está próximo da viewport. requestAnimationFrame agrupa atualizações solicitadas por evento, sem loop permanente. will-change existe somente durante a região ativa; imagem usa transform com escala de 1,025 para evitar bordas vazias. Mobile e reduced motion removem esse efeito e seus listeners. As capturas reais, textos e controles não recebem parallax. Scroll nativo e dimensões estáveis são mantidos.
+
+ESLint, build, validação/convites, Electron, matriz Chromium 320–1440px e axe foram executados e passaram. Electron inclui reveal único, limite de 8px e desativação em reduced motion. Axe não reportou violações automatizadas nas telas cobertas, mantendo os limites de avaliação de contraste já descritos. Capturas desktop/mobile foram examinadas nesta passagem.
+
+Medição controlada em `motion` no JSON: três execuções por viewport, cache frio, CPU 4×, latência150ms e download200.000 bytes/s. Medianas de LCP1,504s desktop/1,368s mobile; layout shift0/0; maior interação amostrada48/40ms. Não são dados de campo nem INP real. O LCP permanece maior que a página de entrada (0,840s/0,804s), com acréscimo de 664ms/564ms nas condições medidas, dentro da meta local de 2,5s. Sem dependência nova ou publicação no domínio.
+
+A revisão independente desta passagem recomendou `ship`, sem regressões materiais no escopo. Inspecionou diff, contexto, quatro capturas e dados do laboratório; não repetiu os testes executados pelo agente principal. A documentação foi reconciliada com a profundidade decorativa e com microinterações existentes de 160ms.
