@@ -31,3 +31,17 @@ A troca das abas usa WAAPI por ponteiro e teclado, sem depender de View Transiti
 A implementação foi verificada pela suíte Electron existente e por inspeção Playwright em oito larguras, incluindo navegação, abas, responsividade e movimento reduzido; as rotas foram preservadas. O detector foi tentado, mas seu launcher não estava disponível: não há relatório de detector concluído. Não houve publicação ou alteração de release.
 
 A segunda revisão independente concluiu disposição de entrega sem problemas materiais. Axe verificou WCAG 2 A/AA, 2.1 e 2.2 na home, diálogo aberto, suporte, privacidade e convite inválido, em 1440px e 390px, sem violações automáticas. Itens classificados como incompletos continuam exigindo avaliação manual; isso não constitui certificação integral de conformidade. A suíte Electron inclui abertura do diálogo por teclado, Escape com restauração de foco e origem oficial do download dedicado.
+
+## Acabamento e prévia local
+
+Os tokens compartilhados de texto são body 16px, small 14px, caption 12px e label 13px. A escala space-1 a space-8 é 8, 12, 16, 24, 32, 48, 80 e 112px; border-default usa 1px solid var(--line), e radius-control centraliza 6px. O rodapé tem grid e ritmo explícitos, títulos de grupo de 14px e links de 13px, com reorganização para telefone.
+
+O indicador das abas se move de fato: CSS usa --tab-x/--tab-width, recalculados por seleção, ResizeObserver e fontes prontas. A entrada e saída do menu móvel usam 160ms; inert bloqueia interação assim que fecha. Fechar a captura oferece tooltip acessível “Fechar (Esc)” por hover/foco. A cópia do endereço mostra “Copiando link…”, disabled e aria-busy enquanto aguarda a API, restaurando o botão no término.
+
+Para revisar o build de produção localmente, na raiz do repositório:
+
+```sh
+node site/build.mjs && node site/preview.mjs
+```
+
+Acesse http://127.0.0.1:4173/. O servidor aceita somente GET/HEAD, serve a saída estática preparada em work/site-preview e não publica o site. A verificação de prévia cobriu rotas, scripts, fonte, resposta 404 para recurso ausente e 405 para método não aceito. Ctrl+C encerra a prévia. A entrega em branch e eventual PR de rascunho são etapas separadas; este documento não afirma que um PR já foi criado. Não há merge em main nem deploy implícitos.

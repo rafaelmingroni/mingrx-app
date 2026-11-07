@@ -17,7 +17,7 @@ check('no generated people or stock portraits',![...files['index.html'].matchAll
 const css=Object.entries(files).filter(([name])=>name.endsWith('.css')).map(([,value])=>value).join('\n');
 check('solid surfaces without gradients',!/(?:linear|radial|conic)-gradient\s*\(/i.test(css));
 check('motion is optional and no cursor or tracking effects',css.includes('@media(prefers-reduced-motion:reduce)')&&css.includes('animation:none!important')&&!/pointermove|mousemove|cursor-glow|localStorage|sessionStorage/.test(files['app.js']));
-check('rectangular buttons',!/border-radius\s*:\s*(?:999|50%)/i.test(css)&&/\.button\{[^}]*border-radius:6px/.test(css));
+check('rectangular buttons',!/border-radius\s*:\s*(?:999|50%)/i.test(css)&&/\.button\{[^}]*border-radius:var\(--radius-control\)/.test(css));
 check('local fonts and no advertising or analytics code',!Object.values(files).some(value=>/fonts\.googleapis|googletagmanager|google-analytics|facebook\.net|hotjar|clarity\.ms|made with ai|feito com ia/i.test(value)));
 check('no typographic dashes in website text',pages.every(name=>!/[\u2013\u2014]/u.test(files[name])));
 const iconEmoji=/[\u{1F000}-\u{1FAFF}\u2600-\u27BF]/u;

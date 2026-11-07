@@ -19,6 +19,14 @@ colors:
   surface-raised: "#1b1d29"
   surface-blue: "#121b2b"
   blue: "#a8c8ff"
+text-sizes:
+  body: "16px"
+  small: "14px"
+  caption: "12px"
+  label: "13px"
+  section: "clamp(34px,4vw,54px)"
+borders:
+  default: "1px solid {colors.border}"
 typography:
   display:
     fontFamily: "Satoshi, Arial, sans-serif"
@@ -54,6 +62,14 @@ rounded:
   frame: "14px"
   card: "14px"
 spacing:
+  space-1: "8px"
+  space-2: "12px"
+  space-3: "16px"
+  space-4: "24px"
+  space-5: "32px"
+  space-6: "48px"
+  space-7: "80px"
+  space-8: "112px"
   control-gap: "12px"
   compact: "20px"
   content: "24px"
@@ -135,6 +151,8 @@ Canvas e surface distinguem página e contêiner. Ink identifica títulos e aç�
 
 Satoshi variável é auto-hospedada em `site/assets/fonts/satoshi-variable.woff2`, com licença ITF Free Font License preservada ao lado. O arquivo oficial, sem modificações, é obtido no build e verificado por SHA-256; não é redistribuído no repositório. O arquivo cobre pesos 300–900; Arial e sans-serif são os fallbacks.
 
+Os tokens CSS compartilhados `--text-body`, `--text-small`, `--text-caption` e `--text-label` usam 16, 14, 12 e 13px; `--type-section` usa `clamp(34px,4vw,54px)`. O label do botão padrão conserva 14px pela variante small.
+
 Display serve à abertura; headline às passagens principais; title aos passos; body ao texto corrente; label ao botão padrão. A navegação usa texto de 13px com peso 650, e notas/captions usam 12–13px. Textos legais usam 15px com entrelinha 1.95, reduzindo a 14px no telefone; a coluna de artigo limita-se a 74ch.
 
 Títulos têm quebra balanceada. Em telas até 540px, o título inicial usa `clamp(34px,9.7vw,48px)` com entrelinha 1.13; títulos de seção usam 36px. Não simular outra família tipográfica com peso ou espaçamento.
@@ -144,6 +162,8 @@ Títulos têm quebra balanceada. Em telas até 540px, o título inicial usa `cla
 A largura principal é limitada a 1240px, com 40px de margem lateral no desktop. Os pontos de adaptação são 1100px, 850px e 540px: margens laterais passam a 32px, 24px e 20px. A navegação fixa ocupa 82px no desktop e 74px até 850px.
 
 O hero usa duas colunas no desktop: título à esquerda, descrição e ações à direita, com captura real em largura integral abaixo. Até 850px o conteúdo se empilha. O bento tem dois cartões amplos e três compactos; até 850px os compactos se reorganizam e até 540px todos ocupam uma coluna. O showcase tem visual sticky à esquerda e quatro etapas à direita, sem interceptar a rolagem nativa; até 850px usa apresentação estática em sequência, com imagens nas duas primeiras etapas. O ritmo das seções passa de 112px para 75px e 65px. Passos e tópicos de suporte tornam-se uma coluna até 540px. Não transformar todas as passagens em cartões iguais.
+
+O ritmo compartilhado `--space-1` a `--space-8` usa 8, 12, 16, 24, 32, 48, 80 e 112px. `--border-default` centraliza `1px solid var(--line)` e `--radius-control` centraliza 6px nos controles. O rodapé usa grid de marca e três grupos de links, gap de 80px no desktop, títulos de grupo de 14px e links de 13px; até 850px a marca fica acima dos grupos e até 540px os links usam duas colunas, com o último grupo em largura total.
 
 As páginas legais usam largura máxima de 1100px, sumário de 200px e artigo em coluna fluida, com intervalo de 75px. Até 850px, o sumário entra no fluxo antes do artigo; o título permanece fora do disclosure. Convites usam um contêiner de até 660px.
 
@@ -167,17 +187,17 @@ Controles usam cantos curtos; figuras e blocos de contato usam o raio image, e a
 
 **Foco e seleção.** O foco visível usa contorno violeta de 3px e afastamento de 5px. A seleção de texto usa o mesmo violeta com tinta escura. O skip link aparece ao receber foco; alvos de navegação programática não recebem contorno artificial.
 
-**Navegação.** Links discretos clareiam em hover. IntersectionObserver identifica a seção corrente dos links internos com `aria-current="location"` e sublinhado violeta; Download leva à seção dedicada `#download`. Até 850px, o botão Menu alterna `aria-expanded` e abre links em coluna. Escape fecha e devolve foco ao botão; clique externo, navegação e retorno ao desktop fecham o menu.
+**Navegação.** Links discretos clareiam em hover. IntersectionObserver identifica a seção corrente dos links internos com `aria-current="location"` e sublinhado violeta; Download leva à seção dedicada `#download`. Até 850px, o botão Menu alterna `aria-expanded` e abre links em coluna. Escape fecha e devolve foco ao botão; clique externo, navegação e retorno ao desktop fecham o menu. A entrada e saída móvel usam 160ms com opacidade, deslocamento de 6px e display discreto quando suportado; ao fechar, `inert` retira imediatamente os links da interação, antes de terminar a transição.
 
-**Cenas.** Duas abas, Conversas e Em chamada, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco. Não há rotação automática. O showcase tem quatro etapas (conversas, chamada, tela e comunidade), mas reutiliza somente duas capturas reais. A etapa de compartilhamento declara explicitamente que a imagem mostra controles, não uma transmissão de tela. O usuário autorizou prosseguir sem uma captura dedicada de transmissão ("prossiga sem isso"). As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
+**Cenas.** Duas abas, Conversas e Em chamada, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco. O indicador de seleção se move em 160ms por `--tab-x` e `--tab-width`; ResizeObserver e o término da carga das fontes recalculam posição e largura. A faixa é decorativa (`aria-hidden`), enquanto a seleção continua representada por `aria-selected`. Não há rotação automática. O showcase tem quatro etapas (conversas, chamada, tela e comunidade), mas reutiliza somente duas capturas reais. A etapa de compartilhamento declara explicitamente que a imagem mostra controles, não uma transmissão de tela. O usuário autorizou prosseguir sem uma captura dedicada de transmissão ("prossiga sem isso"). As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
 
 **Leitura e disclosure.** FAQ usa `details/summary` nativos, divisórias e símbolo de mais que gira ao abrir. `interpolate-size: allow-keywords` e `::details-content` acrescentam transição de altura em 240ms quando suportados; sem suporte, o disclosure nativo continua operacional. O sumário legal é outro disclosure real: abre inicialmente em larguras acima de 850px; em telas menores inicia recolhido. Os tópicos de suporte são links de tarefa com divisórias, sem campos de formulário.
 
-**Inspeção de capturas.** Links `data-preview` abrem um `<dialog>` nativo quando `showModal` está disponível. Fechar, Escape e clique no backdrop encerram a inspeção e devolvem foco ao acionador, sem rolar a página. O diálogo tem título acessível, alternativa textual, status de carregamento/erro e link permanente à imagem original. Cliques modificados e ambientes sem suporte mantêm o link original. A imagem usa `object-fit: contain`; a página bloqueia rolagem de fundo durante o modal. Entrada e saída usam opacidade e deslocamento mínimos, sem movimento em reduced motion.
+**Inspeção de capturas.** Links `data-preview` abrem um `<dialog>` nativo quando `showModal` está disponível. Fechar, Escape e clique no backdrop encerram a inspeção e devolvem foco ao acionador, sem rolar a página. O botão Fechar tem tooltip “Fechar (Esc)” associado por `aria-describedby`, visível em hover e foco, com entrada discreta de 120ms. O diálogo tem título acessível, alternativa textual, status de carregamento/erro e link permanente à imagem original. Cliques modificados e ambientes sem suporte mantêm o link original. A imagem usa `object-fit: contain`; a página bloqueia rolagem de fundo durante o modal. Entrada e saída usam opacidade e deslocamento mínimos, sem movimento em reduced motion.
 
 **Download e perfil.** A seção `#download` apresenta Windows 10 ou 11, instalador de 64 bits e GitHub Releases oficial, com ajuda de instalação e aviso de ausência de versão para celular/navegador. A arquitetura x64 foi conferida no instalador. O painel usa padding de 32px (24px até 540px), raio card e ação em largura total; as duas colunas viram uma até 850px. O cartão “Do seu jeito” descreve status personalizável no perfil, capacidade verificada em `desktop/src/v1.js:149`, além de amigos e conversas recentes.
 
-**Convite e retorno de estado.** O cartão mostra código e mensagem em região de status. Código malformado oculta a abertura e pede outro convite; instalação continua secundária. Código de formato válido tenta o protocolo e oferece recuperação, sem afirmar validade ou autorização da comunidade. Cópia anuncia sucesso somente após confirmação da API; falha revela texto selecionável. Downloads têm fallback oficial disponível antes da consulta de versão.
+**Convite e retorno de estado.** O cartão mostra código e mensagem em região de status. Código malformado oculta a abertura e pede outro convite; instalação continua secundária. Código de formato válido tenta o protocolo e oferece recuperação, sem afirmar validade ou autorização da comunidade. Durante a cópia, o botão fica desabilitado, recebe `aria-busy` e texto “Copiando link…”. Ao terminar, restaura o rótulo e a disponibilidade. Cópia anuncia sucesso somente após confirmação da API; falha revela texto selecionável. Downloads têm fallback oficial disponível antes da consulta de versão.
 
 ## Do's and Don'ts
 

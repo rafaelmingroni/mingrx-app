@@ -4,16 +4,16 @@ Data: 7 de novembro de 2026. Branch local: `redesign/premium-institutional`.
 
 ## Arquitetura e escopo
 
-O site oficial está em `site/`: HTML, CSS e JavaScript estáticos, publicados pelo workflow `.github/workflows/pages.yml` no GitHub Pages. Não há etapa de bundling, servidor de aplicação ou comando de lint próprio do site. O preparo de produção existente adquire a fonte Satoshi oficial, verifica SHA-256 e valida os mesmos arquivos estáticos. Nenhum workflow ou configuração de hospedagem foi alterado.
+O site oficial está em `site/`: HTML, CSS e JavaScript estáticos, publicados pelo workflow `.github/workflows/pages.yml` no GitHub Pages. Não há etapa de bundling, servidor de aplicação ou comando de lint próprio do site. O preparo de produção existente adquire a fonte Satoshi oficial, verifica SHA-256 e valida os mesmos arquivos estáticos. O workflow de validação foi corrigido para preparar a fonte antes de verificá-la. O workflow de deploy e a configuração de hospedagem não foram alterados.
 
-Mantidos o logo, a fonte Satoshi, as páginas e âncoras existentes, links legais, suporte, download oficial, resolução da release com fallback e redirecionamento de convites. Sem mudanças em desktop, backend, Firebase, autenticação, atualizador, instaladores, domínio ou releases. Não houve push, merge ou publicação.
+Mantidos o logo, a fonte Satoshi, as páginas e âncoras existentes, links legais, suporte, download oficial, resolução da release com fallback e redirecionamento de convites. Sem mudanças em desktop, backend, Firebase, autenticação, atualizador, instaladores, domínio ou releases. A entrega usa branch separada e PR em rascunho, sem merge ou publicação.
 
 ## Implementação
 
 - Abertura assimétrica com chamada e download ao lado do título e captura real em largura completa abaixo.
 - Bento de mensagens, voz, compartilhamento de tela, comunidades e amigos, com capturas reais e ícones vetoriais discretos.
 - Showcase nativo com quatro passagens e crossfade entre as duas capturas reais disponíveis. Nenhum interceptador de roda, gesto ou navegação.
-- Abas sem autoplay, navegação por setas/Home/End, mudança visual via View Transitions quando disponível e fallback imediato quando indisponível.
+- Abas sem autoplay, navegação por setas/Home/End, crossfade via Web Animations após decodificação, indicador móvel e fallback imediato quando indisponível.
 - Transições CSS rápidas, revelação única via IntersectionObserver, conteúdo visível por padrão e assinatura do scroll ativa somente quando o showcase se aproxima da viewport.
 - Mobile até 850px com demonstrações no fluxo, sem sticky. Movimento reduzido remove animações/transições e o sticky.
 - FAQ com disclosures nativos e feedback de ícone; foco, menu com Escape e cópia com recuperação preservados.
@@ -30,7 +30,7 @@ Mantidos o logo, a fonte Satoshi, as páginas e âncoras existentes, links legai
 - Revisão visual independente solicitou uma correção de especificidade no título mobile dos recursos. Correção aplicada, recapturada e classificada como resolvida pelo revisor (disposição `ship` no escopo dessa correção).
 - `git diff --check`: sem problemas de whitespace.
 
-Capturas de desktop e mobile estão disponíveis localmente em `.impeccable/review/`, diretório ignorado pelo Git. Nenhum servidor de preview foi mantido em execução.
+Capturas revisáveis de desktop, mobile e diálogo estão versionadas em `docs/design/preview/`. Cópias de trabalho também ficam em `.impeccable/review/`, ignorado pelo Git. Os servidores de teste foram encerrados.
 
 ## Limitações reais
 
@@ -66,7 +66,7 @@ As abas atualizam seleção/foco imediatamente e mantêm o quadro anterior duran
 
 ### Build local
 
-Execute `node site/build.mjs`. Opcionalmente: `node site/build.mjs --out /caminho/separado`.
+Execute `node site/build.mjs`. Opcionalmente: `node site/build.mjs --out /caminho/separado`. Para abrir o build padrão, execute depois `node site/preview.mjs` e acesse `http://127.0.0.1:4173/` na mesma máquina. Ctrl+C encerra a prévia.
 
 O comando prepara/verifica a fonte, executa validação e convites e copia somente arquivos públicos para `work/site-preview/`, sem publicar. A saída contém HTML, CSS, scripts de runtime, assets, sitemap, robots, CNAME e .nojekyll; scripts de teste/build não são incluídos. O diretório local de build é ignorado pelo Git. A hospedagem existente continua sem migração.
 
@@ -86,3 +86,16 @@ O redesign fica dentro das metas de laboratório de LCP ≤2,5s e layout shift �
 Reprodução com o Electron do projeto: `MINGRX_PERFORMANCE_REPORT=work/performance.json ./desktop/node_modules/.bin/electron --no-sandbox --headless --ozone-platform=headless --ozone-override-screen-size=1920,1080 site/test-performance.cjs`. `MINGRX_SITE_ROOT` permite apontar uma cópia da versão anterior para comparação. Não executa o aplicativo desktop e não usa Firebase. Os servidores e perfis temporários encerram ao final do teste.
 
 As verificações finais incluíram novamente build, sintaxe, validação, convites e suíte Electron; a matriz Chromium verificou as novas telas e a auditoria axe incluiu o diálogo aberto. Nenhuma dependência foi adicionada ao projeto; Electron, Chromium e axe foram usados apenas como ferramentas de validação.
+
+
+## Fechamento da entrega
+
+- Tokens reais de tipografia, espaçamento e bordas agora utilizados no CSS compartilhado, além de cores, raios e movimento.
+- Indicador das abas move-se entre as opções e recalcula a geometria após carregamento da fonte e resize.
+- Menu mobile abre/fecha com transição de 160ms e fica `inert` imediatamente ao fechar; rodapé refeito em grid com espaçamento e tipografia de leitura.
+- Tooltip de fechamento disponível por hover/foco; cópia de link comunica carregamento via texto, `aria-busy` e estado desabilitado.
+- `node site/build.mjs` seguido de `node site/preview.mjs` abre a prévia local em `http://127.0.0.1:4173/`. O servidor serve somente o build, não publica e aceita GET/HEAD. Teste de fumaça validou páginas, scripts, fonte, 404 e 405; processo encerrado após verificação.
+- Capturas persistidas em `docs/design/preview/`, fora dos arquivos enviados ao GitHub Pages, para revisão visual pela PR.
+- Correção do CI: `.github/workflows/site-validation.yml` não preparava a fonte, causando ENOENT em `satoshi-variable.woff2` (confirmado nos logs da execução 42408713482). Acrescentada a preparação/verificação oficial existente antes da validação. Sem mudar Pages, instaladores ou releases.
+
+A medição final após estes ajustes fica registrada em `site-premium-performance.json`; os resultados anteriores abaixo documentam a passagem anterior. Medições de laboratório variam conforme a contenção de CPU do executor e não equivalem a dados de campo.

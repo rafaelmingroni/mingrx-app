@@ -12,11 +12,13 @@
   if (menuButton && nav) {
     const closeMenu = () => {
       nav.classList.remove('open');
+      nav.inert = window.matchMedia('(max-width: 850px)').matches;
       menuButton.setAttribute('aria-expanded', 'false');
     };
     menuButton.addEventListener('click', () => {
       const open = nav.classList.toggle('open');
       menuButton.setAttribute('aria-expanded', String(open));
+      nav.inert = !open;
     });
     nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
     document.addEventListener('keydown', event => {
@@ -44,7 +46,25 @@
       if (panel) panel.hidden = !active;
     });
     if (focus) selected.focus();
+    positionIndicator();
   };
+  const tabList = document.querySelector('.scene-tabs');
+  const indicator = tabList ? document.createElement('span') : null;
+  const positionIndicator = () => {
+    const selected = sceneTabs.find(tab => tab.getAttribute('aria-selected') === 'true');
+    if (!tabList || !selected || !indicator) return;
+    tabList.style.setProperty('--tab-x', `${selected.offsetLeft}px`);
+    tabList.style.setProperty('--tab-width', `${selected.offsetWidth}px`);
+    tabList.classList.add('has-scene-indicator');
+  };
+  if (indicator) {
+    indicator.className = 'scene-indicator';
+    indicator.setAttribute('aria-hidden','true');
+    tabList.prepend(indicator);
+    positionIndicator();
+    if ('ResizeObserver' in window) new ResizeObserver(positionIndicator).observe(tabList);
+    document.fonts?.ready.then(positionIndicator);
+  }
   let sceneAnimations = [];
   let outgoingScene;
   let sceneRequest = 0;
@@ -136,6 +156,10 @@
     const status = group?.querySelector('.copy-status');
     const fallback = group?.querySelector('.copy-fallback');
     button.disabled = true;
+    button.setAttribute('aria-busy','true');
+    const label = button.firstChild;
+    const originalLabel = label?.textContent;
+    if (label?.nodeType === 3) label.textContent = 'Copiando link…';
     try {
       await navigator.clipboard.writeText('https://mingrx.site/');
       if (status) status.textContent = 'Link copiado. Abra no seu computador.';
@@ -143,7 +167,11 @@
     } catch {
       if (status) status.textContent = 'Não foi possível copiar automaticamente. Use o endereço abaixo.';
       if (fallback) fallback.hidden = false;
-    } finally { button.disabled = false; }
+    } finally {
+      button.disabled = false;
+      button.removeAttribute('aria-busy');
+      if (label?.nodeType === 3) label.textContent = originalLabel;
+    }
   }));
 
   // Native scroll is never intercepted. Pick the story nearest the viewing line.
