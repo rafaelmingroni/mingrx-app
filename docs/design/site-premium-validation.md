@@ -99,3 +99,15 @@ As verificações finais incluíram novamente build, sintaxe, validação, convi
 - Correção do CI: `.github/workflows/site-validation.yml` não preparava a fonte, causando ENOENT em `satoshi-variable.woff2` (confirmado nos logs da execução 42408713482). Acrescentada a preparação/verificação oficial existente antes da validação. Sem mudar Pages, instaladores ou releases.
 
 A medição final após estes ajustes fica registrada em `site-premium-performance.json`; os resultados anteriores abaixo documentam a passagem anterior. Medições de laboratório variam conforme a contenção de CPU do executor e não equivalem a dados de campo.
+
+
+## Briefing ampliado recebido posteriormente
+
+A [conferência em quinze frentes](site-expanded-checklist.md) trata da versão com Refero Styles. Foram acrescentados pesquisa rastreável e seus limites, galeria de Comunidades, ícones nos cinco cards e indicadores de progresso clicáveis por âncoras nativas. `aria-current="step"` acompanha o texto mais próximo do centro da viewport, inclusive no mobile e em reduced motion. Não há scroll hijacking.
+
+A revisão independente detectou que o novo contêiner sticky podia sobrepor a navegação ao header em alturas pequenas. O topo agora respeita no mínimo 110px e a imagem limita sua altura abaixo de 700px. O teste Electron verifica posição e hit testing em 1440×700, 600 e 500px; a galeria ganhou teste de End selecionando Comunidades. Build, testes existentes e matriz de navegador foram executados após as mudanças.
+
+Foi introduzida uma configuração de ESLint exclusivamente para o site. A execução real com ESLint 10.14.0 passou sobre todos os arquivos JS/MJS/CJS do site, incluindo testes e ferramentas. O mesmo comando foi acrescentado à validação no GitHub. Isso complementa, sem confundir, a verificação de sintaxe anterior. Não há dependência de runtime nova.
+
+
+A medição posterior às novas funções está em `expandedBrief` no JSON: mediana de três execuções, desktop LCP 1,468s e layout shift 0; mobile LCP 1,196s e layout shift 0. As maiores interações amostradas tiveram medianas 64ms e 48ms. Continuam sendo resultados locais, não INP de campo, sujeitos à carga do executor. A correção de alturas afeta apenas viewports curtos e não altera as duas viewports desse benchmark.

@@ -300,3 +300,16 @@ button,input{caret-color:var(--accent)}
  .footer-links{gap:var(--space-5)}
 }
 @media(max-width:540px){.footer-links{grid-template-columns:1fr 1fr;gap:var(--space-5) var(--space-4)}.footer-links>div:last-child{grid-column:1/-1}.capture-close:hover .close-tooltip,.capture-close:focus-visible .close-tooltip{display:block}}
+/* Product paths in the expanded brief: explicit community view and native progress. */
+.showcase-display{position:sticky;top:max(110px,calc(50vh - 240px));min-width:0}
+.showcase-display .showcase-visual{position:static}
+.showcase-progress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-2);margin-bottom:var(--space-4)}
+.showcase-progress a{display:flex;align-items:center;justify-content:center;min-height:44px;border-bottom:2px solid var(--line);color:var(--muted);font-size:var(--text-caption);text-decoration:none;transition:color var(--duration-quick),border-color var(--duration-quick)}
+.showcase-progress a:hover{color:var(--ink)}
+.showcase-progress a[aria-current='step']{color:var(--accent);border-color:var(--accent);font-weight:750}
+.premium-home #scene-community .product-image img{width:100%;height:100%;aspect-ratio:3/2;object-fit:contain}
+@media(max-width:850px){.showcase-display{position:static}.showcase-progress{margin-bottom:var(--space-4)}.showcase-progress a{font-size:11px}.showcase-step:focus{outline:none}}
+@media(max-width:540px){.scene-tabs svg{display:none}.scene-tabs button{padding:10px 6px;font-size:var(--text-caption)}.scene-tabs{min-width:0;width:100%}.scene-tabs button{min-width:0}.premium-home #scene-community .product-image img{aspect-ratio:auto}.showcase-progress{gap:6px}}
+@media(prefers-reduced-motion:reduce){.showcase-display{position:static}}
+
+@media(min-width:851px) and (max-height:700px){.showcase-display .showcase-frame{max-height:calc(100svh - 250px)}}

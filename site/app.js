@@ -128,7 +128,7 @@
       if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button) return;
       event.preventDefault();
       opener = link;
-      const source = link.querySelector('img');
+      const source = link.querySelector('img') || link.closest('figure')?.querySelector('img');
       image.alt = source?.alt || (link.href.includes('call') ? 'Chamada real no Mingrx com contas de demonstração.' : 'Conversa e comunidade reais no Mingrx com conteúdo de demonstração.');
       status.textContent = 'Carregando captura…';
       image.src = link.href;
@@ -178,6 +178,7 @@
   const mediaQuery = query => window.matchMedia?.(query) || {matches: false, addEventListener() {}};
   const stories = [...document.querySelectorAll('[data-showcase-step]')];
   const showcase = document.querySelector('.showcase-layout');
+  const progressLinks = [...document.querySelectorAll('.showcase-progress a')];
   const desktopMotion = mediaQuery('(min-width: 851px) and (prefers-reduced-motion: no-preference)');
   let showcaseObserver;
   let revealObserver;
@@ -192,6 +193,10 @@
     }, null)?.story;
     if (!nearest) return;
     stories.forEach(story => story.classList.toggle('is-active', story === nearest));
+    progressLinks.forEach(link => {
+      if (link.hash === `#${nearest.id}`) link.setAttribute('aria-current','step');
+      else link.removeAttribute('aria-current');
+    });
     document.querySelectorAll('[data-showcase-image]').forEach(image => {
       image.classList.toggle('is-active', image.dataset.showcaseImage === nearest.dataset.showcaseStep);
     });
@@ -209,7 +214,7 @@
     if (!showcase) return;
     stopShowcase();
     showcaseObserver?.disconnect();
-    if (!showcase || !desktopMotion.matches || !('IntersectionObserver' in window)) return;
+    if (!('IntersectionObserver' in window)) return;
     showcaseObserver = new IntersectionObserver(entries => {
       stopShowcase();
       if (entries.some(entry => entry.isIntersecting)) {

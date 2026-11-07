@@ -45,3 +45,13 @@ node site/build.mjs && node site/preview.mjs
 ```
 
 Acesse http://127.0.0.1:4173/. O servidor aceita somente GET/HEAD, serve a saída estática preparada em work/site-preview e não publica o site. A verificação de prévia cobriu rotas, scripts, fonte, resposta 404 para recurso ausente e 405 para método não aceito. Ctrl+C encerra a prévia. A entrega em branch e eventual PR de rascunho são etapas separadas; este documento não afirma que um PR já foi criado. Não há merge em main nem deploy implícitos.
+
+## Briefing ampliado: galeria, progresso e pesquisa
+
+A galeria tem três abas: Conversas, Em chamada e Comunidades, com setas, Home e End em toda a sequência. Comunidades reutiliza a captura verdadeira já disponível de conversa/comunidade, com legenda e alternativa textual próprias. Continuam existindo somente duas capturas distintas. A captura dedicada de transmissão permanece dispensada; não existe uma quarta aba fictícia de compartilhamento. Os dois cartões amplos do bento também recebem ícones SVG, completando a iconografia dos cinco cartões.
+
+O wrapper `.showcase-display` reúne os quatro links nativos de progresso e a imagem no sticky de desktop. As âncoras Mensagens, Chamadas, Tela e Comunidades levam às etapas correspondentes; a etapa mais próxima da linha central recebe `aria-current="step"` em todas as larguras. No mobile o wrapper fica estático e a imagem persistente fica oculta; com movimento reduzido o sticky também é removido. A navegação e a narrativa preservam o fluxo e a rolagem nativos.
+
+A pesquisa auditável está em [site-reference-research.md](site-reference-research.md). Nesta continuação, após a implementação inicial, foram lidos quatro DESIGN.md do Refero Styles e examinadas suas capturas: [Intercom](https://styles.refero.design/style/12255b63-e506-4bc1-a4cd-d05487de32f3), [Dimension](https://styles.refero.design/style/fbcf9cbb-7c6b-449d-862a-bce521a8ab1d), [Notion](https://styles.refero.design/style/2bf4c61f-de10-4614-ba1b-20c0453bd2a9) e [Vercel](https://styles.refero.design/style/f24daf3a-d43f-4dec-85a9-8ac1d5148a03). Os materiais do catálogo são interpretações, não código oficial. Aplicaram-se hierarquia editorial, apresentação do produto, progresso narrativo, ritmo e bordas; Satoshi, tema escuro e evidência real do Mingrx prevalecem.
+
+HTML oficial de Linear, Raycast, Vercel, shadcn/ui e Motion foi acessado, mas o navegador falhou na validação TLS. Não se afirma observação dinâmica de animações externas. CSS, WAAPI e IntersectionObserver continuam suficientes para esta implementação estática; não houve inclusão de dependências de runtime em produção. A verificação agora inclui execução aprovada de ESLint 10.14 somente nos arquivos do site, além da checagem de sintaxe anterior.

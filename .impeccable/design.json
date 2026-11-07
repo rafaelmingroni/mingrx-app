@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-07T20:56:05.057607+00:00",
+  "generatedAt": "2026-11-07T21:12:48.970710+00:00",
   "title": "Design System: Mingrx — mingrx.site",
   "extensions": {
     "colorMeta": {
@@ -280,7 +280,12 @@
       "Acabamento final: indicador móvel das abas por --tab-x/--tab-width e ResizeObserver; menu móvel entra/sai em 160ms com inert imediato no fechamento.",
       "Botão de cópia usa disabled, aria-busy e rótulo temporário; fechar captura oferece tooltip acessível Fechar (Esc).",
       "Rodapé usa ritmo de grid explícito e tokens compartilhados de tipografia, espaçamento, bordas e raio.",
-      "Prévia local: node site/build.mjs && node site/preview.mjs; serve somente build estático em 127.0.0.1:4173, GET/HEAD, sem publicação."
+      "Prévia local: node site/build.mjs && node site/preview.mjs; serve somente build estático em 127.0.0.1:4173, GET/HEAD, sem publicação.",
+      "Galeria: três abas acessíveis Conversas, Em chamada e Comunidades; a terceira reutiliza a captura real de conversa/comunidade. Não há aba fictícia de transmissão.",
+      "Showcase: quatro âncoras nativas com aria-current=step; etapa mais próxima sincronizada em todas as larguras. Wrapper showcase-display reúne progresso e imagem sticky no desktop, estático em mobile/reduced motion.",
+      "Pesquisa Refero realizada nesta continuação, após a implementação inicial: DESIGN.md e capturas de Intercom, Dimension, Notion e Vercel examinados. Registro: docs/design/site-reference-research.md.",
+      "HTML oficial complementar foi consultado; falha TLS no navegador impediu observação dinâmica externa. Não há alegação de animações externas testadas ao vivo.",
+      "ESLint 10.14 executado somente no site e aprovado; nenhuma dependência de runtime de produção adicionada."
     ],
     "tokens": {
       "surface-raised": "#1b1d29",
@@ -306,6 +311,16 @@
       "space-6": "48px",
       "space-7": "80px",
       "space-8": "112px"
+    },
+    "shortViewportShowcase": {
+      "minTop": "110px",
+      "breakpointHeight": "700px",
+      "frameMaxHeight": "calc(100svh - 250px)",
+      "verifiedHeights": [
+        700,
+        600,
+        500
+      ]
     }
   },
   "components": [
@@ -337,8 +352,8 @@
       "name": "Abas de cenas",
       "kind": "custom",
       "refersTo": "scene-tab",
-      "description": "No site, app.js sincroniza painéis, tabindex e teclado, com crossfade WAAPI, decode, cópia de saída inerte e aria-busy; sem autoplay ou dependência de View Transitions. Indicador decorativo móvel usa variáveis de posição/largura e ResizeObserver.",
-      "html": "<div class=\"ds-tabs\" role=\"tablist\" aria-label=\"Veja o Mingrx em uso\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">Conversas</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Em chamada</button></div>",
+      "description": "Três abas: Conversas, Em chamada e Comunidades. app.js sincroniza painéis, tabindex, setas/Home/End e crossfade WAAPI com decode, saída inerte e aria-busy; indicador decorativo móvel com ResizeObserver. Comunidades reutiliza a captura autêntica de conversa/comunidade; sem autoplay ou aba fictícia de transmissão.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\" aria-label=\"Veja o Mingrx em uso\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">Conversas</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Em chamada</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Comunidades</button></div>",
       "css": ".ds-tabs{display:flex;gap:7px;padding:13px 22px;background:var(--paper,#161720)}.ds-tab{display:flex;align-items:center;gap:9px;min-height:44px;padding:9px 15px;border:0;border-radius:6px;background:transparent;color:var(--muted,#b3b0c1);font-family:var(--font,Satoshi,Arial,sans-serif);font-size:13px;font-weight:650;cursor:pointer}.ds-tab:hover{background:#23222e;color:var(--ink,#f6f3ff)}.ds-tab[aria-selected=true]{background:#33283f;color:#f0e6ff}:focus-visible{outline:3px solid var(--accent,#c3acff);outline-offset:5px}::selection{background:var(--accent,#c3acff);color:var(--button-ink,#20152f)}"
     },
     {

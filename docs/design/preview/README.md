@@ -30,3 +30,11 @@ node site/preview.mjs
 Abra http://127.0.0.1:4173/ na mesma máquina. O build requer Node.js e curl para obter/verificar a fonte licenciada oficial. Não é necessário instalar as dependências do aplicativo desktop. Ctrl+C encerra o servidor.
 
 O servidor atende apenas o build estático, sem publicar o site, alterar domínio ou iniciar backend/Firebase. As capturas em documentos não entram nos arquivos enviados ao GitHub Pages. A imagem completa de uma captura estática não representa todas as posições de uma seção sticky; as mudanças durante scroll são exercitadas pelos testes de navegador.
+
+## Progresso e comunidades
+
+![Indicadores de progresso no showcase](progresso-showcase.png)
+
+![Galeria de comunidades no celular](comunidades-mobile.png)
+
+[Conferência do briefing ampliado](../site-expanded-checklist.md) · [Pesquisa no Refero](../site-reference-research.md)

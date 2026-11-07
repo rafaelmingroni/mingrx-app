@@ -81,6 +81,8 @@ app.whenReady().then(async()=>{
       await js("document.getElementById('tab-conversation').focus()");await press('Right');
       assert(await js("document.getElementById('tab-call').getAttribute('aria-selected')==='true'&&!document.getElementById('scene-call').hidden&&document.getElementById('scene-conversation').hidden"),'ArrowRight must select the call scene');
       await js("document.querySelector('#scene-call img').decode()");
+      await press('End');assert.equal(await js('document.activeElement.id'),'tab-community');
+      assert(await js("!document.getElementById('scene-community').hidden"),'End must select the real community view');
       await press('Home');assert.equal(await js('document.activeElement.id'),'tab-conversation');
       assert(await js("!document.getElementById('scene-conversation').hidden&&document.getElementById('scene-call').hidden"));
       await js("document.getElementById('tab-call').click();document.getElementById('tab-call').click();document.getElementById('tab-conversation').click();void 0");await wait(500);
@@ -116,7 +118,14 @@ app.whenReady().then(async()=>{
   for(const index of [0,1,2,3]){
     await js(`document.querySelectorAll('.showcase-step')[${index}].scrollIntoView({block:'center'});void 0`);await wait(450);
     assert(await js(`(()=>{const step=document.querySelectorAll('.showcase-step')[${index}];return step.classList.contains('is-active')&&document.querySelector('[data-showcase-image="'+step.dataset.showcaseStep+'"]').classList.contains('is-active')})()`),'Native scroll must select the corresponding actual capture');
+    assert(await js(`document.querySelector('.showcase-progress a[aria-current="step"]').hash==='#'+document.querySelectorAll('.showcase-step')[${index}].id`),'Progress indicator must follow the visible story');
   }
+  for(const height of [700,600,500]){
+    win.setContentSize(1440,height);
+    await js("document.getElementById('showcase-calls').scrollIntoView({block:'center'});void 0");await wait(100);
+    assert(await js("(()=>{const link=document.querySelector('.showcase-progress a'),r=link.getBoundingClientRect(),header=document.querySelector('.site-header').getBoundingClientRect();return r.top>=header.bottom&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===link})()"),'Short desktop must keep progress navigation visible and clickable above the product');
+  }
+  win.setContentSize(1440,1000);
   await js("document.querySelector('.product-image').focus()");await press('Enter');await wait(250);
   assert(await js("document.querySelector('.capture-dialog').open"),'Image inspection must open a native dialog');
   assert(await js("document.querySelector('.capture-dialog img').getAttribute('src').includes('mingrx-conversation')"),'Dialog must show the actual selected capture');
