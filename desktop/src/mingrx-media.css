@@ -1,4 +1,15 @@
 /* Mingrx media — community icons and inline chat images. */
+body.mingrx-ui #modalBody .mingrx-capture-audio{
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;
+  gap:10px!important;margin:12px 0!important;min-height:44px;
+  font-size:13px!important;line-height:1.5!important;text-transform:none!important;
+  letter-spacing:normal!important;cursor:pointer;
+}
+body.mingrx-ui #modalBody .mingrx-capture-audio input[type=checkbox]{
+  flex:0 0 18px!important;width:18px!important;height:18px!important;min-width:18px!important;
+  margin:0!important;padding:0!important;appearance:auto;accent-color:var(--mx-accent);
+}
+body.mingrx-ui #modalBody .mingrx-capture-audio span{min-width:0}
 body.mingrx-ui .composer{align-items:center}
 body.mingrx-ui #mingrxAttachBtn{
   flex:0 0 42px!important;width:42px!important;min-width:42px!important;height:42px!important;

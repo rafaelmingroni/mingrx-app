@@ -1,0 +1,32 @@
+name: Screen sharing regression
+on:
+  push:
+    paths:
+      - 'desktop/src/screen-share-fix.js'
+      - 'desktop/screen-share-main-fix.js'
+      - 'desktop/src/mingrx-media.css'
+      - 'desktop/scripts/e2e-screen-share.js'
+      - '.github/workflows/screen-share-regression.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Install exact dependencies
+        working-directory: desktop
+        run: npm ci --no-audit --no-fund
+      - name: Prepare production renderer
+        working-directory: desktop
+        run: npm run prepare:source
+      - name: Capture recovery and checkbox alignment
+        working-directory: desktop
+        run: node scripts/smoke-screen-share.js && ./node_modules/.bin/electron scripts/e2e-screen-share.js

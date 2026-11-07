@@ -139,6 +139,8 @@ O protocolo antigo `bananacord://` também continua aceito por compatibilidade, 
 - 720p e 1080p;
 - 30 e 60 FPS;
 - perfis de qualidade, fluidez e economia;
+- qualidade e FPS tratados como preferências, com nova tentativa de captura quando a fonte não aceita as opções de vídeo;
+- opção de áudio do sistema alinhada ao checkbox e recuperação sem áudio quando a captura de áudio não está disponível;
 - prévia local protegida contra efeito espelho recursivo;
 - monitoramento de RTT durante chamadas.
 

@@ -15,8 +15,8 @@ const pkg = JSON.parse(read('package.json'));
 new Function(renderer);
 new Function(mainFix);
 
-assert(renderer.includes('audio: choice.audio') && renderer.includes('chooseCaptureSource'), 'screen share must explicitly select source and audio');
-assert(renderer.includes('audio: false'), 'screen share should retry video-only');
+assert(renderer.includes('audio = choice.audio') && renderer.includes('chooseCaptureSource'), 'screen share must explicitly select source and audio');
+assert(renderer.includes('audio=false'), 'screen share should retry video-only');
 assert(renderer.includes("removeAllListeners('shortcut:screen')"), 'screen shortcut should use compatibility handler');
 assert(renderer.includes('Não consegui compartilhar a tela (${code})'), 'screen failures should expose an error code');
 
