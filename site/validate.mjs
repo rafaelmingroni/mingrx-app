@@ -60,7 +60,7 @@ for(const name of pages){
     const [raw,fragment]=url.split('#');
     const clean=raw.split('?')[0];
     const target=raw?path.resolve(root,clean.startsWith('/')?'.'+clean:clean):path.join(root,name);
-    check(`${name}: local ${attr} ${url}`,(target===root.replace(/\/$/,'')||target.startsWith(root))&&await stat(target).then(()=>true,()=>false));
+    check(`${name}: local ${attr} ${url}`,(target===root.replace(/[\\/]$/,'')||target.startsWith(root))&&await stat(target).then(()=>true,()=>false));
     if(fragment){const targetHtml=raw?await readFile(target,'utf8'):html;check(`${name}: anchor ${fragment}`,new RegExp(`\\bid="${fragment}"`).test(targetHtml));}
   }
 }

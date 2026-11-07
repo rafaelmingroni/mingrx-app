@@ -141,10 +141,9 @@ app.whenReady().then(async()=>{
   await js('scrollTo(0,0);void 0');await wait(100);
   await js("document.querySelector('.feature-card').scrollIntoView({block:'center'});void 0");await wait(150);
   assert.equal(await js('window.__revealCount'),1,'Scrolling back must not restart a previously revealed card');
-  for(const index of [0,1,2,3]){
-    await js(`document.querySelectorAll('.showcase-step')[${index}].scrollIntoView({block:'center'});void 0`);await wait(450);
-    assert(await js(`(()=>{const step=document.querySelectorAll('.showcase-step')[${index}];return step.classList.contains('is-active')&&document.querySelector('[data-showcase-image="'+step.dataset.showcaseStep+'"]').classList.contains('is-active')})()`),'Native scroll must select the corresponding actual capture');
-    assert(await js(`document.querySelector('.showcase-progress a[aria-current="step"]').hash==='#'+document.querySelectorAll('.showcase-step')[${index}].id`),'Progress indicator must follow the visible story');
+  for(const scene of ['call','community','conversation']){
+    await js(`document.querySelector('[data-open-scene="${scene}"]').click();void 0`);await wait(450);
+    assert(await js(`!document.getElementById('scene-${scene}').hidden&&document.querySelector('[data-scene="${scene}"]').getAttribute('aria-selected')==='true'`),'Feature links must open the corresponding real capture');
   }
   await js(`(()=>{
     const original=document.querySelector('[data-ui-tabs]');
@@ -159,11 +158,6 @@ app.whenReady().then(async()=>{
   assert(await js("!document.getElementById('secondary-scene-call').hidden&&!document.getElementById('scene-conversation').hidden&&document.querySelector('#secondary-gallery .scene-tabs').querySelectorAll('.scene-indicator').length===1"),'Independent galleries must isolate state and repeated mounting must not duplicate indicators');
   await js("document.getElementById('secondary-gallery').remove();void 0");
   await js("(()=>{const button=document.createElement('button');button.textContent='Original';button.disabled=true;window.MingrxUI.setButtonBusy(button,true);window.MingrxUI.setButtonBusy(button,true);window.MingrxUI.setButtonBusy(button,false);if(button.textContent!=='Original'||!button.disabled)throw Error('Busy state must preserve the original label and disabled state')})()");
-  for(const height of [700,600,500]){
-    win.setContentSize(1440,height);
-    await js("document.getElementById('showcase-calls').scrollIntoView({block:'center'});void 0");await wait(100);
-    assert(await js("(()=>{const link=document.querySelector('.showcase-progress a'),r=link.getBoundingClientRect(),header=document.querySelector('.site-header').getBoundingClientRect();return r.top>=header.bottom&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===link})()"),'Short desktop must keep progress navigation visible and clickable above the product');
-  }
   win.setContentSize(1440,1000);
   await js("document.querySelector('.product-image').focus()");
   assert(await js("(()=>{const s=getComputedStyle(document.activeElement);return s.outlineStyle!=='none'&&parseFloat(s.outlineWidth)>=3&&parseFloat(s.outlineOffset)<0})()"),'Screenshot keyboard focus must remain inside its clipped frame');
@@ -183,7 +177,6 @@ app.whenReady().then(async()=>{
   assert(await js("!document.querySelector('.orbit-art').classList.contains('parallax-active')&&getComputedStyle(document.querySelector('.orbit-art img')).transform==='none'"),'Reduced motion must disable decorative depth and its active layer');
   await win.loadURL(origin+'/');await wait(100);
   assert(await js('document.getAnimations().length===0'),'Reduced motion must disable entrance and reveal animation');
-  assert(await js("getComputedStyle(document.querySelector('.showcase-visual')).position==='static'"),'Reduced motion must remove sticky motion');
   await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[]});
   win.setContentSize(1440,1000);await win.loadURL(origin+'/');win.webContents.setZoomFactor(2);await wait(100);
   assert(await js('document.documentElement.scrollWidth<=innerWidth+1'),'Content must reflow at 200% zoom');win.webContents.setZoomFactor(1);

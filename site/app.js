@@ -28,60 +28,14 @@
     }
   }));
 
-  // Native scroll is never intercepted. Pick the story nearest the viewing line.
   const mediaQuery = query => window.matchMedia?.(query) || {matches: false, addEventListener() {}};
-  const stories = [...document.querySelectorAll('[data-showcase-step]')];
-  const showcase = document.querySelector('.showcase-layout');
-  const progressLinks = [...document.querySelectorAll('.showcase-progress a')];
-  const desktopMotion = mediaQuery('(min-width: 851px) and (prefers-reduced-motion: no-preference)');
-  let showcaseObserver;
   let revealObserver;
   const revealedElements = new WeakSet();
-  let frame = 0;
-  const selectStory = () => {
-    frame = 0;
-    const line = window.innerHeight * .5;
-    const nearest = stories.reduce((best, story) => {
-      const rect = story.getBoundingClientRect();
-      const distance = Math.abs(rect.top + rect.height / 2 - line);
-      return !best || distance < best.distance ? {story, distance} : best;
-    }, null)?.story;
-    if (!nearest) return;
-    stories.forEach(story => story.classList.toggle('is-active', story === nearest));
-    progressLinks.forEach(link => {
-      if (link.hash === `#${nearest.id}`) link.setAttribute('aria-current','step');
-      else link.removeAttribute('aria-current');
-    });
-    document.querySelectorAll('[data-showcase-image]').forEach(image => {
-      image.classList.toggle('is-active', image.dataset.showcaseImage === nearest.dataset.showcaseStep);
-    });
-    const caption = document.querySelector('.showcase-caption');
-    if (caption) caption.textContent = nearest.dataset.caption;
-  };
-  const scheduleStory = () => { if (!frame) frame = requestAnimationFrame(selectStory); };
-  const stopShowcase = () => {
-    window.removeEventListener('scroll', scheduleStory);
-    window.removeEventListener('resize', scheduleStory);
-    if (frame) cancelAnimationFrame(frame);
-    frame = 0;
-  };
-  const configureShowcase = () => {
-    if (!showcase) return;
-    stopShowcase();
-    showcaseObserver?.disconnect();
-    if (!('IntersectionObserver' in window)) return;
-    showcaseObserver = new IntersectionObserver(entries => {
-      stopShowcase();
-      if (entries.some(entry => entry.isIntersecting)) {
-        window.addEventListener('scroll', scheduleStory, {passive: true});
-        window.addEventListener('resize', scheduleStory, {passive: true});
-        scheduleStory();
-      }
-    }, {rootMargin: '120px 0px'});
-    showcaseObserver.observe(showcase);
-  };
-  desktopMotion.addEventListener('change', configureShowcase);
-  configureShowcase();
+
+  // Feature links open the matching real capture in the product tabs.
+  document.querySelectorAll('[data-open-scene]').forEach(link => link.addEventListener('click', () => {
+    document.querySelector(`[role=tab][data-scene="${link.dataset.openScene}"]`)?.click();
+  }));
 
   // Content stays visible with no JS, unsupported observers, or reduced motion.
   const reducedMotion = mediaQuery('(prefers-reduced-motion: reduce)');
@@ -98,7 +52,7 @@
         if(!entry.target.contains(document.activeElement))entry.target.classList.add('reveal-in');
       });
     }, {threshold: .12});
-    document.querySelectorAll('.product-intro-heading,.product-intro .product-stage,.features-heading,.feature-card,.showcase-heading,.showcase-frame,.start-section .section-heading,.download-copy,.download-panel,.privacy-section,.faq .section-heading,.faq-list,.footer-brand,.footer-links').forEach(element => revealObserver.observe(element));
+    document.querySelectorAll('.product-intro-heading,.product-intro .product-stage,.features-heading,.feature-card,.download-copy,.download-panel,.privacy-section,.faq .section-heading,.faq-list,.footer-brand,.footer-links').forEach(element => revealObserver.observe(element));
   };
   reducedMotion.addEventListener('change', configureReveals);
   configureReveals();
