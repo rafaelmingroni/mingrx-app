@@ -24,6 +24,7 @@
   codeEl.textContent = code;
   const deep = `mingrx://join/${encodeURIComponent(code)}`;
   open.href = deep;
+  open.hidden = false;
   status.textContent = 'Tentando abrir o Mingrx…';
   if (copyGroup) copyGroup.hidden = false;
   const copyButton = document.getElementById('copyInvite');

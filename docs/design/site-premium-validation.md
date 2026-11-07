@@ -158,3 +158,10 @@ ESLint, build, validação/convites, Electron, matriz Chromium 320–1440px e ax
 Medição controlada em `motion` no JSON: três execuções por viewport, cache frio, CPU 4×, latência150ms e download200.000 bytes/s. Medianas de LCP1,504s desktop/1,368s mobile; layout shift0/0; maior interação amostrada48/40ms. Não são dados de campo nem INP real. O LCP permanece maior que a página de entrada (0,840s/0,804s), com acréscimo de 664ms/564ms nas condições medidas, dentro da meta local de 2,5s. Sem dependência nova ou publicação no domínio.
 
 A revisão independente desta passagem recomendou `ship`, sem regressões materiais no escopo. Inspecionou diff, contexto, quatro capturas e dados do laboratório; não repetiu os testes executados pelo agente principal. A documentação foi reconciliada com a profundidade decorativa e com microinterações existentes de 160ms.
+
+
+## Fechamento de responsividade e acessibilidade — itens 9 a 13
+
+A [auditoria desta passagem](site-responsive-accessibility.md) registra achados, correções, cobertura e limites. Navegação sem scripts, links nativos para imagens/endereço, convite sem ação inoperante, contraste do hover e foco interno das capturas foram corrigidos. A primeira solução causava layout shift mobile0,1163; foi substituída por stylesheet exclusivo de noscript. A medição final voltou a0 em ambas as viewports, com LCP1,632s/1,380s e amostras40/40ms. Resultados intermediários e finais estão preservados no JSON. Não houve dependência nova, mudança no aplicativo ou publicação.
+
+Revisão independente final: `ship` no escopo responsivo/acessível examinado; a regressão intermediária de CLS foi resolvida. O documenter atualizou DESIGN.md, sidecar e briefing com comportamento real e limites de teste. Capturas foram conferidas depois do carregamento/decodificação, incluindo tablet, modo sem scripts e foco.

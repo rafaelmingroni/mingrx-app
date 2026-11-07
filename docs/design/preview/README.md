@@ -40,3 +40,10 @@ O servidor atende apenas o build estático, sem publicar o site, alterar domíni
 [Conferência do briefing ampliado](../site-expanded-checklist.md) · [Pesquisa no Refero](../site-reference-research.md)
 
 [Componentes reutilizáveis e exemplos](../site-components.md)
+
+
+## Responsividade e acessibilidade
+
+[Tablet768px](tablet.png) · [Navegação sem JavaScript](sem-javascript.png) · [Galeria sem JavaScript](galeria-sem-javascript.png) · [Convite sem JavaScript](convite-sem-javascript.png) · [Foco visível na captura](foco-captura.png)
+
+[Auditoria dos itens9–13, correções e limites](../site-responsive-accessibility.md). O fallback sem scripts usa links nativos; o layout com scripts não alterna de altura durante a inicialização.

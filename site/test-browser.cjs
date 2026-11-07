@@ -12,12 +12,17 @@ app.setPath('userData',profile);
 app.commandLine.appendSwitch('disable-gpu');
 app.commandLine.appendSwitch('disable-dev-shm-usage');
 app.on('window-all-closed',()=>{});
-let win,server,finished=false;
+let win,server,finished=false,scriptless=false;
 const errors=[],unexpectedRequests=[];
 const deadline=setTimeout(()=>finish(1,'Site browser checks timed out'),60000);
 function finish(code,message){if(finished)return;finished=true;clearTimeout(deadline);(code?console.error:console.log)(message);try{win?.destroy();server?.close();fs.rmSync(profile,{recursive:true,force:true})}catch{}app.exit(code)}
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-const js=code=>win.webContents.executeJavaScript(code,true);
+const js=async code=>{
+  if(!scriptless)return win.webContents.executeJavaScript(code,true);
+  const result=await win.webContents.debugger.sendCommand('Runtime.evaluate',{expression:code,returnByValue:true,awaitPromise:true});
+  if(result.exceptionDetails)throw Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);
+  return result.result.value;
+};
 async function press(keyCode,modifiers=[]){
   win.webContents.sendInputEvent({type:'keyDown',keyCode,modifiers});
   if(keyCode==='Enter'||keyCode==='Space')win.webContents.sendInputEvent({type:'char',keyCode:keyCode==='Enter'?'\r':' ',modifiers});
@@ -73,8 +78,15 @@ app.whenReady().then(async()=>{
     assert.equal(layout.width,width);assert(!layout.overflow,`Horizontal overflow at ${width}`);assert(layout.images,`Missing image at ${width}`);assert(await js("document.getAnimations().every(animation=>animation.effect.getTiming().iterations!==Infinity)"),'Decorative animation must never run indefinitely');assert(layout.radii.every(radius=>radius<=32));assert.match(layout.version,/Mingrx 3\.2\./);assert.match(layout.download,/releases\/download\/v3\.2\.0\/Mingrx-Setup-3\.2\.0-x64\.exe$/);
     assert(await js("[...document.images].every(img=>img.hasAttribute('alt'))&&document.querySelector('.product-image img').alt.length>30"),'Image alternatives are missing');
     if(width===1440){
-      const colors=await js("(()=>{const body=getComputedStyle(document.body),copy=getComputedStyle(document.querySelector('.hero-description')),button=getComputedStyle(document.querySelector('.hero-actions .button-primary'));return{body:body.color,bg:body.backgroundColor,muted:copy.color,button:button.color,buttonBg:button.backgroundColor}})()");
+      const colors=await js("(()=>{const body=getComputedStyle(document.body),copy=getComputedStyle(document.querySelector('.hero-description')),button=getComputedStyle(document.querySelector('.hero-actions .button-primary'));return{body:body.color,bg:body.backgroundColor,muted:copy.color,button:button.color,buttonBg:button.backgroundColor,gradient:button.backgroundImage}})()");
       assert(contrast(colors.body,colors.bg)>=4.5&&contrast(colors.muted,colors.bg)>=4.5&&contrast(colors.button,colors.buttonBg)>=4.5,'Text contrast below 4.5:1');
+      assert(colors.gradient.match(/rgb\([^)]+\)/g).every(color=>contrast(colors.button,color)>=4.5),'Every primary gradient stop must preserve text contrast');
+      const buttonRect=await js("(()=>{const r=document.querySelector('.hero-actions .button-primary').getBoundingClientRect();return{x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()");
+      win.webContents.sendInputEvent({type:'mouseMove',...buttonRect});await wait(180);
+      const hover=await js("(()=>{const s=getComputedStyle(document.querySelector('.hero-actions .button-primary'));return{ink:s.color,gradient:s.backgroundImage}})()");
+      assert(hover.gradient.match(/rgb\([^)]+\)/g).every(color=>contrast(hover.ink,color)>=4.5),'Hover gradient must preserve text contrast at every stop');
+      win.webContents.sendInputEvent({type:'mouseMove',x:0,y:0});
+      assert(await js("[...document.querySelectorAll('.brand')].every(el=>el.getBoundingClientRect().height>=44)"),'Brand links must offer a 44px touch target');
       win.webContents.focus();await press('Tab');
       assert(await js("document.activeElement.classList.contains('skip-link')"),'First Tab must reach the skip link');
       await press('Enter');assert.equal(await js('document.activeElement.id'),'conteudo');
@@ -153,7 +165,9 @@ app.whenReady().then(async()=>{
     assert(await js("(()=>{const link=document.querySelector('.showcase-progress a'),r=link.getBoundingClientRect(),header=document.querySelector('.site-header').getBoundingClientRect();return r.top>=header.bottom&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===link})()"),'Short desktop must keep progress navigation visible and clickable above the product');
   }
   win.setContentSize(1440,1000);
-  await js("document.querySelector('.product-image').focus()");await press('Enter');await wait(250);
+  await js("document.querySelector('.product-image').focus()");
+  assert(await js("(()=>{const s=getComputedStyle(document.activeElement);return s.outlineStyle!=='none'&&parseFloat(s.outlineWidth)>=3&&parseFloat(s.outlineOffset)<0})()"),'Screenshot keyboard focus must remain inside its clipped frame');
+  await press('Enter');await wait(250);
   assert(await js("document.querySelector('.capture-dialog').open"),'Image inspection must open a native dialog');
   assert(await js("document.querySelector('.capture-dialog img').getAttribute('src').includes('mingrx-conversation')"),'Dialog must show the actual selected capture');
   await js("document.activeElement.blur();document.querySelector('.capture-close').focus();void 0");await wait(150);
@@ -173,6 +187,25 @@ app.whenReady().then(async()=>{
   await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[]});
   win.setContentSize(1440,1000);await win.loadURL(origin+'/');win.webContents.setZoomFactor(2);await wait(100);
   assert(await js('document.documentElement.scrollWidth<=innerWidth+1'),'Content must reflow at 200% zoom');win.webContents.setZoomFactor(1);
+  win.setContentSize(1280,1000);win.webContents.setZoomFactor(4);await wait(100);
+  assert(await js('innerWidth<=320&&document.documentElement.scrollWidth<=innerWidth+1'),'Content must reflow at 400% zoom to a 320px CSS viewport');win.webContents.setZoomFactor(1);
+  // Disable document scripts before navigation; Runtime evaluation is test instrumentation only.
+  await win.webContents.debugger.sendCommand('Emulation.setScriptExecutionDisabled',{value:true});scriptless=true;
+  for(const width of [1440,390]){
+    win.setContentSize(width,900);await win.loadURL(origin+'/');
+    assert(await js("typeof window.MingrxUI==='undefined'"),'Scriptless checks must not execute application code');
+    assert(await js("(()=>{const nav=document.querySelector('.topnav'),r=nav.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(nav).opacity==='1'&&!nav.inert})()"),'Native navigation must remain available without scripts');
+    assert(await js("getComputedStyle(document.querySelector('.menu-button')).display==='none'&&getComputedStyle(document.querySelector('.stage-toolbar')).display==='none'&&[...document.querySelectorAll('[data-copy-site]')].every(button=>getComputedStyle(button).display==='none')"),'Script-dependent controls must not appear functional without scripts');
+    assert(await js("document.querySelector('.gallery-fallback a[href*=call]').getBoundingClientRect().height>=44&&[...document.querySelectorAll('.copy-native a')].length===2&&[...document.querySelectorAll('.copy-native a')].every(el=>el.href==='https://mingrx.site/')&&document.querySelector('.download-link').href.endsWith('/releases/latest')"),'Native capture, copy-address and official download links must remain available');
+    assert(await js('document.documentElement.scrollWidth<=innerWidth+1'),'Scriptless page must reflow');
+    await js("document.querySelector('.topnav a[href=\"#download\"]').focus()");await press('Enter');
+    assert.equal(await js('document.activeElement.id'),'download','Native navigation must focus its destination without scripts');
+    await js("document.querySelector('.faq summary').focus()");await press('Space');
+    assert(await js("document.querySelector('.faq details').open"),'FAQ must remain keyboard-operable without scripts');
+  }
+  await win.loadURL(origin+'/invite.html?invite=ABCD2345');
+  assert(await js("document.getElementById('openApp').hidden&&document.getElementById('status').textContent.includes('JavaScript')&&document.getElementById('download').href.endsWith('/releases/latest')"),'Scriptless invite must explain its requirement and preserve installation, without a dead app link');
+  await win.webContents.debugger.sendCommand('Emulation.setScriptExecutionDisabled',{value:false});scriptless=false;
   for(const page of ['privacy.html','terms.html','support.html','accessibility.html','about.html','invite.html?invite=BAD','404.html']){
     win.setContentSize(390,844);await win.loadURL(origin+'/'+page);await wait(50);
     assert(await js('document.documentElement.scrollWidth<=innerWidth+1'),`Overflow on ${page}`);
@@ -188,4 +221,4 @@ app.whenReady().then(async()=>{
   assert.deepEqual(unexpectedRequests,[],'Unexpected external resource or tracking request');
   assert.deepEqual(errors,[],'Browser errors');
   finish(0,'Site browser checks: desktop/mobile, menu, assets, factual release, legal pages and no external tracking passed');
-}).catch(error=>finish(1,error.stack||String(error)));
+}).catch(error=>finish(1,(error.stack||String(error))+'\n'+JSON.stringify(errors)));

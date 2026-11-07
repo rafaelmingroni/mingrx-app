@@ -36,7 +36,7 @@ A pesquisa anterior permanece em [site-reference-research.md](site-reference-res
 
 A revisão independente da direção Orbit concluiu SHIP sem correções materiais. Electron, inspeção Playwright em oito larguras e axe passaram. As verificações automáticas de acessibilidade não substituem itens manuais incompletos. ESLint10.14 foi aprovado somente no site; não foram adicionadas dependências de runtime de produção. O detector Impeccable foi tentado, mas o launcher estava ausente; não há sucesso de detector alegado.
 
-No laboratório controlado, LCP foi1,504s no desktop e1,368s no mobile, CLS0 em ambos e amostras de interação48ms/40ms, respectivamente. São medições locais, sem alegação de INP de campo ou pontuação Lighthouse.
+No laboratório controlado, LCP foi1,632s no desktop e1,380s no mobile, CLS0 em ambos e amostras de interação40ms/40ms, respectivamente. São medições locais, sem alegação de INP de campo ou pontuação Lighthouse.
 
 Na raiz do repositório:
 
@@ -59,3 +59,11 @@ A chegada da prova real usa440ms com atraso130ms, opacidade0→1, escala.99→1 
 Revelações de seção usam opacidade 0→1 e deslocamento de 16px em440ms. WeakSet e unobserve garantem execução única, inclusive após alternar reduced motion; elementos contendo foco pulam a animação. Foram incluídos galeria, showcase, download, FAQ e filhos do rodapé. Sem JavaScript/IntersectionObserver o conteúdo permanece visível. Cards têm stagger40/80ms no desktop e zero no mobile; microinterações continuam160ms e crossfade360ms.
 
 A arte Orbit usa parallax de no máximo8px (`orbit-depth`), apenas em desktop>=851px/no-preference e perto do hero visível. IO controla ativação; listeners passivos de scroll/resize agendam rAF apenas por eventos, sem loop contínuo. Will-change é temporário e escala1.025 evita bordas. Mobile/reduced motion removem listeners e profundidade; scroll nativo e capturas estáticas preservados. Nenhuma dependência foi adicionada. A revisão final de movimento concluiu entrega sem regressões materiais; verificações existentes passaram.
+
+## Fechamento responsivo e acessível — itens 9–13
+
+A direção Orbit foi preservada. O hover troca somente o stop claro para #9242ef (~4,94:1 com branco), mantendo #7633ee. Marca tem alvo mínimo44px; capturas e painéis mantêm contorno3px com offset interno-4px para não recortar. Navegação inicializa o estado fechado/inert corretamente no mobile.
+
+Sem scripts, no-script.css entra exclusivamente por head/noscript: navegação mobile no fluxo, controles não vinculados ocultos, links nativos para capturas e URL selecionável. FAQ/download continuam funcionais. Convite informa que precisa de JavaScript; Abrir Mingrx só aparece após código válido preparar o protocolo. A implementação final não contém flag navigation-ready, troca de layout em runtime ou hidden/unhidden para alternar navegação. A tentativa anterior foi rejeitada por CLS mobile0,1163; esse número não é o resultado final, que permanece0.
+
+[site-responsive-accessibility.md](site-responsive-accessibility.md) conserva evidências e reprodução: Electron com noJS, zoom200/400% e320px CSS; Chromium em12larguras320–2560px, text spacing em390px; percurso de teclado48/49 controles desktop/mobile; axe em16 combinações rota/largura e2 diálogos sem violações automáticas. Contraste em home/404 teve checks incompletos por imagem/gradiente. Não houve leitor de tela, aparelhos físicos ou certificação Safari/Firefox/WCAG integral. A revisão independente final concluiu SHIP. Build/lint e verificações executadas passaram, sem dependência nova, backend alterado ou publicação.

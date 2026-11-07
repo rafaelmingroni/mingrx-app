@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-07T22:19:20.344626+00:00",
+  "generatedAt": "2026-11-07T22:35:32.891946+00:00",
   "title": "Design System: Mingrx — mingrx.site",
   "extensions": {
     "colorMeta": {
@@ -166,7 +166,11 @@
       "Tooltips reutilizáveis com popover manual quando disponível, limite de viewport, flip vertical e fechamento Escape/scroll; navegação e diálogos têm instâncias por raiz.",
       "Teste de duas galerias independentes/remontagem, altura de palco com variação inferior a2px, tooltip na viewport e cancelamento WAAPI ao ativar reduced motion aprovados.",
       "Parallax da arte Orbit limitado a8px no desktop>=851/no-preference e hero próximo da viewport; IO ativa listeners passivos com rAF por eventos e will-change somente ativo. Escala1.025 evita bordas. Mobile/reduced motion removem listeners; capturas sem parallax.",
-      "Revelações incluem galeria, showcase, download, FAQ e filhos do rodapé; conteúdo visível sem JS/IO, WeakSet garante execução única e foco interno pula animação."
+      "Revelações incluem galeria, showcase, download, FAQ e filhos do rodapé; conteúdo visível sem JS/IO, WeakSet garante execução única e foco interno pula animação.",
+      "Responsividade/acessibilidade: hover claro#9242ef (~4,94:1 com branco), marca mínimo44px; captura/painel com foco3px offset-4px para não recortar.",
+      "No-script.css carrega somente em head/noscript: navegação móvel no fluxo, controles sem JS ocultos, capturas/endereço com links nativos. Não há runtime layout switch ou navigation-ready.",
+      "Convite inicia com requisito explícito de JavaScript e ação de protocolo oculta até código válido; download permanece disponível.",
+      "Relatório de testes e limites: docs/design/site-responsive-accessibility.md. Chromium12larguras320–2560, zoom200/400%, teclado, noJS e axe; sem certificação WCAG integral, leitor de tela ou aparelhos físicos."
     ],
     "tokens": {
       "surface-raised": "#1b2240",
@@ -214,7 +218,8 @@
       "space-card": "28px",
       "space-card-compact": "24px",
       "orbit-depth": "8px",
-      "duration-stagger": "40ms"
+      "duration-stagger": "40ms",
+      "orbit-button-hover": "linear-gradient(135deg,#9242ef,#7633ee)"
     },
     "shortViewportShowcase": {
       "minTop": "110px",
@@ -234,7 +239,7 @@
       "refersTo": "button-primary",
       "description": "Ação principal Orbit: gradiente violeta aprovado, tinta branca, raio28px; hover clareia, operação reduz opacidade.",
       "html": "<a class=\"ds-button ds-primary\" href=\"https://github.com/rafaelmingroni/mingrx-app/releases/latest\">Baixar para Windows</a>",
-      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:13px 23px;border:1px solid transparent;border-radius:6px;font-family:var(--font,Satoshi,Arial,sans-serif);font-size:14px;font-weight:750;line-height:1.5;text-decoration:none;text-align:center;cursor:pointer}.ds-button:disabled{cursor:wait;opacity:.7}.ds-primary{background:var(--button-bg,#b894ff);color:var(--button-ink,#ffffff)}.ds-primary:hover{background:var(--button-hover,#7e35ed)}:focus-visible{outline:3px solid var(--accent,#b894ff);outline-offset:5px}::selection{background:var(--accent,#b894ff);color:var(--button-ink,#ffffff)} .ds-primary{background-color:#6c27d9;background-image:linear-gradient(135deg,#8a35fa,#6424df);color:#fff;border-radius:28px}.ds-primary:hover{background-image:linear-gradient(135deg,#9e4cff,#7633ee)}"
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:13px 23px;border:1px solid transparent;border-radius:6px;font-family:var(--font,Satoshi,Arial,sans-serif);font-size:14px;font-weight:750;line-height:1.5;text-decoration:none;text-align:center;cursor:pointer}.ds-button:disabled{cursor:wait;opacity:.7}.ds-primary{background:var(--button-bg,#b894ff);color:var(--button-ink,#ffffff)}.ds-primary:hover{background:var(--button-hover,#7e35ed)}:focus-visible{outline:3px solid var(--accent,#b894ff);outline-offset:5px}::selection{background:var(--accent,#b894ff);color:var(--button-ink,#ffffff)} .ds-primary{background-color:#6c27d9;background-image:linear-gradient(135deg,#8a35fa,#6424df);color:#fff;border-radius:28px}.ds-primary:hover{background-image:linear-gradient(135deg,#9242ef,#7633ee)}"
     },
     {
       "name": "Botão secundário",
@@ -263,7 +268,7 @@
     {
       "name": "Navegação",
       "kind": "nav",
-      "description": "Links internos incluem Download; seção ativa recebe aria-current=location. Menu móvel usa Escape e aria-expanded. Entrada/saída móvel em 160ms; inert remove interação imediatamente no fechamento. Instância reutilizável por raiz.",
+      "description": "Links internos incluem Download; seção ativa recebe aria-current=location. Menu móvel usa Escape e aria-expanded. Entrada/saída móvel em 160ms; inert remove interação imediatamente no fechamento. Instância reutilizável por raiz. Inicializa estado fechado/inert no mobile; sem JS, stylesheet exclusivo noscript mantém links nativos no fluxo.",
       "html": "<nav class=\"ds-nav\" aria-label=\"Principal\"><a href=\"https://mingrx.site/#recursos\">O aplicativo</a><a href=\"https://mingrx.site/#comecar\">Como começar</a><a href=\"https://mingrx.site/#download\">Download</a><a href=\"https://mingrx.site/support.html\">Suporte</a></nav>",
       "css": ".ds-nav{display:flex;align-items:center;justify-content:center;gap:30px;padding:12px 20px;background:var(--bg,#070b17);border-bottom:1px solid var(--line,#28304b);font-family:var(--font,Satoshi,Arial,sans-serif);}.ds-nav a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none;font-size:13px;font-weight:650;color:var(--muted,#bfc0d5)}.ds-nav a:hover{color:var(--ink,#f4f2ff)}@media(max-width:540px){.ds-nav{flex-wrap:wrap;gap:15px}}:focus-visible{outline:3px solid var(--accent,#b894ff);outline-offset:5px}::selection{background:var(--accent,#b894ff);color:var(--button-ink,#ffffff)}"
     },

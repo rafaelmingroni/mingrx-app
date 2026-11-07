@@ -321,7 +321,7 @@ button,input{caret-color:var(--accent)}
 .header-inner{gap:40px}
 .brand{font-weight:800;letter-spacing:-.035em}
 .button-primary,.header-download{border-radius:var(--radius-action);color:#fff;background-color:var(--button-bg);background-image:var(--orbit-button);border-color:#a77cff40;box-shadow:inset 0 1px #d8b9ff33,0 8px 24px -14px #7131eb}
-.button-primary:hover,.header-download:hover{background-color:var(--button-hover);background-image:linear-gradient(135deg,#9e4cff,#7633ee);color:#fff}
+.button-primary:hover,.header-download:hover{background-color:var(--button-hover);background-image:linear-gradient(135deg,#9242ef,#7633ee);color:#fff}
 .header-download{min-width:124px}
 .orbit-hero{position:relative;isolation:isolate;min-height:min(820px,calc(100svh - 82px));display:grid;align-items:center;overflow:clip;background:#060914}
 .orbit-art{position:absolute;inset:0;z-index:-1;display:block}
@@ -432,3 +432,7 @@ button,input{caret-color:var(--accent)}
 }
 @media(max-width:850px){.bento-grid .feature-card:nth-child(n),.download-panel{--reveal-delay:0ms}}
 @media(prefers-reduced-motion:reduce){.orbit-art img{transform:none}.reveal-in{animation:none!important}}
+
+/* Native links remain usable when enhancement scripts do not run. */
+.brand{min-height:44px}
+.orbit-proof>a:focus-visible,.product-image:focus-visible,.scene-panel:focus-visible{outline-offset:-4px}

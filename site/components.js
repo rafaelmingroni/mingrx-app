@@ -31,6 +31,7 @@
       if (!nav.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
     });
     window.matchMedia('(min-width: 851px)').addEventListener?.('change', closeMenu);
+    closeMenu();
   }
 
  };
