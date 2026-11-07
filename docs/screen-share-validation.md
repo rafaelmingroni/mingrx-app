@@ -19,4 +19,10 @@ O novo teste também integra a sequência de interações do release e tem um wo
 
 O workflow Windows específico foi aprovado: https://github.com/rafaelmingroni/mingrx-app/actions/runs/42407502686. Confirma a recuperação simulada e o alinhamento em 100%, 125%, 150% e 200% no Windows.
 
-Nenhum arquivo do site, regra Firebase, configuração de autenticação ou código do backend foi alterado. A candidata 3.2.1 está preparada com versão, README, lockfile e notas sincronizados; não foi publicada. O workflow atual de release reaplica regras e configurações do backend; não foi acionado para respeitar a exigência de aprovação antes de alterar o backend.
+Nenhum arquivo do site, regra Firebase ou código do backend foi alterado por esta correção. Após a aprovação explícita de Rafael, o PR #43 foi integrado e o fluxo completo de release reaplicou as regras de produção e verificou a proteção contra enumeração de e-mails e a correspondência das regras Firestore com as fontes testadas.
+
+## Publicação
+
+A [3.2.1 está publicada](https://github.com/rafaelmingroni/mingrx-app/releases/tag/v3.2.1), com versão, README, lockfile e notas sincronizados. O [workflow de release](https://github.com/rafaelmingroni/mingrx-app/actions/runs/42408519378) usou o commit `7a6cf671c465509fa8f3a3ba46f2c34d1579f103`. O teste específico de compartilhamento passou novamente no fluxo completo.
+
+Depois da publicação, foram baixados sem autenticação o instalador Windows, seu blockmap e `latest.yml`. Os três SHA-256 conferem com os hashes dos assets publicados. A versão, nome, tamanho e SHA-512 do instalador também correspondem ao manifesto da atualização automática. A release está pública, sem marca de prévia, e é retornada pelo endpoint de versão mais recente.
