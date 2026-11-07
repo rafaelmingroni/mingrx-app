@@ -85,8 +85,9 @@ app.whenReady().then(async()=>{
       assert(await js("!document.getElementById('scene-community').hidden"),'End must select the real community view');
       await press('Home');assert.equal(await js('document.activeElement.id'),'tab-conversation');
       assert(await js("!document.getElementById('scene-conversation').hidden&&document.getElementById('scene-call').hidden"));
-      await js("document.getElementById('tab-call').click();document.getElementById('tab-call').click();document.getElementById('tab-conversation').click();void 0");await wait(500);
-      assert(await js("document.querySelector('.product-stage').getAttribute('aria-busy')!=='true'&&document.querySelectorAll('.scene-outgoing').length===0&&!document.getElementById('scene-conversation').hidden"),'Rapid scene changes must settle without stale frames or a stuck loading state');
+      await js("document.getElementById('tab-call').click();document.getElementById('tab-call').click();document.getElementById('tab-conversation').click();void 0");
+      for(let attempt=0;attempt<30;attempt++){if(await js("document.querySelector('.product-stage').getAttribute('aria-busy')!=='true'&&document.querySelectorAll('.scene-outgoing').length===0"))break;await wait(50);}
+      assert(await js("document.querySelector('.product-stage').getAttribute('aria-busy')!=='true'&&document.querySelectorAll('.scene-outgoing').length===0&&!document.getElementById('scene-conversation').hidden"),'Rapid scene changes must settle: '+JSON.stringify(await js("({busy:document.querySelector('.product-stage').getAttribute('aria-busy'),overlays:document.querySelectorAll('.scene-outgoing').length,conversation:document.getElementById('scene-conversation').hidden,animations:document.getAnimations().map(a=>({state:a.playState,time:a.currentTime}))})")));
       await js("document.querySelector('summary').focus()");await press('Space');
       assert(await js("document.querySelector('details').open"),'Space must open the FAQ');
       await press('Enter');assert(!(await js("document.querySelector('details').open")),'Enter must close the FAQ');
@@ -111,6 +112,11 @@ app.whenReady().then(async()=>{
       await js("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{}}});document.querySelector('[data-copy-site]').click();void 0");await wait(30);
       assert(await js("document.querySelector('.pc-link .copy-fallback').hidden&&document.querySelector('.pc-link .copy-status').textContent.includes('Link copiado')"),'Clipboard success must announce completion');
     }
+    const stageHeight=await js("document.querySelector('.product-stage').getBoundingClientRect().height");
+    for(const scene of ['call','community','conversation']){
+      await js(`document.querySelector('[data-scene="${scene}"]').click();void 0`);await wait(400);
+      assert(Math.abs((await js("document.querySelector('.product-stage').getBoundingClientRect().height"))-stageHeight)<2,'Gallery must preserve layout height when switching real captures at '+width+'px');
+    }
     if(width===1440)await capture('desktop.png');if(width===390)await capture('mobile.png');
     console.log(`Site ${width}px: layout, images, live version, consistent action shapes and navigation passed`);
   }
@@ -120,6 +126,19 @@ app.whenReady().then(async()=>{
     assert(await js(`(()=>{const step=document.querySelectorAll('.showcase-step')[${index}];return step.classList.contains('is-active')&&document.querySelector('[data-showcase-image="'+step.dataset.showcaseStep+'"]').classList.contains('is-active')})()`),'Native scroll must select the corresponding actual capture');
     assert(await js(`document.querySelector('.showcase-progress a[aria-current="step"]').hash==='#'+document.querySelectorAll('.showcase-step')[${index}].id`),'Progress indicator must follow the visible story');
   }
+  await js(`(()=>{
+    const original=document.querySelector('[data-ui-tabs]');
+    const secondary=original.cloneNode(true);secondary.id='secondary-gallery';
+    secondary.querySelector('.scene-indicator')?.remove();
+    secondary.querySelectorAll('[id]').forEach(element=>element.id='secondary-'+element.id);
+    secondary.querySelectorAll('[aria-controls]').forEach(element=>element.setAttribute('aria-controls','secondary-'+element.getAttribute('aria-controls')));
+    secondary.querySelectorAll('[aria-labelledby]').forEach(element=>element.setAttribute('aria-labelledby','secondary-'+element.getAttribute('aria-labelledby')));
+    document.body.append(secondary);window.MingrxUI.mount(secondary);window.MingrxUI.mount(secondary);
+    secondary.querySelector('[data-scene="call"]').click();return true;
+  })()`);await wait(450);
+  assert(await js("!document.getElementById('secondary-scene-call').hidden&&!document.getElementById('scene-conversation').hidden&&document.querySelector('#secondary-gallery .scene-tabs').querySelectorAll('.scene-indicator').length===1"),'Independent galleries must isolate state and repeated mounting must not duplicate indicators');
+  await js("document.getElementById('secondary-gallery').remove();void 0");
+  await js("(()=>{const button=document.createElement('button');button.textContent='Original';button.disabled=true;window.MingrxUI.setButtonBusy(button,true);window.MingrxUI.setButtonBusy(button,true);window.MingrxUI.setButtonBusy(button,false);if(button.textContent!=='Original'||!button.disabled)throw Error('Busy state must preserve the original label and disabled state')})()");
   for(const height of [700,600,500]){
     win.setContentSize(1440,height);
     await js("document.getElementById('showcase-calls').scrollIntoView({block:'center'});void 0");await wait(100);
@@ -129,11 +148,16 @@ app.whenReady().then(async()=>{
   await js("document.querySelector('.product-image').focus()");await press('Enter');await wait(250);
   assert(await js("document.querySelector('.capture-dialog').open"),'Image inspection must open a native dialog');
   assert(await js("document.querySelector('.capture-dialog img').getAttribute('src').includes('mingrx-conversation')"),'Dialog must show the actual selected capture');
+  await js("document.activeElement.blur();document.querySelector('.capture-close').focus();void 0");await wait(150);
+  assert(await js("(()=>{const tip=document.getElementById('close-capture-hint'),r=tip.getBoundingClientRect();return !tip.hidden&&r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight})()"),'Focused tooltip must stay inside the viewport');
   await press('Escape');await wait(250);
   assert(await js("!document.querySelector('.capture-dialog').open&&document.activeElement.matches('.product-image')"),'Escape must close inspection and restore focus');
   assert(await js("document.querySelector('#download .download-link').href.includes('github.com/rafaelmingroni/mingrx-app/releases/')"),'Dedicated download must preserve official distribution');
   if(!win.webContents.debugger.isAttached())win.webContents.debugger.attach('1.3');
+  await js("document.querySelector('[data-scene=call]').click();void 0");
   await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+  await wait(150);
+  assert(await js('document.getAnimations().length===0'),'Switching to reduced motion must cancel an in-progress UI transition');
   await win.loadURL(origin+'/');await wait(100);
   assert(await js('document.getAnimations().length===0'),'Reduced motion must disable entrance and reveal animation');
   assert(await js("getComputedStyle(document.querySelector('.showcase-visual')).position==='static'"),'Reduced motion must remove sticky motion');

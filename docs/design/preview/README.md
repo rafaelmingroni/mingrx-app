@@ -1,6 +1,6 @@
 # Prévia do redesign Mingrx
 
-Direção atual: cena espacial aprovada pelo usuário, com personagem sentado, lua com M e violeta/azul. As imagens abaixo são capturas do site implementado no navegador. A ilustração decorativa do hero é distinta das capturas autênticas do aplicativo, que seguem identificadas com conteúdo de demonstração.
+Direção atual: cena espacial aprovada pelo usuário, com personagem sentado, lua com M e violeta/azul. As imagens abaixo são capturas do site implementado no navegador. O hero inclui uma captura verdadeira ampliável e a ilustração decorativa do personagem/lua; são elementos distintos. As capturas seguem identificadas com conteúdo de demonstração.
 
 ## Desktop
 
@@ -38,3 +38,5 @@ O servidor atende apenas o build estático, sem publicar o site, alterar domíni
 ![Galeria de comunidades no celular](comunidades-mobile.png)
 
 [Conferência do briefing ampliado](../site-expanded-checklist.md) · [Pesquisa no Refero](../site-reference-research.md)
+
+[Componentes reutilizáveis e exemplos](../site-components.md)

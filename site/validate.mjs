@@ -7,7 +7,7 @@ import {createHash} from 'node:crypto';
 const root=fileURLToPath(new URL('.',import.meta.url));
 const names=await readdir(root);
 const pages=names.filter(name=>name.endsWith('.html'));
-const files=Object.fromEntries(await Promise.all([...pages,'styles.css','legal.css','app.js','invite.js','CNAME','robots.txt','sitemap.xml'].map(async name=>[name,await readFile(path.join(root,name),'utf8')])));
+const files=Object.fromEntries(await Promise.all([...pages,'styles.css','legal.css','app.js','components.js','invite.js','CNAME','robots.txt','sitemap.xml'].map(async name=>[name,await readFile(path.join(root,name),'utf8')])));
 const check=(label,condition)=>{assert(condition,label);console.log(`OK: ${label}`)};
 check('custom domain is mingrx.site',files.CNAME.trim()==='mingrx.site');
 check('clear product and Windows headline',/Mensagens, chamadas/.test(files['index.html'])&&/Baixar para Windows/.test(files['index.html']));

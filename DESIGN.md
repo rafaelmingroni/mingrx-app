@@ -21,6 +21,7 @@ colors:
   surface-raised: "#1b2240"
   surface-blue: "#101b35"
   blue: "#a8c8ff"
+  card-border-hover: "#6c5694"
 gradients:
   orbit-button: "linear-gradient(135deg,#8a35fa,#6424df)"
   orbit-title: "linear-gradient(110deg,#8e65f7,#c47bff)"
@@ -83,15 +84,21 @@ spacing:
   wide-gap: "48px"
   story-gap: "80px"
   panel: "32px"
+  control-py: "13px"
+  control-px: "23px"
+  space-card: "28px"
+  space-card-compact: "24px"
 motion:
   duration-quick: "160ms"
   duration-scene: "360ms"
   duration-reveal: "440ms"
   duration-disclosure: "240ms"
   duration-dialog: "200ms"
+  duration-tooltip: "120ms"
   ease-out: "cubic-bezier(.16,1,.3,1)"
 shadows:
   stage: "0 30px 80px -50px #6543b866"
+  card-hover: "0 12px 28px -20px #8d64cc66"
 components:
   button-primary:
     backgroundColor: "{colors.action}"
@@ -133,7 +140,7 @@ components:
 
 A referência cósmica fornecida e aprovada mais recentemente pelo usuário é a autoridade visual principal: pessoa fictícia sentada em uma crista rochosa, lua enorme com contorno violeta e M luminoso, céu navy, título branco e “compartilhe” violeta. Esta direção Orbit está implementada e substitui as antigas regras de hero editorial dividido, ação sólida, ausência de gradientes, cápsulas e ilustração. Satoshi e a marca Mingrx permanecem.
 
-O sistema governa somente o site público, incluindo início, convites, suporte e páginas legais. Mantém arquitetura estática e fatos do aplicativo Windows. A ilustração de marca é ficcional e decorativa; a demonstração do produto usa capturas genuínas em uma seção própria abaixo do hero.
+O sistema governa somente o site público, incluindo início, convites, suporte e páginas legais. Mantém arquitetura estática e fatos do aplicativo Windows. A ilustração de marca é ficcional e decorativa; a demonstração do produto usa uma captura genuína sob as ações do hero e a galeria completa abaixo dele.
 
 ## Colors
 
@@ -155,7 +162,7 @@ O hero usa “Converse, jogue” / “e compartilhe.” em Satoshi 500, `clamp(4
 
 A largura principal é limitada a 1240px, com 40px de margem lateral no desktop. Os pontos de adaptação são 1100px, 850px e 540px: margens laterais passam a 32px, 24px e 20px. A navegação fixa ocupa 82px no desktop e 74px até 850px.
 
-O `.orbit-hero` apresenta copy à esquerda, com largura de 53% (máximo 640px), e a arte preenchendo o palco, com gamer e lua à direita. O hero tem altura mínima limitada a 820px/viewport no desktop e 860px acima de 1600px. Até 850px copy e arte se empilham; a arte tem 420px, reduzidos a 330px até 540px, com enquadramento à direita. A prova do aplicativo fica abaixo, em `.product-intro`, com título próprio e galeria real em largura integral. O bento tem dois cartões amplos e três compactos, todos com iconografia SVG coerente; até 850px os compactos se reorganizam e até 540px todos ocupam uma coluna. O showcase tem wrapper `.showcase-display` sticky à esquerda, reunindo navegação de progresso e visual, e quatro etapas à direita, sem interceptar a rolagem nativa; até 850px usa apresentação estática em sequência, com imagens nas duas primeiras etapas. O ritmo das seções passa de 112px para 75px e 65px. Passos e tópicos de suporte tornam-se uma coluna até 540px. Não transformar todas as passagens em cartões iguais.
+O `.orbit-hero` apresenta copy à esquerda, com largura de 53% (máximo 640px), e a arte preenchendo o palco, com gamer e lua à direita. O hero tem altura mínima limitada a 820px/viewport no desktop e 860px acima de 1600px. Até 850px copy e arte se empilham; a arte tem 420px, reduzidos a 330px até 540px, com enquadramento à direita. A prova imediata `.orbit-proof` fica sob as ações do hero, com largura máxima de 460px, imagem inteira (`object-fit: contain`, altura automática), legenda demonstrativa e abertura no diálogo. No telefone ela precede a arte. A galeria completa fica em `.product-intro` abaixo, com título próprio. No desktop a arte alinha à direita com overlay escuro à esquerda para preservar pessoa e lua quando o hero cresce. O bento tem dois cartões amplos e três compactos, todos com iconografia SVG coerente; até 850px os compactos se reorganizam e até 540px todos ocupam uma coluna. O showcase tem wrapper `.showcase-display` sticky à esquerda, reunindo navegação de progresso e visual, e quatro etapas à direita, sem interceptar a rolagem nativa; até 850px usa apresentação estática em sequência, com imagens nas duas primeiras etapas. O ritmo das seções passa de 112px para 75px e 65px. Passos e tópicos de suporte tornam-se uma coluna até 540px. Não transformar todas as passagens em cartões iguais.
 
 O ritmo compartilhado `--space-1` a `--space-8` usa 8, 12, 16, 24, 32, 48, 80 e 112px. `--border-default` centraliza `1px solid var(--line)` e `--radius-control` centraliza 6px nos controles. O rodapé usa grid de marca e três grupos de links, gap de 80px no desktop, títulos de grupo de 14px e links de 13px; até 850px a marca fica acima dos grupos e até 540px os links usam duas colunas, com o último grupo em largura total.
 
@@ -165,7 +172,7 @@ As capturas mantêm acesso à imagem completa. No telefone, a galeria abaixo do 
 
 ## Elevation & Depth
 
-A sombra do palco de produto é `0 30px 80px -50px #6543b866`. Botões têm borda e luz interna discretas; a lua e a iluminação violeta pertencem à arte estática. Ações e cartões têm hover discreto. Os tokens de duração são quick 160ms, scene 360ms e reveal 440ms; a curva de saída é `cubic-bezier(.16,1,.3,1)`. A chegada do palco usa 500ms com atraso de 120ms. O disclosure usa 240ms para interpolar altura quando `interpolate-size` está disponível, além da entrada de conteúdo existente em 200ms. O diálogo usa 200ms para entrada e saída nativas com transições discretas de display e overlay quando suportadas.
+A sombra do palco de produto é `0 30px 80px -50px #6543b866`. Botões têm borda e luz interna discretas; a lua e a iluminação violeta pertencem à arte estática. Ações e cartões têm hover discreto. Os tokens de duração são quick 160ms, scene 360ms e reveal 440ms; a curva de saída é `cubic-bezier(.16,1,.3,1)`. O título do hero entra em 440ms; descrição atrasa 50ms, ações 90ms e a prova real 130ms. A prova usa opacidade 0→1, escala .99→1 e deslocamento de 16px; a arte permanece estática. A chegada da galeria usa 500ms com atraso de 120ms. O disclosure usa 240ms para interpolar altura quando `interpolate-size` está disponível, além da entrada de conteúdo existente em 200ms. O diálogo usa 200ms para entrada e saída nativas com transições discretas de display e overlay quando suportadas.
 
 Conteúdo é visível por padrão. IntersectionObserver adiciona revelações uma única vez e só acompanha o showcase quando ele se aproxima da viewport. O acompanhamento usa listeners passivos e requestAnimationFrame, sem scroll hijack. As imagens do showcase alternam opacidade e escala discreta; as abas usam crossfade com Web Animations API, sem depender de View Transitions. A imagem anterior permanece em uma cópia inerte e oculta à acessibilidade durante a decodificação da próxima; o palco sinaliza `aria-busy` enquanto aguarda. Foco ou pointerenter antecipa a carga. Erros mantêm os links originais disponíveis; movimento reduzido ou ausência da API resulta em troca direta. Não há autoplay, rolagem imposta ou dependência de animação para ler.
 
@@ -177,21 +184,25 @@ Ações principais e download do header usam raio 28px; os demais controles mant
 
 ## Components
 
+A camada reutilizável está em `site/components.js`, carregada com defer antes de `app.js` e incluída no build. `MingrxUI.mount(scope)` monta raízes com registro WeakMap idempotente. `MingrxUI.tabs(root).select(nome)` controla somente painéis da própria raiz, identificados por aria-controls, sem IDs de painel hardcoded. `MingrxUI.setButtonBusy` preserva rótulo e disabled originais, suporta `[data-button-label]` e chamadas repetidas. App.js fica com controle de página: convites, download, cópia, progresso nativo e seção ativa. Contratos e exemplos estão em [docs/design/site-components.md](docs/design/site-components.md).
+
+Navegação e diálogos têm instâncias por raiz. Links `data-preview-dialog` escolhem um diálogo explicitamente; os demais usam `data-primary-dialog`. Cards e accordion são padrões HTML/CSS nativos, sem React. Botões base usam control-py13px/control-px23px; cards usam space-card28px e compact24px, borda hover #6c5694 e sombra `0 12px 28px -20px #8d64cc66`.
+
 **Botões.** Primary destaca download ou abertura do aplicativo; secondary oferece o caminho alternativo. Ambos têm altura mínima de 52px; a variante compacta tem 44px. O link textual sublinhado tem alvo mínimo de 44px. Hover altera cor/preenchimento e desloca o botão em 2px; botões em operação ficam desabilitados, com opacidade .7 e cursor de espera.
 
 **Foco e seleção.** O foco visível usa contorno violeta de 3px e afastamento de 5px. A seleção de texto usa #6930c9 com tinta branca; o skip link usa #6c27d9 com tinta branca. O skip link aparece ao receber foco; alvos de navegação programática não recebem contorno artificial.
 
 **Navegação.** Links discretos clareiam em hover. IntersectionObserver identifica a seção corrente dos links internos com `aria-current="location"` e sublinhado violeta; Download leva à seção dedicada `#download`. Até 850px, o botão Menu alterna `aria-expanded` e abre links em coluna. Escape fecha e devolve foco ao botão; clique externo, navegação e retorno ao desktop fecham o menu. A entrada e saída móvel usam 160ms com opacidade, deslocamento de 6px e display discreto quando suportado; ao fechar, `inert` retira imediatamente os links da interação, antes de terminar a transição.
 
-**Cenas.** Três abas, Conversas, Em chamada e Comunidades, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco entre as três abas. A aba Comunidades reutiliza a captura verdadeira de conversa/comunidade, com alternativa textual e legenda próprias; não representa uma terceira captura distinta. O indicador de seleção se move em 160ms por `--tab-x` e `--tab-width`; ResizeObserver e o término da carga das fontes recalculam posição e largura. A faixa é decorativa (`aria-hidden`), enquanto a seleção continua representada por `aria-selected`. Não há rotação automática. O showcase tem quatro etapas (conversas, chamada, tela e comunidade), mas reutiliza somente duas capturas reais. A etapa de compartilhamento declara explicitamente que a imagem mostra controles, não uma transmissão de tela. O usuário autorizou prosseguir sem uma captura dedicada de transmissão ("prossiga sem isso"). As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
+**Cenas.** Três abas, Conversas, Em chamada e Comunidades, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco entre as três abas. A aba Comunidades reutiliza a captura verdadeira de conversa/comunidade, com alternativa textual e legenda próprias; não representa uma terceira captura distinta. As legendas reservam 128px até 850px e 140px até 540px; a troca entre três vistas mantém variação de altura do palco inferior a 2px nos testes. O indicador de seleção se move em 160ms por `--tab-x` e `--tab-width`; ResizeObserver e o término da carga das fontes recalculam posição e largura. A faixa é decorativa (`aria-hidden`), enquanto a seleção continua representada por `aria-selected`. Não há rotação automática. O showcase tem quatro etapas (conversas, chamada, tela e comunidade), mas reutiliza somente duas capturas reais. A etapa de compartilhamento declara explicitamente que a imagem mostra controles, não uma transmissão de tela. O usuário autorizou prosseguir sem uma captura dedicada de transmissão ("prossiga sem isso"). As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
 
 **Leitura e disclosure.** FAQ usa `details/summary` nativos, divisórias e símbolo de mais que gira ao abrir. `interpolate-size: allow-keywords` e `::details-content` acrescentam transição de altura em 240ms quando suportados; sem suporte, o disclosure nativo continua operacional. O sumário legal é outro disclosure real: abre inicialmente em larguras acima de 850px; em telas menores inicia recolhido. Os tópicos de suporte são links de tarefa com divisórias, sem campos de formulário.
 
-**Inspeção de capturas.** Links `data-preview` abrem um `<dialog>` nativo quando `showModal` está disponível. Fechar, Escape e clique no backdrop encerram a inspeção e devolvem foco ao acionador, sem rolar a página. O botão Fechar tem tooltip “Fechar (Esc)” associado por `aria-describedby`, visível em hover e foco, com entrada discreta de 120ms. O diálogo tem título acessível, alternativa textual, status de carregamento/erro e link permanente à imagem original. Cliques modificados e ambientes sem suporte mantêm o link original. A imagem usa `object-fit: contain`; a página bloqueia rolagem de fundo durante o modal. Entrada e saída usam opacidade e deslocamento mínimos, sem movimento em reduced motion.
+**Inspeção de capturas.** Links `data-preview` abrem um `<dialog>` nativo quando `showModal` está disponível. Fechar, Escape e clique no backdrop encerram a inspeção e devolvem foco ao acionador, sem rolar a página. O botão Fechar tem tooltip “Fechar (Esc)” associado por `aria-describedby`, visível em hover e foco, com entrada discreta de 120ms. O componente tooltip usa popover manual no top layer quando disponível, limita posição à viewport e troca para cima se faltar espaço abaixo. Abre por foco/hover e fecha com Escape, saída/blur adequados, scroll/resize ou fechamento do diálogo. O diálogo tem título acessível, alternativa textual, status de carregamento/erro e link permanente à imagem original. Cliques modificados e ambientes sem suporte mantêm o link original. A imagem usa `object-fit: contain`; a página bloqueia rolagem de fundo durante o modal. Entrada e saída usam opacidade e deslocamento mínimos, sem movimento em reduced motion.
 
 **Download e perfil.** A seção `#download` apresenta Windows 10 ou 11, instalador de 64 bits e GitHub Releases oficial, com ajuda de instalação e aviso de ausência de versão para celular/navegador. A arquitetura x64 foi conferida no instalador. O painel usa padding de 32px (24px até 540px), raio card e ação em largura total; as duas colunas viram uma até 850px. O cartão “Do seu jeito” descreve status personalizável no perfil, capacidade verificada em `desktop/src/v1.js:149`, além de amigos e conversas recentes.
 
-**Convite e retorno de estado.** O cartão mostra código e mensagem em região de status. Código malformado oculta a abertura e pede outro convite; instalação continua secundária. Código de formato válido tenta o protocolo e oferece recuperação, sem afirmar validade ou autorização da comunidade. Durante a cópia, o botão fica desabilitado, recebe `aria-busy` e texto “Copiando link…”. Ao terminar, restaura o rótulo e a disponibilidade. Cópia anuncia sucesso somente após confirmação da API; falha revela texto selecionável. Downloads têm fallback oficial disponível antes da consulta de versão.
+**Convite e retorno de estado.** O cartão mostra código e mensagem em região de status. Código malformado oculta a abertura e pede outro convite; instalação continua secundária. Código de formato válido tenta o protocolo e oferece recuperação, sem afirmar validade ou autorização da comunidade. Durante a cópia, o botão fica desabilitado, recebe `aria-busy` e texto “Copiando link…”. Ao terminar, restaura o rótulo e o estado disabled original, inclusive se o botão já estava desabilitado. Cópia anuncia sucesso somente após confirmação da API; falha revela texto selecionável. Downloads têm fallback oficial disponível antes da consulta de versão.
 
 ## Do's and Don'ts
 
@@ -209,7 +220,7 @@ Ações principais e download do header usam raio 28px; os demais controles mant
 
 A ilustração gerada por image_gen representa uma pessoa anônima fictícia na crista rochosa, lua violeta e monograma M. Não é captura, usuário real ou evidência funcional. O `<picture>` é decorativo (`aria-hidden`, alt vazio), enquanto headline e controles permanecem HTML. O WebP desktop tem 1672×941 e cerca de 72KB; a versão pequena tem 1000×563 e cerca de 28KB. `site/assets/mingrx-orbit.provenance.json` registra original, transformações e SHA-256; `site/assets/mingrx-orbit.prompt.txt` conserva o prompt. As transformações foram resize e WebP, sem UI composta na imagem.
 
-A direção acrescenta somente HTML/CSS e arte otimizada, sem runtime JS adicional, efeitos infinitos ou cursor especial. As duas capturas genuínas e suas três vistas de galeria continuam separadas da ilustração.
+A direção usa HTML/CSS, arte otimizada e um módulo JavaScript próprio de componentes, sem framework ou dependência adicional de runtime, efeitos infinitos ou cursor especial. As duas capturas genuínas e suas três vistas de galeria continuam separadas da ilustração.
 
 ## Fontes e pesquisa do briefing ampliado
 

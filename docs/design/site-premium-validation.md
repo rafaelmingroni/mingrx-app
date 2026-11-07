@@ -126,3 +126,20 @@ Desktop: hero com texto à esquerda e cena à direita. Até 850px: texto e açõ
 Após esta substituição foram executados ESLint, build, validação/convites, suíte Electron, matriz Chromium em 320,390,540,768,850,1024,1280 e1440px, e axe nas telas cobertas. Todos passaram. As capturas desktop/mobile e página completa foram examinadas; a revisão independente recomendou `ship`, sem correções materiais. O revisor não recebeu o mock inline como arquivo local; o agente principal comparou a referência da conversa com os renders e o revisor recebeu a direção detalhada e a arte gerada.
 
 Última medição controlada (`orbit` no JSON): LCP mediano 1,440s desktop/1,392s mobile, layout shift0/0 e maior interação amostrada48ms em ambas. Não é INP de campo nem promessa de desempenho em produção. Medidas anteriores permanecem registradas como histórico. O projeto não ganhou dependência de runtime.
+
+
+## Componentes reutilizáveis e captura no hero
+
+A solicitação seguinte reforçou componentes reutilizáveis e captura verdadeira em destaque. `site/components.js` extrai navegação, tabs, diálogo e tooltip do controlador da página para instâncias próprias, montadas por atributos. `site/app.js` conserva comportamento específico de release/convite, scroll e cópia. O build inclui o novo arquivo e o HTML o carrega antes do controlador, ambos com defer. Sem migração e sem biblioteca adicional.
+
+A montagem usa WeakMap e é idempotente. O teste cria outra galeria com IDs diferentes, monta duas vezes e verifica que a seleção de uma não altera a outra nem duplica o indicador. Botões preservam rótulo/disabled anteriores ao busy. O diálogo usa delegação para links adicionados posteriormente, com alvo explícito ou instância primária, sem reabrir cópias por montagem repetida. Tooltips usam top layer de popover manual quando disponível, clamp de viewport e troca de lado quando falta espaço. Seus limites foram verificados por geometria após foco.
+
+Cards e accordions permanecem componentes de HTML/CSS nativos. Padding de card e botão ganhou tokens específicos; a iluminação/sombra do card transiciona junto da elevação. O módulo responde à mudança de prefers-reduced-motion durante uma transição, cancelando animações Web Animations em andamento, além dos fallbacks CSS já existentes.
+
+O hero mantém o personagem e a lua aprovados e agora contém uma captura real ampliável de 460px, renderizada inteira com object-fit: contain. A imagem é HTML e a entrada é a quarta na sequência (130ms de atraso, 440ms, opacidade, 16px e escala discreta). A direção espacial foi mantida; a arte usa enquadramento à direita e overlay à esquerda para proteger a leitura quando a seção cresce. No mobile, a captura vem antes da faixa da ilustração.
+
+Foi corrigida na primeira inspeção uma altura intrínseca que ampliava/cortava a captura; o render final usa height:auto e contém a imagem verdadeira completa. As legendas da galeria reservam 128px/140px em larguras menores. O teste mede diferença de altura inferior a 2px ao trocar cada captura em cinco larguras; não depende somente de uma inspeção visual. A espera de limpeza de trocas rápidas usa condição com limite em vez de assumir callback de compositor em 500ms sob contenção de CPU.
+
+Foram executados novamente lint, build, validação, convites, Electron, matriz Chromium e axe. A auditoria automatizada não reportou violações nos cenários cobertos; contraste no hero com imagem/gradiente exige avaliação manual e apareceu como verificação incompleta. Os pares principais de texto/botão passaram na medida de contraste do teste Electron, sem declarar certificação completa. A revisão independente recomendou ship no escopo examinado.
+
+Medição local final desta passagem (`components` no JSON): LCP mediano1,596s desktop/1,372s mobile; layout shift0/0; maior interação amostrada56/40ms. São dados de laboratório, não INP de campo. [Contratos e exemplos reutilizáveis](site-components.md).

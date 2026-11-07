@@ -11,7 +11,7 @@ if(source.startsWith(output+path.sep)||output===source.slice(0,-1)||output.start
 for(const file of ['prepare-fonts.mjs','validate.mjs','test-invites.mjs'])execFileSync(process.execPath,[path.join(source,file)],{stdio:'inherit'});
 await mkdir(output,{recursive:true});
 for(const name of await readdir(source)){
- if(name==='assets'||name==='CNAME'||name==='.nojekyll'||name==='favicon.ico'||name==='robots.txt'||name==='sitemap.xml'||/\.(html|css)$/.test(name)||['app.js','invite.js'].includes(name))await cp(path.join(source,name),path.join(output,name),{recursive:true});
+ if(name==='assets'||name==='CNAME'||name==='.nojekyll'||name==='favicon.ico'||name==='robots.txt'||name==='sitemap.xml'||/\.(html|css)$/.test(name)||['app.js','invite.js','components.js'].includes(name))await cp(path.join(source,name),path.join(output,name),{recursive:true});
 }
 let files=0,bytes=0;
 async function count(dir){for(const name of await readdir(dir)){const p=path.join(dir,name),s=await stat(p);if(s.isDirectory())await count(p);else{files++;bytes+=s.size}}}

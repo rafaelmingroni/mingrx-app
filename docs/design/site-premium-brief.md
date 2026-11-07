@@ -8,7 +8,7 @@ A direção está implementada no site público estático, incluindo linguagem c
 
 ## Composição e tokens atuais
 
-`.orbit-hero` reúne copy à esquerda e arte preenchendo o palco, com gamer e lua à direita. O título “Converse, jogue” / “e compartilhe.” usa Satoshi 500, clamp(48px,5.25vw,76px), entrelinha1.07 e tracking-.035em; o destaque usa750 e chega a80px acima de1600px. Até850px, copy e arte se empilham; a arte tem420px, reduzidos a330px até540px. A galeria real saiu da abertura e ocupa `.product-intro` abaixo do hero, com título próprio.
+`.orbit-hero` reúne copy à esquerda e arte preenchendo o palco, com gamer e lua à direita. O título “Converse, jogue” / “e compartilhe.” usa Satoshi 500, clamp(48px,5.25vw,76px), entrelinha1.07 e tracking-.035em; o destaque usa750 e chega a80px acima de1600px. Até850px, copy e arte se empilham; a arte tem420px, reduzidos a330px até540px. Uma captura real inteira `.orbit-proof` fica sob as ações do hero, com largura máxima460px, object-fit:contain, altura automática, legenda e abertura no diálogo. No mobile ela vem antes da arte. A galeria completa permanece em `.product-intro` abaixo, com título próprio. No desktop a arte alinha à direita com overlay à esquerda para preservar pessoa e lua quando o hero cresce.
 
 A base é canvas #070b17, surface #11172a, soft #0c1122, ink #f4f2ff, muted #bfc0d5 e border #28304b. Acento #b894ff, surface-raised #1b2240, surface-blue #101b35 e violet-field #11112b. A ação usa base #6c27d9, hover #7e35ed e tinta branca. `--orbit-button` é linear-gradient(135deg,#8a35fa,#6424df); `--orbit-title` é linear-gradient(110deg,#8e65f7,#c47bff). Primary e download do header usam radius-action28px; demais controles mantêm6px e cards14px. Sombra do palco real: 0 30px 80px -50px #6543b866.
 
@@ -36,7 +36,7 @@ A pesquisa anterior permanece em [site-reference-research.md](site-reference-res
 
 A revisão independente da direção Orbit concluiu SHIP sem correções materiais. Electron, inspeção Playwright em oito larguras e axe passaram. As verificações automáticas de acessibilidade não substituem itens manuais incompletos. ESLint10.14 foi aprovado somente no site; não foram adicionadas dependências de runtime de produção. O detector Impeccable foi tentado, mas o launcher estava ausente; não há sucesso de detector alegado.
 
-No laboratório controlado, LCP foi1,44s no desktop e1,392s no mobile, CLS0 em ambos e amostras de interação48ms. São medições locais, sem alegação de INP de campo ou pontuação Lighthouse.
+No laboratório controlado, LCP foi1,596s no desktop e1,372s no mobile, CLS0 em ambos e amostras de interação56ms/40ms, respectivamente. São medições locais, sem alegação de INP de campo ou pontuação Lighthouse.
 
 Na raiz do repositório:
 
@@ -45,3 +45,11 @@ node site/build.mjs && node site/preview.mjs
 ```
 
 A prévia serve somente o build estático em http://127.0.0.1:4173/, aceita GET/HEAD e não publica o site. Rotas, scripts, fonte,404 e405 foram verificados. Ctrl+C encerra. Branch/PR de rascunho são etapas separadas; não se afirma aqui sua criação nem merge em main ou deploy.
+
+## Camada reutilizável concluída
+
+[site-components.md](site-components.md) documenta Buttons, Cards, Tabs, Dialogs, Tooltips, Accordion e Navigation. O módulo próprio `site/components.js` carrega com defer antes de app.js e entra no build; não usa framework ou dependência nova de runtime. Mount por escopo usa WeakMap para ser idempotente. Cada galeria resolve seus próprios aria-controls/painéis e oferece tabs(root).select; setButtonBusy preserva disabled/rótulo originais e aceita data-button-label. Navegação e diálogos têm instâncias próprias; links escolhem data-preview-dialog ou usam o diálogo primário. App.js mantém o controle das tarefas de página.
+
+Tooltips usam popover manual no top layer quando disponível, clamp/flip na viewport, foco/hover e fechamento por Escape, scroll/resize ou diálogo. Cards e accordions são padrões nativos HTML/CSS. Tokens novos: duration-tooltip120ms, shadow-card-hover0 12px 28px -20px #8d64cc66, card-border-hover#6c5694, control-py13px, control-px23px, space-card28px e compact24px.
+
+A chegada da prova real usa440ms com atraso130ms, opacidade0→1, escala.99→1 e deslocamento16px; descrição50ms e ações90ms seguem o título. A arte fica estática. Legendas da galeria reservam128px/140px nos breakpoints móveis, sem cortar texto. Testes confirmaram variação de palco menor que2px, duas galerias independentes com IDs próprios e remontagem sem duplicação, tooltip na viewport e cancelamento ao ativar reduced motion durante transição. Lint, build, Electron, oito larguras e axe passaram; revisão independente sem achados materiais. O escopo permanece na mesma branch/PR45, sem produção, backend ou aplicativo alterados.

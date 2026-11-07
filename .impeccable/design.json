@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-07T21:28:42.323202+00:00",
+  "generatedAt": "2026-11-07T22:03:22.966069+00:00",
   "title": "Design System: Mingrx — mingrx.site",
   "extensions": {
     "colorMeta": {
@@ -76,6 +76,11 @@
         "name": "stage",
         "value": "0 30px 80px -50px #6543b866",
         "purpose": "Moldura do produto abaixo do hero Orbit."
+      },
+      {
+        "name": "card-hover",
+        "value": "0 12px 28px -20px #8d64cc66",
+        "purpose": "Elevação curta do card reutilizável."
       }
     ],
     "motion": [
@@ -108,6 +113,11 @@
         "name": "duration-dialog",
         "value": "200ms",
         "purpose": "Entrada e saída do diálogo nativo; reduced motion remove a transição."
+      },
+      {
+        "name": "duration-tooltip",
+        "value": "120ms",
+        "purpose": "Entrada de tooltip reutilizável, viewport clamp e top layer popover quando disponível."
       }
     ],
     "breakpoints": [
@@ -146,7 +156,10 @@
       "ESLint 10.14 executado somente no site e aprovado; nenhuma dependência de runtime de produção adicionada.",
       "Direção atual Orbit: referência cósmica mais recente do usuário substitui ação sólida, veto a gradientes/cápsulas e antigo hero dividido.",
       "Arte ficcional decorativa separada das duas capturas reais; proveniência e prompt em site/assets/mingrx-orbit.provenance.json e mingrx-orbit.prompt.txt.",
-      "Hero: copy à esquerda, gamer e lua à direita; mobile empilha copy e arte420/330px. Galeria genuína em product-intro abaixo. Refero é pesquisa histórica suplementar."
+      "Componentes próprios em site/components.js: mount(scope) idempotente por WeakMap, tabs(root).select e setButtonBusy preservando rótulo/disabled originais. Contratos: docs/design/site-components.md.",
+      "Hero Orbit agora inclui captura real inteira sob as ações, largura460px, antes da arte no mobile; galeria completa permanece em product-intro. Arte estática alinhada à direita com overlay no desktop.",
+      "Tooltips reutilizáveis com popover manual quando disponível, limite de viewport, flip vertical e fechamento Escape/scroll; navegação e diálogos têm instâncias por raiz.",
+      "Teste de duas galerias independentes/remontagem, altura de palco com variação inferior a2px, tooltip na viewport e cancelamento WAAPI ao ativar reduced motion aprovados."
     ],
     "tokens": {
       "surface-raised": "#1b2240",
@@ -185,7 +198,14 @@
       "violet-field": "#11112b",
       "radius-action": "28px",
       "orbit-button": "linear-gradient(135deg,#8a35fa,#6424df)",
-      "orbit-title": "linear-gradient(110deg,#8e65f7,#c47bff)"
+      "orbit-title": "linear-gradient(110deg,#8e65f7,#c47bff)",
+      "duration-tooltip": "120ms",
+      "shadow-card-hover": "0 12px 28px -20px #8d64cc66",
+      "card-border-hover": "#6c5694",
+      "control-py": "13px",
+      "control-px": "23px",
+      "space-card": "28px",
+      "space-card-compact": "24px"
     },
     "shortViewportShowcase": {
       "minTop": "110px",
@@ -227,14 +247,14 @@
       "name": "Abas de cenas",
       "kind": "custom",
       "refersTo": "scene-tab",
-      "description": "Três abas: Conversas, Em chamada e Comunidades. app.js sincroniza painéis, tabindex, setas/Home/End e crossfade WAAPI com decode, saída inerte e aria-busy; indicador decorativo móvel com ResizeObserver. Comunidades reutiliza a captura autêntica de conversa/comunidade; sem autoplay ou aba fictícia de transmissão.",
+      "description": "Três abas: Conversas, Em chamada e Comunidades. components.js sincroniza painéis, tabindex, setas/Home/End e crossfade WAAPI com decode, saída inerte e aria-busy; indicador decorativo móvel com ResizeObserver. Comunidades reutiliza a captura autêntica de conversa/comunidade; sem autoplay ou aba fictícia de transmissão. Instâncias independentes por raiz, IDs próprios e mount idempotente.",
       "html": "<div class=\"ds-tabs\" role=\"tablist\" aria-label=\"Veja o Mingrx em uso\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">Conversas</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Em chamada</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Comunidades</button></div>",
       "css": ".ds-tabs{display:flex;gap:7px;padding:13px 22px;background:var(--paper,#11172a)}.ds-tab{display:flex;align-items:center;gap:9px;min-height:44px;padding:9px 15px;border:0;border-radius:6px;background:transparent;color:var(--muted,#bfc0d5);font-family:var(--font,Satoshi,Arial,sans-serif);font-size:13px;font-weight:650;cursor:pointer}.ds-tab:hover{background:#23222e;color:var(--ink,#f4f2ff)}.ds-tab[aria-selected=true]{background:#33283f;color:#f0e6ff}:focus-visible{outline:3px solid var(--accent,#b894ff);outline-offset:5px}::selection{background:var(--accent,#b894ff);color:var(--button-ink,#ffffff)}"
     },
     {
       "name": "Navegação",
       "kind": "nav",
-      "description": "Links internos incluem Download; seção ativa recebe aria-current=location. Menu móvel usa Escape e aria-expanded. Entrada/saída móvel em 160ms; inert remove interação imediatamente no fechamento.",
+      "description": "Links internos incluem Download; seção ativa recebe aria-current=location. Menu móvel usa Escape e aria-expanded. Entrada/saída móvel em 160ms; inert remove interação imediatamente no fechamento. Instância reutilizável por raiz.",
       "html": "<nav class=\"ds-nav\" aria-label=\"Principal\"><a href=\"https://mingrx.site/#recursos\">O aplicativo</a><a href=\"https://mingrx.site/#comecar\">Como começar</a><a href=\"https://mingrx.site/#download\">Download</a><a href=\"https://mingrx.site/support.html\">Suporte</a></nav>",
       "css": ".ds-nav{display:flex;align-items:center;justify-content:center;gap:30px;padding:12px 20px;background:var(--bg,#070b17);border-bottom:1px solid var(--line,#28304b);font-family:var(--font,Satoshi,Arial,sans-serif);}.ds-nav a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none;font-size:13px;font-weight:650;color:var(--muted,#bfc0d5)}.ds-nav a:hover{color:var(--ink,#f4f2ff)}@media(max-width:540px){.ds-nav{flex-wrap:wrap;gap:15px}}:focus-visible{outline:3px solid var(--accent,#b894ff);outline-offset:5px}::selection{background:var(--accent,#b894ff);color:var(--button-ink,#ffffff)}"
     },
@@ -263,9 +283,9 @@
   ],
   "narrative": {
     "northStar": "Converse, jogue e compartilhe — no universo Mingrx",
-    "overview": "Direção Orbit concluída a partir da referência cósmica aprovada pelo usuário: navy, lua violeta com M luminoso e gamer fictício em rocha. Satoshi, headline branca com compartilhe em gradiente violeta e ações arredondadas. Arte decorativa separada da galeria genuína abaixo; arquitetura estática e fatos do produto preservados.",
+    "overview": "Direção Orbit concluída a partir da referência cósmica aprovada pelo usuário: navy, lua violeta com M luminoso e gamer fictício em rocha. Satoshi, headline branca com compartilhe em gradiente violeta e ações arredondadas. Arte decorativa separada da captura real inteira sob as ações e da galeria completa abaixo; arquitetura estática e fatos do produto preservados.",
     "keyCharacteristics": [
-      "Hero cósmico com copy à esquerda e arte à direita; composição empilhada no mobile.",
+      "Hero cósmico com copy e captura genuína sob CTA à esquerda, arte estática à direita; composição empilhada no mobile.",
       "Ações em gradiente violeta com tinta branca e raio28px; controles6px e cards14px.",
       "Duas capturas reais em três vistas de galeria, bento e showcase nativo."
     ],
