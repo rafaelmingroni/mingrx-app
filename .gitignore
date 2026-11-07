@@ -16,3 +16,6 @@ desktop/backend-security-report.json
 
 # Satoshi is acquired from Fontshare at build time for our own site.
 site/assets/fonts/satoshi-variable.woff2
+
+# Local static preview build
+/work/

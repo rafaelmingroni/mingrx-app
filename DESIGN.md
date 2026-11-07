@@ -60,10 +60,13 @@ spacing:
   section-gap: "35px"
   wide-gap: "48px"
   story-gap: "80px"
+  panel: "32px"
 motion:
   duration-quick: "160ms"
   duration-scene: "360ms"
   duration-reveal: "440ms"
+  duration-disclosure: "240ms"
+  duration-dialog: "200ms"
   ease-out: "cubic-bezier(.16,1,.3,1)"
 shadows:
   stage: "0 24px 70px -35px #0009"
@@ -134,7 +137,7 @@ Satoshi variável é auto-hospedada em `site/assets/fonts/satoshi-variable.woff2
 
 Display serve à abertura; headline às passagens principais; title aos passos; body ao texto corrente; label ao botão padrão. A navegação usa texto de 13px com peso 650, e notas/captions usam 12–13px. Textos legais usam 15px com entrelinha 1.95, reduzindo a 14px no telefone; a coluna de artigo limita-se a 74ch.
 
-Títulos têm quebra balanceada. Em telas até 540px, o título inicial usa 42px com entrelinha 1.13; títulos de seção usam 36px. Não simular outra família tipográfica com peso ou espaçamento.
+Títulos têm quebra balanceada. Em telas até 540px, o título inicial usa `clamp(34px,9.7vw,48px)` com entrelinha 1.13; títulos de seção usam 36px. Não simular outra família tipográfica com peso ou espaçamento.
 
 ## Layout
 
@@ -148,9 +151,9 @@ As capturas mantêm acesso à imagem completa. No telefone, o hero mostra recort
 
 ## Elevation & Depth
 
-A sombra `stage` (`0 24px 70px -35px #0009`) destaca somente a moldura do produto. Ações e cartões têm hover discreto, sem halos. Os tokens de duração são quick 160ms, scene 360ms e reveal 440ms; a curva de saída é `cubic-bezier(.16,1,.3,1)`. A chegada do palco usa 500ms com atraso de 120ms; disclosures usam 200ms.
+A sombra `stage` (`0 24px 70px -35px #0009`) destaca somente a moldura do produto. Ações e cartões têm hover discreto, sem halos. Os tokens de duração são quick 160ms, scene 360ms e reveal 440ms; a curva de saída é `cubic-bezier(.16,1,.3,1)`. A chegada do palco usa 500ms com atraso de 120ms. O disclosure usa 240ms para interpolar altura quando `interpolate-size` está disponível, além da entrada de conteúdo existente em 200ms. O diálogo usa 200ms para entrada e saída nativas com transições discretas de display e overlay quando suportadas.
 
-Conteúdo é visível por padrão. IntersectionObserver adiciona revelações uma única vez e só acompanha o showcase quando ele se aproxima da viewport. O acompanhamento usa listeners passivos e requestAnimationFrame, sem scroll hijack. As imagens do showcase alternam opacidade e escala discreta; abas usam View Transitions quando suportadas. Não há autoplay, rolagem imposta ou dependência de animação para ler.
+Conteúdo é visível por padrão. IntersectionObserver adiciona revelações uma única vez e só acompanha o showcase quando ele se aproxima da viewport. O acompanhamento usa listeners passivos e requestAnimationFrame, sem scroll hijack. As imagens do showcase alternam opacidade e escala discreta; as abas usam crossfade com Web Animations API, sem depender de View Transitions. A imagem anterior permanece em uma cópia inerte e oculta à acessibilidade durante a decodificação da próxima; o palco sinaliza `aria-busy` enquanto aguarda. Foco ou pointerenter antecipa a carga. Erros mantêm os links originais disponíveis; movimento reduzido ou ausência da API resulta em troca direta. Não há autoplay, rolagem imposta ou dependência de animação para ler.
 
 `prefers-reduced-motion: reduce` remove animações, transições, transformações de hover e sticky; a narrativa permanece legível. Até 850px, o showcase também dispensa sticky e acompanhamento de etapas.
 
@@ -164,11 +167,15 @@ Controles usam cantos curtos; figuras e blocos de contato usam o raio image, e a
 
 **Foco e seleção.** O foco visível usa contorno violeta de 3px e afastamento de 5px. A seleção de texto usa o mesmo violeta com tinta escura. O skip link aparece ao receber foco; alvos de navegação programática não recebem contorno artificial.
 
-**Navegação.** Links discretos clareiam em hover. Até 850px, o botão Menu alterna `aria-expanded` e abre links em coluna. Escape fecha e devolve foco ao botão; clique externo, navegação e retorno ao desktop fecham o menu.
+**Navegação.** Links discretos clareiam em hover. IntersectionObserver identifica a seção corrente dos links internos com `aria-current="location"` e sublinhado violeta; Download leva à seção dedicada `#download`. Até 850px, o botão Menu alterna `aria-expanded` e abre links em coluna. Escape fecha e devolve foco ao botão; clique externo, navegação e retorno ao desktop fecham o menu.
 
-**Cenas.** Duas abas, Conversas e Em chamada, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco. Não há rotação automática. O showcase tem quatro etapas (conversas, chamada, tela e comunidade), mas reutiliza somente duas capturas reais. A etapa de compartilhamento declara explicitamente que a imagem mostra controles, não uma transmissão de tela. As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
+**Cenas.** Duas abas, Conversas e Em chamada, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco. Não há rotação automática. O showcase tem quatro etapas (conversas, chamada, tela e comunidade), mas reutiliza somente duas capturas reais. A etapa de compartilhamento declara explicitamente que a imagem mostra controles, não uma transmissão de tela. O usuário autorizou prosseguir sem uma captura dedicada de transmissão ("prossiga sem isso"). As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
 
-**Leitura e disclosure.** FAQ usa `details/summary` nativos, divisórias e símbolo de mais que gira ao abrir. O sumário legal é outro disclosure real: abre inicialmente em larguras acima de 850px; em telas menores inicia recolhido. Os tópicos de suporte são links de tarefa com divisórias, sem campos de formulário.
+**Leitura e disclosure.** FAQ usa `details/summary` nativos, divisórias e símbolo de mais que gira ao abrir. `interpolate-size: allow-keywords` e `::details-content` acrescentam transição de altura em 240ms quando suportados; sem suporte, o disclosure nativo continua operacional. O sumário legal é outro disclosure real: abre inicialmente em larguras acima de 850px; em telas menores inicia recolhido. Os tópicos de suporte são links de tarefa com divisórias, sem campos de formulário.
+
+**Inspeção de capturas.** Links `data-preview` abrem um `<dialog>` nativo quando `showModal` está disponível. Fechar, Escape e clique no backdrop encerram a inspeção e devolvem foco ao acionador, sem rolar a página. O diálogo tem título acessível, alternativa textual, status de carregamento/erro e link permanente à imagem original. Cliques modificados e ambientes sem suporte mantêm o link original. A imagem usa `object-fit: contain`; a página bloqueia rolagem de fundo durante o modal. Entrada e saída usam opacidade e deslocamento mínimos, sem movimento em reduced motion.
+
+**Download e perfil.** A seção `#download` apresenta Windows 10 ou 11, instalador de 64 bits e GitHub Releases oficial, com ajuda de instalação e aviso de ausência de versão para celular/navegador. A arquitetura x64 foi conferida no instalador. O painel usa padding de 32px (24px até 540px), raio card e ação em largura total; as duas colunas viram uma até 850px. O cartão “Do seu jeito” descreve status personalizável no perfil, capacidade verificada em `desktop/src/v1.js:149`, além de amigos e conversas recentes.
 
 **Convite e retorno de estado.** O cartão mostra código e mensagem em região de status. Código malformado oculta a abertura e pede outro convite; instalação continua secundária. Código de formato válido tenta o protocolo e oferece recuperação, sem afirmar validade ou autorização da comunidade. Cópia anuncia sucesso somente após confirmação da API; falha revela texto selecionável. Downloads têm fallback oficial disponível antes da consulta de versão.
 

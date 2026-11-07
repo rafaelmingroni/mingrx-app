@@ -45,20 +45,90 @@
     });
     if (focus) selected.focus();
   };
+  let sceneAnimations = [];
+  let outgoingScene;
+  let sceneRequest = 0;
+  const changeScene = async (name, focus = false) => {
+    const current = document.querySelector('.scene-panel:not([hidden]):not(.scene-outgoing)');
+    if (!current || current.id === `scene-${name}`) { if (focus) activateScene(name, true); return; }
+    const request = ++sceneRequest;
+    sceneAnimations.forEach(animation => animation.cancel());
+    outgoingScene?.remove();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const overlay = current.cloneNode(true);
+    const canAnimate = !reduce && typeof current.animate === 'function';
+    overlay.removeAttribute('id');
+    overlay.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
+    overlay.classList.add('scene-outgoing');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.inert = true;
+    activateScene(name, focus);
+    const next = document.getElementById(`scene-${name}`);
+    const targetImage = next.querySelector('img');
+    const stage = document.querySelector('.product-stage');
+    current.parentElement.append(overlay);
+    outgoingScene = overlay;
+    if (targetImage && !targetImage.complete) {
+      targetImage.loading = 'eager';
+      stage?.setAttribute('aria-busy','true');
+      try { await targetImage.decode(); } catch { /* Original image links remain available. */ }
+    }
+    if (request !== sceneRequest) { overlay.remove(); return; }
+    stage?.removeAttribute('aria-busy');
+    if (canAnimate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const duration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration-scene')) || 360;
+      const fade = overlay.animate([{opacity:1},{opacity:0}], {duration,easing:'ease-out'});
+      const arrive = next.animate([{opacity:.4,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}], {duration,easing:'cubic-bezier(.16,1,.3,1)'});
+      sceneAnimations = [fade, arrive];
+      fade.finished.then(() => overlay.remove()).catch(() => overlay.remove());
+    } else overlay.remove();
+  };
   sceneTabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => {
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (document.startViewTransition && !reduce) {
-        document.startViewTransition(() => activateScene(tab.dataset.scene));
-      } else activateScene(tab.dataset.scene);
-    });
+    const warmImage = () => {
+      const image = document.querySelector(`#${tab.getAttribute('aria-controls')} img`);
+      if (image) image.loading = 'eager';
+    };
+    tab.addEventListener('pointerenter', warmImage, {once: true});
+    tab.addEventListener('focus', warmImage, {once: true});
+    tab.addEventListener('click', () => { warmImage(); changeScene(tab.dataset.scene); });
     tab.addEventListener('keydown', event => {
       const destinations = {ArrowRight:(index+1)%sceneTabs.length, ArrowLeft:(index-1+sceneTabs.length)%sceneTabs.length, Home:0, End:sceneTabs.length-1};
       if (!(event.key in destinations)) return;
       event.preventDefault();
-      activateScene(sceneTabs[destinations[event.key]].dataset.scene, true);
+      changeScene(sceneTabs[destinations[event.key]].dataset.scene, true);
     });
   });
+
+  const captureDialog = document.querySelector('.capture-dialog');
+  if (captureDialog && typeof captureDialog.showModal === 'function') {
+    const image = captureDialog.querySelector('img');
+    const status = captureDialog.querySelector('.capture-load-status');
+    let opener;
+    document.querySelectorAll('[data-preview]').forEach(link => link.addEventListener('click', event => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button) return;
+      event.preventDefault();
+      opener = link;
+      const source = link.querySelector('img');
+      image.alt = source?.alt || (link.href.includes('call') ? 'Chamada real no Mingrx com contas de demonstração.' : 'Conversa e comunidade reais no Mingrx com conteúdo de demonstração.');
+      status.textContent = 'Carregando captura…';
+      image.src = link.href;
+      captureDialog.querySelector('.capture-original').href = link.href;
+      captureDialog.showModal();
+      document.documentElement.classList.add('capture-open');
+    }));
+    image.addEventListener('load', () => { status.textContent = ''; });
+    image.addEventListener('error', () => { status.textContent = 'Não foi possível carregar a captura. Abra a imagem original pelo link abaixo.'; });
+    captureDialog.querySelector('.capture-close').addEventListener('click', () => captureDialog.close());
+    captureDialog.addEventListener('click', event => {
+      const rect = captureDialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) captureDialog.close();
+    });
+    captureDialog.addEventListener('close', () => {
+      document.documentElement.classList.remove('capture-open');
+      opener?.focus({preventScroll:true});
+    });
+  }
+
   document.querySelectorAll('[data-show-scene]').forEach(link => link.addEventListener('click', () => activateScene(link.dataset.showScene)));
   document.querySelectorAll('.legal-toc').forEach(toc => { if (window.matchMedia?.('(min-width: 851px)').matches) toc.open = true; });
   document.querySelectorAll('[data-copy-site]').forEach(button => button.addEventListener('click', async () => {
@@ -142,6 +212,19 @@
   };
   reducedMotion.addEventListener('change', configureReveals);
   configureReveals();
+
+  const sectionLinks = [...document.querySelectorAll('.topnav a[href^="#"]')];
+  if ('IntersectionObserver' in window && sectionLinks.length) {
+    const navigationObserver = new IntersectionObserver(entries => {
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => a.boundingClientRect.top-b.boundingClientRect.top)[0];
+      if (!visible) return;
+      sectionLinks.forEach(link => {
+        if (link.hash === `#${visible.target.id}`) link.setAttribute('aria-current','location');
+        else link.removeAttribute('aria-current');
+      });
+    }, {rootMargin:'-15% 0px -55% 0px',threshold:0});
+    sectionLinks.forEach(link => { const target = document.getElementById(link.hash.slice(1)); if (target) navigationObserver.observe(target); });
+  }
 
   const year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());

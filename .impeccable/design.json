@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-07T20:39:31.045302+00:00",
+  "generatedAt": "2026-11-07T20:50:31.695530+00:00",
   "title": "Design System: Mingrx — mingrx.site",
   "extensions": {
     "colorMeta": {
@@ -227,7 +227,7 @@
       {
         "name": "duration-scene",
         "value": "360ms",
-        "purpose": "Troca de imagem e View Transitions quando suportadas."
+        "purpose": "Crossfade WAAPI entre abas por ponteiro ou teclado; preserva imagem anterior durante decode, sem dependência de View Transitions."
       },
       {
         "name": "duration-reveal",
@@ -238,6 +238,16 @@
         "name": "ease-out",
         "value": "cubic-bezier(.16,1,.3,1)",
         "purpose": "Saída suave; reduced motion remove animação, transição e sticky."
+      },
+      {
+        "name": "duration-disclosure",
+        "value": "240ms",
+        "purpose": "Altura da FAQ por interpolate-size e ::details-content quando suportados."
+      },
+      {
+        "name": "duration-dialog",
+        "value": "200ms",
+        "purpose": "Entrada e saída do diálogo nativo; reduced motion remove a transição."
       }
     ],
     "breakpoints": [
@@ -262,7 +272,11 @@
       "Hero editorial em duas colunas, captura integral abaixo; bento com dois cartões amplos e três compactos.",
       "Quatro etapas narrativas usam apenas duas capturas reais; tela mostra controles, não transmissão.",
       "Showcase estático até 850px; reduced motion remove sticky e movimento; rolagem permanece nativa.",
-      "Detector: tentativa de execução bloqueada por launcher ausente; nenhum resultado de detector foi fabricado."
+      "Detector: tentativa de execução bloqueada por launcher ausente; nenhum resultado de detector foi fabricado.",
+      "Segunda passagem: download dedicado #download com Windows 10/11 x64 e distribuição oficial; status personalizável verificado em desktop/src/v1.js:149.",
+      "Inspeção usa dialog nativo com Fechar, Escape, backdrop, restauração de foco, estado de erro e link original como fallback.",
+      "Usuário autorizou prosseguir sem captura dedicada de transmissão de tela; permanece a ressalva explícita de controles na imagem.",
+      "Navegação ativa por aria-current=location; abas com WAAPI, preload por foco/ponteiro e aria-busy durante decode."
     ],
     "tokens": {
       "surface-raised": "#1b1d29",
@@ -270,7 +284,10 @@
       "blue": "#a8c8ff",
       "radius-card": "14px",
       "radius-control": "6px",
-      "shadow-stage": "0 24px 70px -35px #0009"
+      "shadow-stage": "0 24px 70px -35px #0009",
+      "space-panel": "32px",
+      "duration-disclosure": "240ms",
+      "duration-dialog": "200ms"
     }
   },
   "components": [
@@ -302,15 +319,15 @@
       "name": "Abas de cenas",
       "kind": "custom",
       "refersTo": "scene-tab",
-      "description": "Amostra dos estados selecionado e inativo. No site, app.js sincroniza painéis, tabindex e teclado, sem autoplay.",
+      "description": "No site, app.js sincroniza painéis, tabindex e teclado, com crossfade WAAPI, decode, cópia de saída inerte e aria-busy; sem autoplay ou dependência de View Transitions.",
       "html": "<div class=\"ds-tabs\" role=\"tablist\" aria-label=\"Veja o Mingrx em uso\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">Conversas</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">Em chamada</button></div>",
       "css": ".ds-tabs{display:flex;gap:7px;padding:13px 22px;background:var(--paper,#161720)}.ds-tab{display:flex;align-items:center;gap:9px;min-height:44px;padding:9px 15px;border:0;border-radius:6px;background:transparent;color:var(--muted,#b3b0c1);font-family:var(--font,Satoshi,Arial,sans-serif);font-size:13px;font-weight:650;cursor:pointer}.ds-tab:hover{background:#23222e;color:var(--ink,#f6f3ff)}.ds-tab[aria-selected=true]{background:#33283f;color:#f0e6ff}:focus-visible{outline:3px solid var(--accent,#c3acff);outline-offset:5px}::selection{background:var(--accent,#c3acff);color:var(--button-ink,#20152f)}"
     },
     {
       "name": "Navegação",
       "kind": "nav",
-      "description": "Links do desktop; o menu móvel real é controlado por app.js, com Escape e aria-expanded.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Principal\"><a href=\"https://mingrx.site/#recursos\">O aplicativo</a><a href=\"https://mingrx.site/#comecar\">Como começar</a><a href=\"https://mingrx.site/support.html\">Suporte</a></nav>",
+      "description": "Links internos incluem Download; seção ativa recebe aria-current=location. Menu móvel usa Escape e aria-expanded.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Principal\"><a href=\"https://mingrx.site/#recursos\">O aplicativo</a><a href=\"https://mingrx.site/#comecar\">Como começar</a><a href=\"https://mingrx.site/#download\">Download</a><a href=\"https://mingrx.site/support.html\">Suporte</a></nav>",
       "css": ".ds-nav{display:flex;align-items:center;justify-content:center;gap:30px;padding:12px 20px;background:var(--bg,#0c0d12);border-bottom:1px solid var(--line,#30303e);font-family:var(--font,Satoshi,Arial,sans-serif);}.ds-nav a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none;font-size:13px;font-weight:650;color:var(--muted,#b3b0c1)}.ds-nav a:hover{color:var(--ink,#f6f3ff)}@media(max-width:540px){.ds-nav{flex-wrap:wrap;gap:15px}}:focus-visible{outline:3px solid var(--accent,#c3acff);outline-offset:5px}::selection{background:var(--accent,#c3acff);color:var(--button-ink,#20152f)}"
     },
     {
@@ -323,7 +340,7 @@
     {
       "name": "Pergunta frequente",
       "kind": "custom",
-      "description": "Disclosure nativo com divisória e indicador de abertura.",
+      "description": "Disclosure nativo com divisória e indicador; altura anima em 240ms com interpolate-size quando suportado, preservando fallback nativo.",
       "html": "<details class=\"ds-faq\"><summary>O Mingrx é gratuito?<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M12 5v14\"/></svg></summary><p>Sim. A versão atual do aplicativo para Windows pode ser baixada gratuitamente.</p></details>",
       "css": ".ds-faq{border-top:1px solid var(--line,#30303e);border-bottom:1px solid var(--line,#30303e);background:var(--bg,#0c0d12);color:var(--ink,#f6f3ff);font-family:var(--font,Satoshi,Arial,sans-serif);}.ds-faq summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:24px;cursor:pointer;min-height:76px;padding:20px 0;font-size:14px;font-weight:650}.ds-faq summary::-webkit-details-marker{display:none}.ds-faq svg{width:18px;height:18px;fill:none;stroke:var(--muted,#b3b0c1);stroke-width:1.6}.ds-faq[open] svg{transform:rotate(45deg)}.ds-faq p{margin:0;padding:0 30px 25px 0;font-size:14px;line-height:1.9;max-width:65ch;color:var(--muted,#b3b0c1)}:focus-visible{outline:3px solid var(--accent,#c3acff);outline-offset:5px}::selection{background:var(--accent,#c3acff);color:var(--button-ink,#20152f)}"
     },

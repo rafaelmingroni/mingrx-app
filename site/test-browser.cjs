@@ -83,6 +83,8 @@ app.whenReady().then(async()=>{
       await js("document.querySelector('#scene-call img').decode()");
       await press('Home');assert.equal(await js('document.activeElement.id'),'tab-conversation');
       assert(await js("!document.getElementById('scene-conversation').hidden&&document.getElementById('scene-call').hidden"));
+      await js("document.getElementById('tab-call').click();document.getElementById('tab-call').click();document.getElementById('tab-conversation').click();void 0");await wait(500);
+      assert(await js("document.querySelector('.product-stage').getAttribute('aria-busy')!=='true'&&document.querySelectorAll('.scene-outgoing').length===0&&!document.getElementById('scene-conversation').hidden"),'Rapid scene changes must settle without stale frames or a stuck loading state');
       await js("document.querySelector('summary').focus()");await press('Space');
       assert(await js("document.querySelector('details').open"),'Space must open the FAQ');
       await press('Enter');assert(!(await js("document.querySelector('details').open")),'Enter must close the FAQ');
@@ -115,6 +117,12 @@ app.whenReady().then(async()=>{
     await js(`document.querySelectorAll('.showcase-step')[${index}].scrollIntoView({block:'center'});void 0`);await wait(450);
     assert(await js(`(()=>{const step=document.querySelectorAll('.showcase-step')[${index}];return step.classList.contains('is-active')&&document.querySelector('[data-showcase-image="'+step.dataset.showcaseStep+'"]').classList.contains('is-active')})()`),'Native scroll must select the corresponding actual capture');
   }
+  await js("document.querySelector('.product-image').focus()");await press('Enter');await wait(250);
+  assert(await js("document.querySelector('.capture-dialog').open"),'Image inspection must open a native dialog');
+  assert(await js("document.querySelector('.capture-dialog img').getAttribute('src').includes('mingrx-conversation')"),'Dialog must show the actual selected capture');
+  await press('Escape');await wait(250);
+  assert(await js("!document.querySelector('.capture-dialog').open&&document.activeElement.matches('.product-image')"),'Escape must close inspection and restore focus');
+  assert(await js("document.querySelector('#download .download-link').href.includes('github.com/rafaelmingroni/mingrx-app/releases/')"),'Dedicated download must preserve official distribution');
   if(!win.webContents.debugger.isAttached())win.webContents.debugger.attach('1.3');
   await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   await win.loadURL(origin+'/');await wait(100);

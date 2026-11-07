@@ -155,7 +155,6 @@ button,input{caret-color:var(--accent)}
 .premium-home .stage-toolbar{padding:14px 18px;border-bottom:1px solid var(--line)}
 .premium-home .product-image{margin:0}
 .premium-home .scene-panel{position:relative}
-.premium-home .scene-panel.scene-entering{animation:scene-enter var(--duration-scene) var(--ease-out) both}
 .premium-home .scene-panel figcaption{padding:9px 20px}
 .premium-home .scene-tabs button[aria-selected='true']{background:#332b48;box-shadow:inset 0 -2px var(--accent)}
 .premium-home .features-heading,.showcase-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:42px}
@@ -203,7 +202,6 @@ button,input{caret-color:var(--accent)}
 .faq-list summary svg{transition:transform var(--duration-quick) var(--ease-out)}
 /* Native disclosures retain full content and keyboard behavior without JS. */
 .faq-list details[open]>p{animation:disclosure-enter 200ms var(--ease-out)}
-@keyframes scene-enter{from{opacity:.45;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 @keyframes disclosure-enter{from{opacity:.6;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 @keyframes premium-arrive{from{opacity:.7;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:no-preference){
@@ -230,5 +228,50 @@ button,input{caret-color:var(--accent)}
  .showcase-step h3{font-size:30px}.showcase-step p{font-size:15px}.premium-home .privacy-section{padding:28px 22px}.premium-home .closing{padding-block:48px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.button:hover,.feature-card:hover{transform:none}.showcase-image{transform:none}.showcase-visual{position:static}}
-@supports(view-transition-name:mingrx-scenes){.premium-home .product-stage{view-transition-name:mingrx-scenes}::view-transition-group(mingrx-scenes){animation-duration:var(--duration-scene)}::view-transition-old(mingrx-scenes),::view-transition-new(mingrx-scenes){animation-duration:var(--duration-scene)}}
 @media(max-width:540px){.premium-home .product-image{aspect-ratio:430/164;background:#0f1017}.premium-home .product-image picture{display:block;height:100%}.premium-home .product-image img,.premium-home #scene-call .product-image img{width:100%;height:100%;aspect-ratio:auto;object-fit:contain}}
+/* Completion: intentional image inspection, downloads and disclosure motion. */
+:root{--space-panel:32px;--duration-disclosure:240ms;--duration-dialog:200ms}
+.scene-panels{position:relative}
+.premium-home .scene-panel.scene-outgoing{position:absolute;inset:0;z-index:1;pointer-events:none}
+.premium-home .scene-panel figcaption{min-height:64px}
+.topnav a[aria-current='location']{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:8px}
+.download-section{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;border-top:1px solid var(--line)}
+.download-copy h2{font-size:clamp(34px,4vw,54px)}
+.download-copy>p{margin-top:24px;max-width:42ch;line-height:1.8}
+.download-copy>.text-link{margin-top:20px}
+.download-panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-card);padding:var(--space-panel)}
+.download-platform{display:flex;align-items:center;gap:16px}
+.download-platform>svg{width:30px;height:30px;color:var(--blue)}
+.download-platform h3{font-size:24px}
+.download-specs{margin:28px 0;display:grid;gap:12px;font-size:14px}
+.download-specs>div{display:flex;justify-content:space-between;gap:24px}
+.download-specs dt{color:var(--muted)}
+.download-specs dd{margin:0;text-align:right}
+.download-panel>.button{width:100%}
+.download-panel>p{font-size:12px;margin-top:14px;max-width:50ch}
+.capture-open{overflow:hidden;scrollbar-gutter:stable}
+.capture-dialog{width:min(1200px,calc(100% - 48px));max-height:calc(100dvh - 48px);padding:20px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius-card);overscroll-behavior:contain}
+.capture-dialog::backdrop{background:#080910db}
+.capture-dialog-toolbar{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:16px}
+.capture-dialog-toolbar h2{font-size:18px;letter-spacing:-.02em;line-height:1.4}
+.capture-close{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius-control);background:var(--soft);color:var(--ink);font-size:13px}
+.capture-close:hover{background:var(--surface-raised)}
+.capture-dialog-image{background:var(--bg);aspect-ratio:3/2;max-height:72dvh}
+.capture-dialog-image img{width:100%;height:100%;object-fit:contain}
+.capture-dialog>p{font-size:12px;margin-top:12px}
+.capture-dialog .capture-load-status:empty{display:none}
+.capture-original{display:inline-flex;align-items:center;min-height:44px;color:var(--accent)}
+@supports(interpolate-size:allow-keywords){
+ .faq-list details{interpolate-size:allow-keywords}
+ .faq-list details::details-content{block-size:0;overflow:clip;transition:block-size var(--duration-disclosure) var(--ease-out),content-visibility var(--duration-disclosure) allow-discrete}
+ .faq-list details[open]::details-content{block-size:auto}
+}
+@media(max-width:850px){.download-section{grid-template-columns:1fr;gap:32px}.download-copy>p{max-width:55ch}.download-specs{max-width:100%}.capture-dialog{width:calc(100% - 24px);padding:16px}.capture-dialog-toolbar{gap:12px}}
+@media(max-width:540px){.download-panel{padding:24px}.download-copy h2{font-size:36px}.download-platform h3{font-size:21px}.download-specs{font-size:13px}.download-specs>div{gap:14px}.capture-dialog-toolbar h2{font-size:15px}.capture-close span{display:none}.capture-close{min-width:44px}.premium-home .scene-panel figcaption{min-height:112px}}
+@media(prefers-reduced-motion:reduce){.capture-dialog[open]{animation:none}.faq-list details::details-content{transition:none}}
+/* Native modal retains its top-layer presentation during the exit transition. */
+.capture-dialog{opacity:0;transform:translateY(8px) scale(.99);transition:opacity var(--duration-dialog),transform var(--duration-dialog) var(--ease-out),overlay var(--duration-dialog) allow-discrete,display var(--duration-dialog) allow-discrete}
+.capture-dialog[open]{opacity:1;transform:none;animation:none}
+.capture-dialog::backdrop{opacity:0;transition:opacity var(--duration-dialog),display var(--duration-dialog) allow-discrete,overlay var(--duration-dialog) allow-discrete}
+.capture-dialog[open]::backdrop{opacity:1}
+@starting-style{.capture-dialog[open]{opacity:0;transform:translateY(8px) scale(.99)}.capture-dialog[open]::backdrop{opacity:0}}

@@ -34,8 +34,55 @@ Capturas de desktop e mobile estão disponíveis localmente em `.impeccable/revi
 
 ## Limitações reais
 
-- Existem apenas duas capturas verificadas: conversa/comunidade e chamada. O estágio de compartilhamento mostra os controles da chamada e informa explicitamente que a imagem não representa uma transmissão. Uma captura dedicada ainda é necessária para demonstrar esse recurso visualmente. Nenhuma imagem ou funcionalidade foi fabricada.
-- A mudança de abas usa crossfade com View Transitions em navegadores compatíveis; demais navegadores conservam a troca acessível imediata.
-- LCP, CLS e INP de produção não foram medidos: a execução de navegador usou recursos locais e respostas controladas da API. Não se afirma cumprimento das metas de Core Web Vitals sem medição representativa após uma publicação autorizada.
+- Existem apenas duas capturas verificadas: conversa/comunidade e chamada. O estágio de compartilhamento mostra os controles da chamada e informa explicitamente que a imagem não representa uma transmissão. O usuário dispensou uma captura dedicada nesta continuação; o recurso permanece descrito sem uma transmissão fabricada. Nenhuma imagem ou funcionalidade foi fabricada.
+- As abas agora usam Web Animations para crossfade em mouse e teclado, mantendo a captura anterior até a próxima decodificar. Sem Web Animations ou com movimento reduzido, a troca continua funcional e imediata.
+- Foram acrescentadas medições locais controladas de LCP, layout shift e latência de interações. Elas não representam Core Web Vitals de campo nem INP de produção; ver a tabela e as condições abaixo.
 - O launcher/detector do Impeccable não está instalado neste executor. Ambos foram tentados e retornaram arquivo inexistente; a avaliação utilizou código, navegador e revisão independente. Não houve overlay injetado.
 - O desktop compartilhado não expôs ferramenta de controle nesta sessão. A prévia foi verificada por capturas automatizadas, não por um link publicado.
+
+
+## Continuação: fechamento das dez fases do TXT
+
+| Fase | Implementação e evidência |
+| --- | --- |
+| 1. Análise | `site/`, workflows Pages/validação, fontes, capturas e proveniência, CSP, links, convites, app.js e testes inspecionados. Arquitetura estática mantida; shadcn depende de React, equivalente nativo aplicado sem migração. |
+| 2. Identidade | Grafite, violeta e azul, Satoshi auto-hospedada conforme compromisso existente, raios e tempos centralizados; DESIGN.md e JSON sincronizados. |
+| 3. Componentes | Botões, bento, abas por teclado, diálogo nativo, navegação ativa, menu responsivo e FAQ. Controles identificados por texto ou nome acessível; tooltips extras não trazem informação necessária. |
+| 4. Landing | Hero, bento, showcase sticky, capturas selecionáveis, ampliação, seção dedicada de download/requisitos, FAQ e rodapé. Compartilhamento descrito com evidência disponível; captura própria dispensada pelo usuário. |
+| 5. Animações | Entrada coordenada, revelação única, crossfade com preload por intenção/decodificação, hover/clique, accordion com tamanho natural, entrada/saída do diálogo, reduced motion. Parallax decorativo é opcional no TXT e foi omitido para priorizar legibilidade e desempenho. |
+| 6. Performance | Sem dependências de runtime novas, imagens WebP existentes, fontes locais verificadas, escuta de scroll passiva limitada à seção. Benchmark comparativo de seis execuções por versão, abaixo. |
+| 7. Responsividade | 320, 390, 540, 768, 850, 1024, 1280 e 1440px; zoom 200%; mobile com showcase estático. |
+| 8. Acessibilidade | Teclado, foco, alt, estrutura semântica, reduced motion, contraste e axe-core: zero violações automáticas WCAG A/AA 2.0/2.1/2.2 nas páginas e diálogo examinados a 1440/390px. Checks incompletos exigem avaliação humana; o resultado automatizado não é uma certificação de conformidade. |
+| 9. Segurança de escopo | Branch separada, sem alterar desktop, Firebase, backend, autenticação, atualizador, instaladores, domínio ou workflow de distribuição. |
+| 10. Entrega | Build estático reproduzível, testes funcionais ampliados, benchmark versionado e capturas desktop/mobile/diálogo; revisão independente da continuação com disposição `ship`. Sem publicação. |
+
+### Download e inspeção
+
+A seção `#download` mostra Windows 10/11, instalador x64 e origem GitHub. A arquitetura de 64 bits é a já usada na seleção do arquivo oficial `Mingrx-Setup-*-x64.exe`. O cartão de perfil descreve status personalizado, verificado em `desktop/src/v1.js`; não promete uma personalização inexistente.
+
+O diálogo usa top layer nativa, Escape, fechamento por botão/fundo, foco devolvido ao acionador, erro de carregamento com recuperação e link para a imagem original. Sem suporte ou JavaScript, os links originais continuam utilizáveis. Ctrl/Cmd/clique modificado preserva a abertura normal do navegador.
+
+As abas atualizam seleção/foco imediatamente e mantêm o quadro anterior durante o carregamento. Um teste adicional cobre trocas rápidas e clique repetido sem deixar overlays ou `aria-busy` presos. A duração vem do token CSS. O FAQ usa `interpolate-size` quando disponível, com disclosure nativo como fallback.
+
+### Build local
+
+Execute `node site/build.mjs`. Opcionalmente: `node site/build.mjs --out /caminho/separado`.
+
+O comando prepara/verifica a fonte, executa validação e convites e copia somente arquivos públicos para `work/site-preview/`, sem publicar. A saída contém HTML, CSS, scripts de runtime, assets, sitemap, robots, CNAME e .nojekyll; scripts de teste/build não são incluídos. O diretório local de build é ignorado pelo Git. A hospedagem existente continua sem migração.
+
+### Comparação de performance em laboratório
+
+Medições via `site/test-performance.cjs`, Electron 45.1.0, três execuções de cache frio por viewport, CPU 4×, latência simulada 150ms, download 200.000 bytes/s e upload 100.000 bytes/s. A API externa de release é bloqueada; o fallback oficial permanece disponível. A versão de comparação é a entrada do repositório `a241304`; o benchmark usa os mesmos assets locais e condições para as duas versões.
+
+| Versão / viewport | LCP mediano | Layout shift mediano | Maior interação amostrada, mediana |
+| --- | --- | --- | --- |
+| Anterior / desktop | 0.840 s | 0.0008 | 24 ms |
+| Anterior / mobile | 0.804 s | 0.0004 | 32 ms |
+| Redesign / desktop | 1.160 s | 0.0138 | 56 ms |
+| Redesign / mobile | 0.976 s | 0.0000 | 32 ms |
+
+O redesign fica dentro das metas de laboratório de LCP ≤2,5s e layout shift ≤0,1 nas duas larguras. Há regressão de LCP de 320ms no desktop e 172ms no mobile frente à entrada: ela é registrada, não ocultada por um score. A amostra de cliques (abas e FAQ) permanece abaixo de 200ms, mas não é INP de campo. Layout shift no relatório acumula deslocamentos sem entrada recente durante a sessão controlada, uma verificação conservadora de estabilidade. Resultados brutos e recursos carregados estão em `site-premium-performance.json`.
+
+Reprodução com o Electron do projeto: `MINGRX_PERFORMANCE_REPORT=work/performance.json ./desktop/node_modules/.bin/electron --no-sandbox --headless --ozone-platform=headless --ozone-override-screen-size=1920,1080 site/test-performance.cjs`. `MINGRX_SITE_ROOT` permite apontar uma cópia da versão anterior para comparação. Não executa o aplicativo desktop e não usa Firebase. Os servidores e perfis temporários encerram ao final do teste.
+
+As verificações finais incluíram novamente build, sintaxe, validação, convites e suíte Electron; a matriz Chromium verificou as novas telas e a auditoria axe incluiu o diálogo aberto. Nenhuma dependência foi adicionada ao projeto; Electron, Chromium e axe foram usados apenas como ferramentas de validação.
