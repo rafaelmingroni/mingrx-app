@@ -6,6 +6,9 @@ service cloud.firestore {
     function role(serverId) { return get(/databases/$(database)/documents/servers/$(serverId)/members/$(request.auth.uid)).data.role; }
     function owner(serverId) { return verified() && get(/databases/$(database)/documents/servers/$(serverId)).data.ownerId == request.auth.uid; }
     function ownerAfter(serverId) { return verified() && getAfter(/databases/$(database)/documents/servers/$(serverId)).data.ownerId == request.auth.uid; }
+    function liveServer(serverId) { return get(/databases/$(database)/documents/servers/$(serverId)).data.get('deleting', false) == false; }
+    function liveServerAfter(serverId) { return getAfter(/databases/$(database)/documents/servers/$(serverId)).data.get('deleting', false) == false; }
+    function deletingOwner(serverId) { return owner(serverId) && get(/databases/$(database)/documents/servers/$(serverId)).data.get('deleting', false) == true; }
     function admin(serverId) { return member(serverId) && (owner(serverId) || role(serverId) == 'owner' || role(serverId) == 'admin'); }
     function moderator(serverId) { return member(serverId) && (owner(serverId) || role(serverId) == 'owner' || role(serverId) == 'admin' || role(serverId) == 'moderator'); }
     function validInvite(serverId, code) {
@@ -288,6 +291,7 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','icon','inviteCode','categories','updatedAt','deleting'])
         && validServerFields(request.resource.data)
         && request.resource.data.ownerId == resource.data.ownerId
+        && (!resource.data.get('deleting', false) || request.resource.data.get('deleting', false) == true)
         && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['deleting']) || owner(serverId));
       allow update: if moderator(serverId)
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['categories', 'updatedAt'])
@@ -297,17 +301,17 @@ service cloud.firestore {
 
       match /presence/{uid}/connections/{sessionId} {
         allow read: if member(serverId);
-        allow create, update: if member(serverId) && request.auth.uid == uid && validPresence(request.resource.data);
+        allow create, update: if member(serverId) && liveServer(serverId) && request.auth.uid == uid && validPresence(request.resource.data);
         allow delete: if verified() && (request.auth.uid == uid || owner(serverId));
       }
       match /members/{uid} {
         allow read: if member(serverId) || (verified() && uid == request.auth.uid);
-        allow create: if validMember(request.resource.data) && (ownerAfter(serverId)
+        allow create: if liveServerAfter(serverId) && validMember(request.resource.data) && (ownerAfter(serverId)
           || (verified() && uid == request.auth.uid
               && request.resource.data.role == 'member'
               && validInvite(serverId, request.resource.data.joinedVia)));
-        allow update: if owner(serverId) && validMember(request.resource.data);
-        allow update: if verified() && uid == request.auth.uid
+        allow update: if owner(serverId) && liveServer(serverId) && validMember(request.resource.data);
+        allow update: if verified() && uid == request.auth.uid && liveServer(serverId)
           && validMember(request.resource.data)
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'avatar', 'customStatus']);
         allow delete: if (owner(serverId) || (verified() && uid == request.auth.uid))
@@ -317,24 +321,24 @@ service cloud.firestore {
 
       match /channels/{channelId} {
         allow read: if member(serverId);
-        allow create: if (ownerAfter(serverId) || moderator(serverId))
+        allow create: if liveServerAfter(serverId) && (ownerAfter(serverId) || moderator(serverId))
           && validChannel(request.resource.data);
-        allow update: if moderator(serverId) && validChannel(request.resource.data)
+        allow update: if moderator(serverId) && liveServer(serverId) && validChannel(request.resource.data)
           && request.resource.data.type == resource.data.type;
         allow delete: if moderator(serverId);
 
         match /voiceSessions/{slotId} {
-          allow read: if channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice';
-          allow create: if channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice' && slotId in ['0','1','2','3','4'] && validSession(request.resource.data);
-          allow update: if channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice' && slotId in ['0','1','2','3','4'] && validSession(request.resource.data)
+          allow read: if deletingOwner(serverId) || (channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice');
+          allow create: if liveServer(serverId) && channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice' && slotId in ['0','1','2','3','4'] && validSession(request.resource.data);
+          allow update: if liveServer(serverId) && channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice' && slotId in ['0','1','2','3','4'] && validSession(request.resource.data)
             && (resource.data.userId == request.auth.uid || resource.data.expiresAt <= request.time);
-          allow delete: if verified() && resource.data.userId == request.auth.uid;
+          allow delete: if deletingOwner(serverId) || (verified() && resource.data.userId == request.auth.uid);
           match /signals/{signalId} {
             function target() { return get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)/voiceSessions/$(slotId)).data; }
             function source() { return get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)/voiceSessions/$(request.resource.data.fromSlot)).data; }
-            allow read, delete: if channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice' && target().userId == request.auth.uid
-              && resource.data.targetSessionId == target().sessionId && resource.data.targetUserId == request.auth.uid;
-            allow create: if channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice' && validSignal(request.resource.data)
+            allow read, delete: if deletingOwner(serverId) || (channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice' && target().userId == request.auth.uid
+              && resource.data.targetSessionId == target().sessionId && resource.data.targetUserId == request.auth.uid);
+            allow create: if liveServer(serverId) && channelAccess(serverId, channelId) && get(/databases/$(database)/documents/servers/$(serverId)/channels/$(channelId)).data.type == 'voice' && validSignal(request.resource.data)
               && request.resource.data.fromSlot in ['0','1','2','3','4']
               && source().userId == request.auth.uid
               && source().sessionId == request.resource.data.fromSocketId
@@ -347,18 +351,18 @@ service cloud.firestore {
         }
         match /messages/{messageId} {
           allow read: if channelAccess(serverId, channelId);
-          allow create: if channelAccess(serverId, channelId)
+          allow create: if liveServer(serverId) && channelAccess(serverId, channelId)
             && request.resource.data.authorId == request.auth.uid
             && validText(request.resource.data.text)
             && validMetadata(request.resource.data)
             && sendPermit(serverId + '/' + channelId + '/' + messageId)
             && request.resource.data.keys().hasOnly(['authorId', 'text', 'createdAt', 'editedAt', 'replyToId', 'reactions', 'mentionIds']);
-          allow update: if channelAccess(serverId, channelId)
+          allow update: if liveServer(serverId) && channelAccess(serverId, channelId)
             && resource.data.authorId == request.auth.uid
             && request.resource.data.editedAt == request.time
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['text', 'editedAt', 'mentionIds'])
             && validText(request.resource.data.text);
-          allow update: if channelAccess(serverId, channelId)
+          allow update: if liveServer(serverId) && channelAccess(serverId, channelId)
             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reactions'])
             && validReactions(resource.data.get('reactions', {}), request.resource.data.reactions);
           allow delete: if channelAccess(serverId, channelId)
@@ -379,14 +383,14 @@ service cloud.firestore {
       }
       allow get: if verified();
       allow list: if verified() && request.query.limit <= 100 && admin(resource.data.serverId);
-      allow create: if verified()
+      allow create: if verified() && liveServerAfter(request.resource.data.serverId)
         && validInviteFields(request.resource.data)
         && (!('createdBy' in request.resource.data) || request.resource.data.createdBy == request.auth.uid)
         && (ownerAfter(request.resource.data.serverId) || admin(request.resource.data.serverId))
         && request.resource.data.code == code
         && code.size() >= 8
         && code.size() <= 16;
-      allow update: if admin(resource.data.serverId)
+      allow update: if admin(resource.data.serverId) && liveServer(resource.data.serverId)
         && validInviteFields(request.resource.data)
         && request.resource.data.get('createdBy', null) == resource.data.get('createdBy', null)
         && request.resource.data.serverId == resource.data.serverId

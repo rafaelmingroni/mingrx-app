@@ -166,23 +166,7 @@
       this.__activity=a ? {id:String(a.id||'').slice(0,64),name:String(a.name||'').slice(0,80),startedAt:Number(a.startedAt)||now()}:null;
       await this.publishPresence();
     };
-    const deleteServer=socket.deleteServer.bind(socket);
-    socket.deleteServer=async function(serverId) {
-      if(await this.role(serverId)!=='owner')throw new Error('Só o dono pode excluir a comunidade.');
-      await updateDoc(doc(this.db,'servers',serverId),{deleting:true,updatedAt:serverTimestamp()});
-      // Cleanup is idempotent. A failed deletion can be resumed by the owner.
-      while(true){
-        const snap=await getDocs(query(collection(this.db,'invites'),where('serverId','==',serverId),limit(100)));
-        if(snap.empty)break;const batch=writeBatch(this.db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();
-      }
-      await updateDoc(doc(this.db,'servers',serverId),{inviteCode:''});
-      const members=await getDocs(collection(this.db,'servers',serverId,'members'));
-      for(const member of members.docs){
-        const snap=await getDocs(collection(this.db,'servers',serverId,'presence',member.id,'connections'));
-        if(!snap.empty){const batch=writeBatch(this.db);snap.docs.forEach(d=>batch.delete(d.ref));await batch.commit();}
-      }
-      return deleteServer(serverId);
-    };
+    require('./server-deletion')(socket,F);
     for(const method of ['createCategory','updateCategory']) {
       const base=socket[method].bind(socket);
       socket[method]=async function(payload) {
