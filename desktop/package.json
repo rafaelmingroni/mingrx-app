@@ -1,6 +1,6 @@
 {
   "name": "banana-cord",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Mingrx - comunicação leve por voz, chat e compartilhamento de tela",
   "private": true,
   "main": "main-v120.js",

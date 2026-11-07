@@ -17,9 +17,9 @@
 Ele reúne comunidades, canais de texto e voz, mensagens privadas, webcam, compartilhamento de tela, presença e perfis em um único aplicativo para Windows. O projeto nasceu como Banana Cord e evoluiu para Mingrx preservando o caminho de atualização dos usuários existentes.
 
 <!-- mingrx-version:begin -->
-> **Mingrx 3.2** · Versão técnica: `3.2.0`
+> **Mingrx 3.2.1** · Versão técnica: `3.2.1`
 >
-> [Notas desta versão](RELEASE_NOTES-3.2.0.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
+> [Notas desta versão](RELEASE_NOTES-3.2.1.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
 >
 > Projeto pessoal de **Rafael Mingroni**.
 <!-- mingrx-version:end -->

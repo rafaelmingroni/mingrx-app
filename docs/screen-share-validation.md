@@ -17,4 +17,6 @@ O label de áudio usa flex, centralização vertical, área clicável e checkbox
 
 O novo teste também integra a sequência de interações do release e tem um workflow Windows independente, sem publicação nem acesso ao Firebase de produção. Estes testes não substituem a validação do driver e do áudio loopback no computador Windows afetado.
 
-Nenhum arquivo do site, regra Firebase, configuração de autenticação ou código do backend foi alterado. A versão do aplicativo continua 3.2 nesta revisão; uma publicação deve avançar para 3.2.1, atualizar notas e verificar o pipeline. O workflow atual de release reaplica regras e configurações do backend; não foi acionado para respeitar a exigência de aprovação antes de alterar o backend.
+O workflow Windows específico foi aprovado: https://github.com/rafaelmingroni/mingrx-app/actions/runs/42407502686. Confirma a recuperação simulada e o alinhamento em 100%, 125%, 150% e 200% no Windows.
+
+Nenhum arquivo do site, regra Firebase, configuração de autenticação ou código do backend foi alterado. A candidata 3.2.1 está preparada com versão, README, lockfile e notas sincronizados; não foi publicada. O workflow atual de release reaplica regras e configurações do backend; não foi acionado para respeitar a exigência de aprovação antes de alterar o backend.
