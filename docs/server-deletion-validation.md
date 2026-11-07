@@ -12,5 +12,12 @@ As regras bloqueiam criação/alteração de registros na comunidade durante a e
 - O cenário contém 109 membros com referências e presenças, 205 mensagens públicas, mensagem de canal restrito, 106 convites, sessões e sinais de chamadas, inclusive sinal sob slot já ausente. Uma interrupção após um batch confirmado deixa o dono autorizado a retomar e concluir a limpeza. Dados de outra comunidade e amizades permanecem presentes.
 - `smoke:mingrx`, `smoke:cloud`, `smoke:hotfix315`, ciclo de conexão/logout e geração do bundle: aprovados localmente. O novo teste integra `smoke:rules` no CI e no release.
 - A execução local conjunta de Firestore/RTDB não concluiu porque o inicializador cancelou o carregamento das regras do emulador RTDB. Não foi contada como aprovada; o teste Firestore específico foi executado diretamente contra o emulador ativo e concluiu.
+- No Windows, a suíte completa de regras Firestore/RTDB, incluindo o novo teste de exclusão, passou no [CI do PR #44](https://github.com/rafaelmingroni/mingrx-app/actions/runs/42410196395) e novamente no fluxo de release. O E2E local de login, migração/restauração de sessão, recuperação de senha e saída/reconexão também concluiu com o bundle atualizado.
 
-3.2.2 preparada com README, versão, lockfile e notas sincronizados. Nenhum dado real do usuário foi excluído durante os testes. As regras Realtime Database e os arquivos do site não foram alterados. A publicação de novas regras Firestore e do aplicativo ainda não foi realizada nesta revisão.
+## Publicação autorizada
+
+A [3.2.2 foi publicada](https://github.com/rafaelmingroni/mingrx-app/releases/tag/v3.2.2) após aprovação explícita de Rafael, com README, versão, lockfile e notas sincronizados. O [fluxo de release](https://github.com/rafaelmingroni/mingrx-app/actions/runs/42410657100) concluiu com sucesso no commit `6903f7d2ee5458593a4eb868642c93bb079eba85`. As regras foram aplicadas antes da liberação do aplicativo, e o hash Firestore conferido em produção foi `f298e02e55a9c4b21bfc8dccb3ee0d928cd0aaf7d11c08fc1d65d9530e1b4039`, igual à fonte testada.
+
+Após a publicação, o instalador, o blockmap e `latest.yml` foram baixados sem autenticação e tiveram os SHA-256 conferidos com os assets do GitHub. Nome, versão, tamanho e SHA-512 do instalador correspondem ao manifesto da atualização automática. A release é pública, sem marca de prévia, e retornada pelo endpoint de versão mais recente.
+
+Nenhum dado real do usuário foi excluído durante os testes. Os arquivos do site e a fonte das regras Realtime Database não foram alterados. O fluxo de publicação reaplicou a configuração RTDB existente junto às novas regras Firestore.
