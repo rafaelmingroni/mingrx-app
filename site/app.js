@@ -39,6 +39,8 @@
 
   // Content stays visible with no JS, unsupported observers, or reduced motion.
   const reducedMotion = mediaQuery('(prefers-reduced-motion: reduce)');
+  // Browsers with scroll-driven animations run the stage, hero depth and header in CSS.
+  const scrollTimelines = window.CSS?.supports?.('animation-timeline: scroll()') === true;
   const configureReveals = () => {
     revealObserver?.disconnect();
     document.querySelectorAll('.reveal-in').forEach(element => element.classList.remove('reveal-in'));
@@ -52,7 +54,7 @@
         if(!entry.target.contains(document.activeElement))entry.target.classList.add('reveal-in');
       });
     }, {threshold: .12});
-    document.querySelectorAll('.product-intro-heading,.product-intro .product-stage,.features-heading,.feature-card,.download-copy,.download-panel,.privacy-section,.faq .section-heading,.faq-list,.footer-brand,.footer-links').forEach(element => revealObserver.observe(element));
+    document.querySelectorAll((scrollTimelines ? '' : '.product-stage,') + '.product-intro-heading,.features-heading,.feature-card,.download-copy,.download-panel,.privacy-section,.faq .section-heading,.faq-list,.footer-brand,.footer-links').forEach(element => revealObserver.observe(element));
   };
   reducedMotion.addEventListener('change', configureReveals);
   configureReveals();
@@ -77,7 +79,7 @@
     decoration?.classList.remove('parallax-active');
   };
   const configureDepth=()=>{
-    if(!decoration)return;
+    if(!decoration||scrollTimelines)return;
     stopDepth();depthObserver?.disconnect();decoration.style.removeProperty('--orbit-parallax');
     if(!depthMedia.matches||!('IntersectionObserver' in window))return;
     depthObserver=new IntersectionObserver(entries=>{

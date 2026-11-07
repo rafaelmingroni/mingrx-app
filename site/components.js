@@ -108,8 +108,8 @@
     stage?.removeAttribute('aria-busy');
     if (canAnimate && !reducedMotion.matches) {
       const duration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration-scene')) || 360;
-      const fade = overlay.animate([{opacity:1},{opacity:0}], {duration,easing:'ease-out'});
-      const arrive = next.animate([{opacity:0,transform:'translateY(4px) scale(.995)'},{opacity:1,transform:'translateY(0) scale(1)'}], {duration,easing:'cubic-bezier(.16,1,.3,1)'});
+      const fade = overlay.animate([{opacity:1,filter:'blur(0)'},{opacity:0,filter:'blur(6px)'}], {duration:duration*.6,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+      const arrive = next.animate([{opacity:0,filter:'blur(8px)',transform:'translateY(10px) scale(.985)'},{opacity:1,filter:'blur(0)',transform:'translateY(0) scale(1)'}], {duration,easing:'cubic-bezier(.16,1,.3,1)'});
       sceneAnimations = [fade, arrive];
       fade.finished.then(() => overlay.remove()).catch(() => overlay.remove());
     } else overlay.remove();

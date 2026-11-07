@@ -124,10 +124,10 @@ app.whenReady().then(async()=>{
       await js("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{}}});document.querySelector('[data-copy-site]').click();void 0");await wait(30);
       assert(await js("document.querySelector('.pc-link .copy-fallback').hidden&&document.querySelector('.pc-link .copy-status').textContent.includes('Link copiado')"),'Clipboard success must announce completion');
     }
-    const stageHeight=await js("document.querySelector('.product-stage').getBoundingClientRect().height");
+    const stageHeight=await js("document.querySelector('.product-stage').offsetHeight");
     for(const scene of ['call','community','conversation']){
       await js(`document.querySelector('[data-scene="${scene}"]').click();void 0`);await wait(400);
-      assert(Math.abs((await js("document.querySelector('.product-stage').getBoundingClientRect().height"))-stageHeight)<2,'Gallery must preserve layout height when switching real captures at '+width+'px');
+      assert(Math.abs((await js("document.querySelector('.product-stage').offsetHeight"))-stageHeight)<2,'Gallery must preserve layout height when switching real captures at '+width+'px');
     }
     if(width===1440)await capture('desktop.png');if(width===390)await capture('mobile.png');
     console.log(`Site ${width}px: layout, images, live version, consistent action shapes and navigation passed`);
@@ -135,7 +135,7 @@ app.whenReady().then(async()=>{
   win.setContentSize(1440,1000);await win.loadURL(origin+'/');
   await js('document.fonts.ready');
   await js("scrollTo(0,document.querySelector('.orbit-hero').offsetHeight*.4);void 0");await wait(150);
-  assert(await js("(()=>{const art=document.querySelector('.orbit-art'),value=parseFloat(art.style.getPropertyValue('--orbit-parallax'));return art.classList.contains('parallax-active')&&value>0&&value<=8})()"),'Desktop decorative depth must stay bounded to 8px');
+  assert(await js("(()=>{const img=document.querySelector('.orbit-art img'),s=getComputedStyle(img),header=getComputedStyle(document.querySelector('.site-header'));return s.animationName==='hero-drift'&&String(s.animationTimeline).includes('scroll')&&header.animationName==='header-glass'&&!document.querySelector('.orbit-art').classList.contains('parallax-active')})()"),'Desktop hero depth and header must run on scroll timelines, not scroll listeners');
   await js("window.__revealCount=0;const card=document.querySelector('.feature-card');card.addEventListener('animationstart',event=>{if(event.target===card&&event.animationName==='scroll-arrive')window.__revealCount++});card.scrollIntoView({block:'center'});void 0");await wait(600);
   assert.equal(await js('window.__revealCount'),1,'A card must receive one real reveal animation');
   await js('scrollTo(0,0);void 0');await wait(100);
@@ -145,6 +145,7 @@ app.whenReady().then(async()=>{
     await js(`document.querySelector('[data-open-scene="${scene}"]').click();void 0`);await wait(450);
     assert(await js(`!document.getElementById('scene-${scene}').hidden&&document.querySelector('[data-scene="${scene}"]').getAttribute('aria-selected')==='true'`),'Feature links must open the corresponding real capture');
   }
+  await js('document.activeElement.blur();void 0');
   await js(`(()=>{
     const original=document.querySelector('[data-ui-tabs]');
     const secondary=original.cloneNode(true);secondary.id='secondary-gallery';
@@ -174,7 +175,7 @@ app.whenReady().then(async()=>{
   await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   await wait(150);
   assert(await js('document.getAnimations().length===0'),'Switching to reduced motion must cancel an in-progress UI transition');
-  assert(await js("!document.querySelector('.orbit-art').classList.contains('parallax-active')&&getComputedStyle(document.querySelector('.orbit-art img')).transform==='none'"),'Reduced motion must disable decorative depth and its active layer');
+  assert(await js("!document.querySelector('.orbit-art').classList.contains('parallax-active')&&getComputedStyle(document.querySelector('.orbit-art img')).animationName==='none'&&getComputedStyle(document.querySelector('.orbit-art img')).transform==='none'&&getComputedStyle(document.querySelector('.site-header')).animationName==='none'"),'Reduced motion must disable decorative depth and scroll-linked effects');
   await win.loadURL(origin+'/');await wait(100);
   assert(await js('document.getAnimations().length===0'),'Reduced motion must disable entrance and reveal animation');
   await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[]});
@@ -185,7 +186,7 @@ app.whenReady().then(async()=>{
   // Disable document scripts before navigation; Runtime evaluation is test instrumentation only.
   await win.webContents.debugger.sendCommand('Emulation.setScriptExecutionDisabled',{value:true});scriptless=true;
   for(const width of [1440,390]){
-    win.setContentSize(width,900);await win.loadURL(origin+'/');
+    win.setContentSize(width,900);await win.loadURL(origin+'/');await wait(100);
     assert(await js("typeof window.MingrxUI==='undefined'"),'Scriptless checks must not execute application code');
     assert(await js("(()=>{const nav=document.querySelector('.topnav'),r=nav.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(nav).opacity==='1'&&!nav.inert})()"),'Native navigation must remain available without scripts');
     assert(await js("getComputedStyle(document.querySelector('.menu-button')).display==='none'&&getComputedStyle(document.querySelector('.stage-toolbar')).display==='none'&&[...document.querySelectorAll('[data-copy-site]')].every(button=>getComputedStyle(button).display==='none')"),'Script-dependent controls must not appear functional without scripts');
