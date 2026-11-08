@@ -49,7 +49,7 @@ const platformHandlers = {
   'banana-updater:check': () => ({ ok: true }),
   'clipboard:write': () => true,
   'ptt:configure': () => ({ ok: true }),
-  'rtc:configuration': () => ({ iceServers: [], relayAvailable: false })
+  'rtc:configuration': () => ({ iceServers: [], relayAvailable: false }), 'voice:background-active': () => true
 };
 for (const [name, handler] of Object.entries(platformHandlers)) ipcMain.handle(name, handler);
 require('../e2ee-main');

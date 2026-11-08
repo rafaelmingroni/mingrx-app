@@ -313,8 +313,11 @@
         if(s.exists()&&s.data().sessionId===this.id)tx.delete(current.slotRef);
       }).catch(()=>{});
     };
-    socket.voiceMedia=async function(value) {if(this.voice)await updateDoc(this.voice.slotRef,{mediaState:media(value)});};
-    socket.voiceSpeaking=async function(value) {if(this.voice)await updateDoc(this.voice.slotRef,{speaking:!!value.speaking});};
+    // A speaking/media write can be in flight when the member leaves and the slot is deleted.
+    // That rejection is expected once the admission is gone; while still admitted it propagates.
+    const slotWrite=async(socket,patch)=>{const current=socket.voice;if(!current)return;try{await updateDoc(current.slotRef,patch);}catch(error){if(socket.voice!==current)return;throw error;}};
+    socket.voiceMedia=async function(value) {return slotWrite(this,{mediaState:media(value)});};
+    socket.voiceSpeaking=async function(value) {return slotWrite(this,{speaking:!!value.speaking});};
     socket.signal=async function(payload={}) {
       const current=this.voice;if(!current||!payload.targetSocketId)return;
       // The first person in a room learns about newcomers from the room listener,

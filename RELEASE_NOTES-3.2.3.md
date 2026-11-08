@@ -4,6 +4,7 @@
 - Corrige chamadas que ficavam presas em "conectando" com a primeira pessoa da sala quando outras entravam em seguida: a resposta de conexão não é mais descartada enquanto a lista da sala se atualiza.
 - Ofertas de conexão sem resposta são reenviadas automaticamente (até três vezes), para que uma sinalização perdida não deixe ninguém fora da call.
 - O indicador de "falando" continua funcionando com o Mingrx minimizado ou atrás do jogo.
+- Sair da chamada no exato momento em que o indicador de voz muda não gera mais um erro de permissão.
 - Em uma instalação nova, o compartilhamento de tela, o volume de saída e os sons de notificação usam os valores padrão em vez de começar zerados.
 
 ## Mais leve
