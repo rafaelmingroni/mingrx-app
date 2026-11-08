@@ -369,3 +369,7 @@ html body.mingrx-ui #settingsArea .mingrx-theme-card.active .mingrx-theme-check:
 html body.mingrx-ui .modal-card label,html body.mingrx-ui .mingrx-create-community label,html body.mingrx-ui #settingsArea .settings-stat span,html body.mingrx-ui #settingsArea small{text-transform:none!important;letter-spacing:0!important}
 html body.mingrx-ui .modal-card label{font-size:13px!important;font-weight:600!important}
 html body.mingrx-ui .mingrx-social-empty,html body.mingrx-ui .mingrx-social-list [class*="empty"]{border:0!important;background:none!important}
+/* Appearance: theme cards speak for themselves; no intro paragraph or footer note. */
+html body.mingrx-ui .mingrx-theme-intro,html body.mingrx-ui .mingrx-theme-note{display:none!important}
+/* Mic test: the record button reads as a secondary action, not a grey slab. */
+html body.mingrx-ui #settingsArea #testMicBtn{background:var(--mx-panel-2)!important;border:1px solid var(--mx-line)!important;color:var(--mx-text)!important;font-size:13.5px!important;font-weight:650!important;height:40px!important;border-radius:10px!important}

@@ -5,6 +5,17 @@
 
   const BRAND = 'Mingrx';
   const VERSION = '3.1.0';
+  // Settings footer shows the installed version (public form: 3.2.0 -> 3.2), never a hardcoded one.
+  const publicVersion = v => String(v || '').trim().replace(/^v/i, '').replace(/^(d+.d+).0$/, '$1');
+  const fillInstalledVersion = el => {
+    try {
+      window.MingrxDesktop?.ipcRenderer?.invoke('banana-updater:get-version').then(v => {
+        const shown = publicVersion(v);
+        if (shown && el.isConnected) el.textContent = `${BRAND} ${shown}`;
+      }).catch(() => {});
+    } catch {}
+  };
+
   let fixing = false;
   let queued = false;
 
@@ -90,7 +101,8 @@
       if (!nav.querySelector('.mingrx-settings-version')) {
         const version = document.createElement('div');
         version.className = 'mingrx-settings-version';
-        version.textContent = `${BRAND} ${VERSION}`;
+        version.textContent = BRAND;
+        fillInstalledVersion(version);
         nav.appendChild(version);
       }
     }

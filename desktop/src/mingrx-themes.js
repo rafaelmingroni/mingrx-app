@@ -4,13 +4,13 @@
 
   const KEY = 'mingrx.theme';
   const THEMES = [
-    { id:'system', name:'Sistema', preview:['#f4f5f7','#ffffff','#6848e8','#17191f'], desc:{pt:'Segue automaticamente o tema claro ou escuro do Windows.',en:'Automatically follows Windows light or dark mode.',es:'Sigue automáticamente el modo claro u oscuro de Windows.'} },
-    { id:'midnight', name:'Midnight', preview:['#0b0c10','#111218','#7c5cff','#f5f6f8'], desc:{pt:'O visual Mingrx original: grafite profundo e violeta.',en:'The original Mingrx look: deep graphite and violet.',es:'El estilo original de Mingrx: grafito profundo y violeta.'} },
-    { id:'pearl', name:'Pearl', preview:['#f4f5f7','#ffffff','#6848e8','#17191f'], desc:{pt:'Claro, limpo e suave para uso durante o dia.',en:'Bright, clean and soft for daytime use.',es:'Claro, limpio y suave para usar durante el día.'} },
-    { id:'crimson', name:'Crimson', preview:['#0d0a0c','#151114','#e5485d','#f8f4f5'], desc:{pt:'Preto com vermelho elegante, sem neon exagerado.',en:'Black with restrained premium red accents.',es:'Negro con acentos rojos elegantes y contenidos.'} },
-    { id:'ocean', name:'Ocean', preview:['#081014','#0e171f','#3b8df5','#f2f7fb'], desc:{pt:'Azul frio e discreto, com sensação técnica e limpa.',en:'Cool, restrained blue with a clean technical feel.',es:'Azul frío y discreto con una sensación técnica limpia.'} },
-    { id:'forest', name:'Forest', preview:['#08100c','#0e1813','#38bf78','#f1f8f4'], desc:{pt:'Verde escuro sóbrio, confortável em sessões longas.',en:'Calm dark green designed for long sessions.',es:'Verde oscuro sobrio, cómodo para sesiones largas.'} },
-    { id:'mono', name:'Mono', preview:['#0b0b0c','#121214','#d6d6db','#f4f4f5'], desc:{pt:'Quase sem cor: minimalista e focado no conteúdo.',en:'Almost colorless: minimal and content-focused.',es:'Casi sin color: minimalista y centrado en el contenido.'} }
+    { id:'system', name:'Sistema', preview:['#f4f5f7','#ffffff','#6848e8','#17191f'], desc:{pt:'Acompanha o claro ou escuro do Windows.',en:'Follows Windows light or dark mode.',es:'Sigue el modo claro u oscuro de Windows.'} },
+    { id:'midnight', name:'Midnight', preview:['#0b0c10','#111218','#7c5cff','#f5f6f8'], desc:{pt:'Navy e violeta. O padrão do Mingrx.',en:'Navy and violet. The Mingrx default.',es:'Azul marino y violeta. El estilo de Mingrx.'} },
+    { id:'pearl', name:'Pearl', preview:['#f4f5f7','#ffffff','#6848e8','#17191f'], desc:{pt:'Claro, para usar de dia.',en:'Light, for daytime.',es:'Claro, para usar de día.'} },
+    { id:'crimson', name:'Crimson', preview:['#0d0a0c','#151114','#e5485d','#f8f4f5'], desc:{pt:'Preto com vermelho.',en:'Black with red.',es:'Negro con rojo.'} },
+    { id:'ocean', name:'Ocean', preview:['#081014','#0e171f','#3b8df5','#f2f7fb'], desc:{pt:'Escuro com azul.',en:'Dark with blue.',es:'Oscuro con azul.'} },
+    { id:'forest', name:'Forest', preview:['#08100c','#0e1813','#38bf78','#f1f8f4'], desc:{pt:'Escuro com verde.',en:'Dark with green.',es:'Oscuro con verde.'} },
+    { id:'mono', name:'Mono', preview:['#0b0b0c','#121214','#d6d6db','#f4f4f5'], desc:{pt:'Quase sem cor.',en:'Almost no color.',es:'Casi sin color.'} }
   ];
   const ids = new Set(THEMES.map(theme => theme.id));
   const media = window.matchMedia?.('(prefers-color-scheme: light)');
@@ -25,9 +25,9 @@
   function strings() {
     const lang = locale();
     return {
-      pt:{title:'Aparência',subtitle:'Escolha como o Mingrx deve parecer.',intro:'Os temas alteram apenas cores e superfícies. O layout, desempenho e recursos continuam iguais.',system:'Sistema',note:'A troca é instantânea e fica salva neste dispositivo. “Sistema” acompanha o tema do Windows automaticamente.',applied:'Tema aplicado'},
-      en:{title:'Appearance',subtitle:'Choose how Mingrx should look.',intro:'Themes only change colors and surfaces. Layout, performance and features stay the same.',system:'System',note:'Changes apply instantly and are saved on this device. “System” follows Windows automatically.',applied:'Theme applied'},
-      es:{title:'Apariencia',subtitle:'Elige cómo debe verse Mingrx.',intro:'Los temas solo cambian colores y superficies. El diseño, rendimiento y funciones siguen iguales.',system:'Sistema',note:'El cambio es instantáneo y se guarda en este dispositivo. “Sistema” sigue Windows automáticamente.',applied:'Tema aplicado'}
+      pt:{title:'Aparência',subtitle:'Cores do app. Fica salvo neste computador.',intro:'Os temas alteram apenas cores e superfícies. O layout, desempenho e recursos continuam iguais.',system:'Sistema',note:'A troca é instantânea e fica salva neste dispositivo. “Sistema” acompanha o tema do Windows automaticamente.',applied:'Tema aplicado'},
+      en:{title:'Appearance',subtitle:'App colors. Saved on this computer.',intro:'Themes only change colors and surfaces. Layout, performance and features stay the same.',system:'System',note:'Changes apply instantly and are saved on this device. “System” follows Windows automatically.',applied:'Theme applied'},
+      es:{title:'Apariencia',subtitle:'Colores de la app. Se guarda en este equipo.',intro:'Los temas solo cambian colores y superficies. El diseño, rendimiento y funciones siguen iguales.',system:'Sistema',note:'El cambio es instantáneo y se guarda en este dispositivo. “Sistema” sigue Windows automáticamente.',applied:'Tema aplicado'}
     }[lang];
   }
 
