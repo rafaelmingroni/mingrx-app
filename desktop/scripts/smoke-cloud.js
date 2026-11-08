@@ -22,7 +22,8 @@ for (const file of ['src/cloud-v2.js','src/cloud-v2-auth-fix.js','src/cloud-v2-s
   execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'inherit' });
 }
 assert(/^(?:2|3)\.\d+\.\d+(?:-cloud\.\d+)?$/.test(pkg.version), 'Cloud version must be a stable 2.x/3.x release or preview x.y.z-cloud.n');
-assert(pkg.dependencies?.firebase === '12.19.0', 'Firebase JS SDK must be pinned to 12.19.0');
+// The renderer ships a prebuilt Firebase bundle; the SDK is build-time only and must stay out of the installer.
+assert(pkg.devDependencies?.firebase === '12.19.0' && !pkg.dependencies?.firebase, 'Firebase JS SDK must be pinned to 12.19.0 as a build-time devDependency');
 assert(pkg.devDependencies?.esbuild === '0.28.2', 'esbuild must be pinned for browser Firebase bundling');
 assert((pkg.build?.files || []).includes('cloud/**/*'), 'cloud config folder must be packaged');
 assert(fs.existsSync(cloudBrowserPath), 'single Firebase browser bundle must be generated');

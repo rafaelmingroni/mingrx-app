@@ -17,9 +17,9 @@
 Ele reúne comunidades, canais de texto e voz, mensagens privadas, webcam, compartilhamento de tela, presença e perfis em um único aplicativo para Windows. O projeto nasceu como Banana Cord e evoluiu para Mingrx preservando o caminho de atualização dos usuários existentes.
 
 <!-- mingrx-version:begin -->
-> **Mingrx 3.2.2** · Versão técnica: `3.2.2`
+> **Mingrx 3.2.3** · Versão técnica: `3.2.3`
 >
-> [Notas desta versão](RELEASE_NOTES-3.2.2.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
+> [Notas desta versão](RELEASE_NOTES-3.2.3.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
 >
 > Projeto pessoal de **Rafael Mingroni**.
 <!-- mingrx-version:end -->
@@ -40,13 +40,14 @@ O Mingrx prioriza:
 
 ## Novidades desta versão
 
-- sessão de login protegida pelo cofre do sistema, com migração automática das sessões antigas;
-- controle de solicitações repetidas de login, cadastro e recuperação de senha;
-- validação mais restrita de perfis, imagens, comunidades, canais e permissões no Firebase;
-- testes reais de migração de sessão, recuperação de senha, chamadas e atualização automática antes de publicar;
-- conferência das regras ativas no backend e documentação da revisão de segurança.
+- chamadas que ficavam presas em "conectando" com a primeira pessoa da sala foram corrigidas, com reenvio automático de ofertas sem resposta;
+- o indicador de quem está falando continua funcionando com o app minimizado ou atrás do jogo;
+- detecção de voz mais leve (20 leituras por segundo) e sem pausa em segundo plano apenas durante chamadas;
+- valores padrão corretos de compartilhamento de tela, volume e sons em instalações novas;
+- novo visual alinhado ao site: navy e violeta, tipografia Satoshi e ícones desenhados no lugar de emojis;
+- remoção do antigo modo de servidor local e das dependências que só ele usava.
 
-Veja a [revisão de segurança](docs/SECURITY-3.2.md) para conhecer o alcance e os limites dessas proteções.
+Veja as [notas da 3.2.3](RELEASE_NOTES-3.2.3.md) e a [revisão de segurança](docs/SECURITY-3.2.md).
 
 ## Base Firebase gratuita
 
@@ -74,7 +75,7 @@ O aplicativo **não depende de Firebase Storage**.
 
 - marca **Mingrx** em toda a experiência visível;
 - símbolo e ícone próprios;
-- direção visual em grafite, violeta e superfícies discretas;
+- direção visual navy e violeta compartilhada com o site, tipografia Satoshi e ícones desenhados;
 - temas de aparência;
 - layout de comunidades horizontal e compacto;
 - painel de membros contextual;
