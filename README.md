@@ -17,9 +17,9 @@
 Ele reúne comunidades, canais de texto e voz, mensagens privadas, webcam, compartilhamento de tela, presença e perfis em um único aplicativo para Windows. O projeto nasceu como Banana Cord e evoluiu para Mingrx preservando o caminho de atualização dos usuários existentes.
 
 <!-- mingrx-version:begin -->
-> **Mingrx 3.2.4** · Versão técnica: `3.2.4`
+> **Mingrx 3.2.5** · Versão técnica: `3.2.5`
 >
-> [Notas desta versão](RELEASE_NOTES-3.2.4.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
+> [Notas desta versão](RELEASE_NOTES-3.2.5.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
 >
 > Projeto pessoal de **Rafael Mingroni**.
 <!-- mingrx-version:end -->
@@ -40,16 +40,16 @@ O Mingrx prioriza:
 
 ## Novidades desta versão
 
-- quem sai da chamada não fica mais preso no centro da tela: a grade é conferida com a presença real da chamada;
-- o anel verde de quem está falando aparece só na chamada em que você está;
-- donos e administradores voltam a conseguir trocar a foto da comunidade;
-- novo logo com o M da arte do Mingrx, login e cadastro com a arte do site e atualizador nas cores do tema;
-- emojis com Fluent Emoji 3D nas mensagens e reações;
-- configurações, perfil, convite e tela de chamada com textos curtos e sem caixa alta;
-- o botão de atualização só aparece quando há uma versão mais nova;
-- o rodapé das configurações mostra a versão instalada.
+- quem está falando é detectado localmente, a partir do áudio recebido, sem gravar esse estado no Firebase;
+- cards de quem já saiu da chamada não são mais recriados por eventos atrasados da conexão;
+- som de chamada ao ligar para alguém no privado, com aviso quando ninguém atende;
+- menu de cargos que acompanha a rolagem e barra de comunidades sem barra de rolagem vertical;
+- seletores com setinha e controles deslizantes com preenchimento violeta nas configurações;
+- diálogos com foco, Tab e Esc acessíveis, controles com nome para leitores de tela e textos de pelo menos 11 px;
+- aviso de "sem internet" e de conexão restabelecida;
+- presença e chamadas renovadas com menos frequência, com menos leituras no Firebase.
 
-Veja as [notas da 3.2.4](RELEASE_NOTES-3.2.4.md) e a [revisão de segurança](docs/SECURITY-3.2.md).
+Veja as [notas da 3.2.5](RELEASE_NOTES-3.2.5.md) e a [revisão de segurança](docs/SECURITY-3.2.md).
 
 ## Base Firebase gratuita
 
@@ -127,7 +127,8 @@ O protocolo antigo `bananacord://` também continua aceito por compatibilidade, 
 ### Voz e vídeo
 
 - voz por WebRTC;
-- indicador de fala, visível apenas para quem está na mesma chamada;
+- indicador de fala calculado localmente a partir do áudio recebido, visível apenas para quem está na mesma chamada;
+- som de chamada enquanto a outra pessoa não atende;
 - mute e deafen;
 - push-to-talk;
 - volume individual;
