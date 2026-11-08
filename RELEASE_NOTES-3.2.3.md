@@ -9,7 +9,8 @@
 ## Mais leve
 - A detecção de voz roda 20 vezes por segundo em vez de acompanhar a taxa do monitor (antes chegava a 280 vezes por segundo em monitores de alta frequência).
 - Fora de uma chamada, o Windows volta a economizar recursos do aplicativo em segundo plano normalmente.
-- Remove o antigo modo de servidor local, o download do túnel cloudflared e as dependências que só ele usava, reduzindo o instalador e o que é carregado ao abrir o app.
+- Remove o antigo modo de servidor local, o download do túnel cloudflared e as dependências que só ele usava, reduzindo o que é carregado ao abrir o app.
+- O SDK do Firebase deixa de ir dentro do instalador (o app já usa uma versão empacotada no build): o pacote do aplicativo cai de 133 MB para 14 MB e o instalador de 134 MB para 118 MB.
 
 ## Novo visual
 - Paleta navy e violeta, tipografia Satoshi e superfícies alinhadas ao site mingrx.site no tema padrão. Os demais temas mantêm suas cores.
