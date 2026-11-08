@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#171d3a"/>
+      <stop offset="1" stop-color="#070a16"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.45" r="0.5">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="legL" gradientUnits="userSpaceOnUse" x1="234" y1="659" x2="439" y2="369">
+      <stop offset="0" stop-color="#7a3df0"/>
+      <stop offset="1" stop-color="#d7b8ff"/>
+    </linearGradient>
+    <linearGradient id="dip" gradientUnits="userSpaceOnUse" x1="439" y1="369" x2="454" y2="604">
+      <stop offset="0" stop-color="#b892ff"/>
+      <stop offset="1" stop-color="#6a33e6"/>
+    </linearGradient>
+    <linearGradient id="rise" gradientUnits="userSpaceOnUse" x1="454" y1="604" x2="789" y2="364">
+      <stop offset="0" stop-color="#6b34e8"/>
+      <stop offset="1" stop-color="#c7a6ff"/>
+    </linearGradient>
+    <linearGradient id="legR" gradientUnits="userSpaceOnUse" x1="789" y1="364" x2="664" y2="649">
+      <stop offset="0" stop-color="#b996ff"/>
+      <stop offset="1" stop-color="#6230e0"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#fff" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <filter id="shade" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+  <rect x="32" y="32" width="960" height="960" rx="232" fill="url(#tile)"/>
+  
+  <rect x="33" y="33" width="958" height="958" rx="231" fill="none" stroke="#ffffff" stroke-opacity=".07" stroke-width="2"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(512 512) scale(1.32) translate(-512 -512)">
+    <path d="M234 659 439 369 454 604 789 364 664 649" stroke="#efe4ff" stroke-opacity=".55" stroke-width="122"/>
+    <path d="M454 604 789 364" stroke="url(#rise)" stroke-width="112"/>
+    <path d="M439 369 454 604" stroke="url(#dip)" stroke-width="112"/>
+    <path d="M234 659 439 369" stroke="url(#legL)" stroke-width="112"/>
+    <path d="M789 364 664 649" stroke="url(#legR)" stroke-width="112"/>
+    <path d="M234 659 439 369 454 604 789 364 664 649" stroke="url(#gloss)" stroke-width="112" opacity=".9"/>
+  </g>
+</svg>

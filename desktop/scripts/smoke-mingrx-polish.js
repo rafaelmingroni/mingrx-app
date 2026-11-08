@@ -52,7 +52,7 @@ assert(polish.includes("['Your profile', 'Seu perfil']"), 'Correção de idioma 
 assert(polish.includes("['Save profile', 'Salvar perfil']"), 'Correção de idioma do botão de perfil ausente.');
 assert(polish.includes("['Servidor', 'Comunidade']"), 'Terminologia Servidor -> Comunidade não está protegida.');
 assert(polish.includes("brand.onclick = () => document.getElementById('homeServer')?.click()"), 'Marca Mingrx não substitui funcionalmente o quadrado Home legado.');
-assert(polish.includes('var(--mx-accent)'), 'Marca Mingrx não está ligada à cor do tema.');
+assert(polish.includes('mingrx-symbol.svg') && css.includes('.mingrx-x{color:var(--mx-accent)'), 'Marca Mingrx: símbolo oficial ou X do tema ausente.');
 assert(polish.includes('mingrx-x'), 'Wordmark Mingrx não trata o X como detalhe de identidade.');
 assert(polish.includes('mingrx-settings-version'), 'Rodapé/versionamento Mingrx das configurações não foi injetado.');
 assert(polish.includes("querySelectorAll(':scope > .settings-brand,:scope > .settings-nav-foot')"), 'Brand/versionamento legado das configurações ainda pode coexistir com Mingrx.');
@@ -73,9 +73,9 @@ assert(socialJs.includes('bindSocialSocket(state?.socket)'), 'Central social nã
 for (const selector of ['big-banana-img','v214-private-home','mingrx-community-head','banana-updater-logo','cloud-home-logo']) {
   assert(markJs.includes(selector), `Marca fixa ainda não está coberta em ${selector}.`);
 }
-assert(markJs.includes('var(--mx-accent)'), 'Marcas de superfície ainda não acompanham o tema.');
+assert(markJs.includes('../assets/mingrx.svg'), 'Marcas de superfície não usam o logo oficial.');
 assert(markCss.includes('mingrx-private-mark') && markCss.includes('mingrx-updater-mark'), 'Dimensionamento das marcas temáticas está incompleto.');
-assert(svg.includes('#7c5cff') && !svg.includes('mxFold') && !svg.includes('linearGradient'), 'SVG oficial ainda possui brilho/fold assimétrico.');
+assert(svg.includes('M234 659 439 369 454 604 789 364 664 649') && !svg.includes('mxFold'), 'SVG oficial não usa o M aprovado.');
 assert(pkg.scripts['smoke:e2e-v2'].includes('e2e-mingrx-layout.js'), 'E2E de layout responsivo não está na suíte principal.');
 assert(pkg.scripts['smoke:e2e-v2'].includes('e2e-mingrx-social.js'), 'E2E da central social Mingrx não está na suíte principal.');
 

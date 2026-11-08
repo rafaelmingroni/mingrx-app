@@ -5,6 +5,8 @@ const sharp = require('sharp');
 const root = path.join(__dirname, '..');
 const assetsDir = path.join(root, 'assets');
 const sourcePath = path.join(assetsDir, 'mingrx.svg');
+// Sizes up to 48px use a tighter mark without the soft halo so the M stays legible.
+const smallSourcePath = path.join(assetsDir, 'mingrx-small.svg');
 const sizes = [16, 24, 32, 48, 64, 128, 256];
 
 function pngDimensions(buffer) {
@@ -46,9 +48,10 @@ async function validateVisual(buffer,size){
 async function main(){
   if(!fs.existsSync(sourcePath))throw new Error('assets/mingrx.svg não encontrado.');
   const svg=fs.readFileSync(sourcePath);
+  const smallSvg=fs.existsSync(smallSourcePath)?fs.readFileSync(smallSourcePath):svg;
   if(!svg.includes(Buffer.from('<svg'))||!svg.includes(Buffer.from('viewBox="0 0 1024 1024"')))throw new Error('Fonte vetorial Mingrx inválida.');
   const frames=[];
-  for(const size of sizes){const png=await sharp(svg,{density:Math.max(144,size*4)}).resize(size,size,{fit:'fill',kernel:sharp.kernel.lanczos3}).png({compressionLevel:9,adaptiveFiltering:true}).toBuffer();const d=pngDimensions(png);if(d.width!==size||d.height!==size)throw new Error(`Renderização Mingrx ${size}px inválida.`);frames.push({size,png});}
+  for(const size of sizes){const png=await sharp(size<=48?smallSvg:svg,{density:Math.max(144,size*4)}).resize(size,size,{fit:'fill',kernel:sharp.kernel.lanczos3}).png({compressionLevel:9,adaptiveFiltering:true}).toBuffer();const d=pngDimensions(png);if(d.width!==size||d.height!==size)throw new Error(`Renderização Mingrx ${size}px inválida.`);frames.push({size,png});}
   const check32=await validateVisual(frames.find(f=>f.size===32).png,32);const check256=await validateVisual(frames.find(f=>f.size===256).png,256);
   const ico=buildIco(frames);validateIco(ico,sizes);
   fs.writeFileSync(path.join(assetsDir,'mingrx.png'),frames.find(f=>f.size===256).png);

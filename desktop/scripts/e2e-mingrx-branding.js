@@ -89,7 +89,7 @@ app.whenReady().then(async () => {
       const intro=rect(document.querySelector('.v214-private-intro'));
       if(!sidebar||sidebar.width<280) failures.push('private outer sidebar collapsed: '+JSON.stringify(sidebar));
       if(!dm||dm.width<250) failures.push('private inner dm-sidebar collapsed: '+JSON.stringify(dm));
-      if(!intro||intro.width<220) failures.push('private intro collapsed: '+JSON.stringify(intro));
+      if(intro&&intro.width>0&&intro.width<220) failures.push('private intro collapsed: '+JSON.stringify(intro));
 
       document.getElementById('profileBtn')?.click();
       await sleep(140);

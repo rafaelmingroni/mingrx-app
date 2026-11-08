@@ -80,7 +80,8 @@
     if (!bar || bar.querySelector('.mingrx-brand')) return;
     const brand = document.createElement('div');
     brand.className = 'mingrx-brand';
-    brand.innerHTML = `<img src="${MARK}" alt=""><span>${BRAND}</span>`;
+    // The top bar shows the bare M beside the name; the tiled mark is the app icon.
+    brand.innerHTML = `<img class="mingrx-brand-symbol" src="../assets/mingrx-symbol.svg" alt=""><span>${BRAND}</span>`;
     bar.prepend(brand);
 
     const spacer = document.createElement('div');
