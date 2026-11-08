@@ -304,3 +304,27 @@ html body.mingrx-ui .v219-role-row .v219-role-static{font-size:12.5px!important;
 html body.mingrx-ui .mingrx-community-photo-actions button{font-size:13px!important;font-weight:650!important;height:36px!important;padding:0 16px!important}
 html body.mingrx-ui .mingrx-community-photo-copy b{font-size:14px!important}
 html body.mingrx-ui .mingrx-community-photo-copy small{font-size:12.5px!important;color:var(--mx-muted)!important}
+/* Member profile card: one surface, no boxes inside it, sentence-case labels. */
+html body.mingrx-ui .v219-profile-banner{height:72px!important;background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--profile-role-color,#8b5cf6) 34%,transparent),transparent 62%),linear-gradient(120deg,#1a1f42,#0d1124)!important}
+html body.mingrx-ui .v219-profile-role{display:inline-flex!important;align-items:center;gap:5px;font-size:12px!important;font-weight:650!important;padding:4px 10px!important;border-radius:999px!important}
+html body.mingrx-ui .v219-profile-role .v219-role-icon{width:12px;height:12px;flex-basis:12px}
+html body.mingrx-ui .v219-profile-about,html body.mingrx-ui .v219-profile-info>div{background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:12px 0 0!important}
+html body.mingrx-ui .v219-profile-about{border-top:1px solid var(--mx-line)!important;margin-top:14px!important}
+html body.mingrx-ui .v219-profile-info{gap:24px!important;border-top:1px solid var(--mx-line);margin-top:12px!important}
+html body.mingrx-ui .v219-profile-about small,html body.mingrx-ui .v219-profile-info small{display:block;text-transform:none!important;letter-spacing:0!important;font-size:12px!important;font-weight:600!important;color:var(--mx-muted)!important;margin-bottom:3px}
+html body.mingrx-ui .v219-profile-about p,html body.mingrx-ui .v219-profile-info b{font-size:13.5px!important;font-weight:550!important}
+html body.mingrx-ui .v219-profile-self{display:none!important}
+/* Settings: one heading per page, sentence-case labels, styled file picker. */
+html body.mingrx-ui .settings-content-head>span{display:none!important}
+html body.mingrx-ui #settingsArea .settings-field>label,html body.mingrx-ui #settingsArea label{text-transform:none!important;letter-spacing:0!important;font-size:13px!important;font-weight:600!important}
+html body.mingrx-ui #settingsArea input[type=file]{color:var(--mx-muted)!important;font-size:13px!important;padding:6px!important;height:auto!important;cursor:pointer}
+html body.mingrx-ui #settingsArea input[type=file]::file-selector-button{font:inherit;font-weight:650;color:var(--mx-text);background:var(--mx-panel-2);border:1px solid var(--mx-line);border-radius:9px;height:34px;padding:0 14px;margin-right:12px;cursor:pointer}
+html body.mingrx-ui #settingsArea input[type=file]::file-selector-button:hover{background:var(--mx-panel-3,var(--mx-hover))}
+html body.mingrx-ui .v219-profile-banner{border:0!important;box-shadow:none!important}
+html body.mingrx-ui #settingsArea .settings-field input[type=file],html body.mingrx-ui #settingsArea input[type=file]{font-size:13px!important;min-height:46px!important}
+html body.mingrx-ui #settingsArea input[type=file]::file-selector-button{font-size:13px!important;font-weight:650!important}
+html body.mingrx-ui #settingsArea .settings-card button.primary,html body.mingrx-ui #settingsArea button.primary{font-size:13.5px!important;font-weight:700!important;min-height:38px!important;padding:0 18px!important;border-radius:10px!important}
+html body.mingrx-ui #settingsArea .settings-card-head h3{font-size:15px!important}
+html body.mingrx-ui #settingsArea .settings-card-head p{font-size:12.5px!important}
+html body.mingrx-ui #settingsArea button.action,html body.mingrx-ui #settingsArea #saveProfile{font-size:13.5px!important;font-weight:700!important;min-height:38px!important;height:auto!important;padding:0 18px!important;border-radius:10px!important}
+html body.mingrx-ui #settingsArea .settings-kicker{font-size:12px!important;letter-spacing:0!important;color:var(--mx-muted)!important}
