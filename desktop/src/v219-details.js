@@ -286,7 +286,7 @@
   function formatMemberSince(value) {
     const ms = typeof value?.toMillis === 'function' ? value.toMillis() : Number(value || 0);
     if (!ms) return 'Data de entrada indisponível';
-    return `Membro desde ${new Date(ms).toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}`;
+    return `Desde ${new Date(ms).toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}`;
   }
 
   openMemberProfile = function openMemberProfileV219(userId) {

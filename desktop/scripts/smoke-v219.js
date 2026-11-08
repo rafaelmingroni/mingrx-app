@@ -31,7 +31,7 @@ expect(js.includes('DEFAULT_ROLE_COLORS') && js.includes('persistRoleColors'), '
 expect(js.includes("roleColors: safe") && js.includes('serverTimestamp'), 'role colors are not saved to server document');
 expect(js.includes('applyMessageRoleColors') && js.includes("name.dataset.role = role"), 'chat author role coloring missing');
 expect(js.includes('v219-role-color-input') && js.includes('type="color"'), 'role color picker missing');
-expect(js.includes('v219-profile-card') && js.includes('Membro desde'), 'richer member profile missing');
+expect(js.includes('v219-profile-card') && js.includes('Desde ${new Date(ms)'), 'richer member profile missing');
 expect(js.includes("firestore.getDoc(firestore.doc(db, 'servers', serverId, 'members', userId))"), 'member joined date lookup missing');
 expect(js.includes('Dono') && js.includes('Administrador') && js.includes('Moderador') && js.includes('Membro'), 'role descriptions missing');
 expect(css.includes('.v219-date-divider') && css.includes('.v219-member-group'), 'date/member hierarchy styles missing');

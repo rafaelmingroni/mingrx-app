@@ -328,3 +328,18 @@ html body.mingrx-ui #settingsArea .settings-card-head h3{font-size:15px!importan
 html body.mingrx-ui #settingsArea .settings-card-head p{font-size:12.5px!important}
 html body.mingrx-ui #settingsArea button.action,html body.mingrx-ui #settingsArea #saveProfile{font-size:13.5px!important;font-weight:700!important;min-height:38px!important;height:auto!important;padding:0 18px!important;border-radius:10px!important}
 html body.mingrx-ui #settingsArea .settings-kicker{font-size:12px!important;letter-spacing:0!important;color:var(--mx-muted)!important}
+/* Selects: one drawn chevron instead of the platform arrow. */
+html body.mingrx-ui select:not([multiple]):not(#settingsArea select){-webkit-appearance:none!important;appearance:none!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 12px center!important;background-size:15px!important;padding-right:38px!important;cursor:pointer}
+html body.mingrx-ui select:not([multiple]):not(#settingsArea select):focus{outline:none;border-color:var(--mx-accent-border)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--mx-accent) 14%,transparent)!important}
+html body.mingrx-ui select option{background:var(--mx-panel);color:var(--mx-text)}
+html body.mingrx-ui .mingrx-temp-row select{font-size:14px!important;font-weight:500!important}
+html body.mingrx-ui .v21-role-chevron{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.7;flex:0 0 14px}
+/* Invite: flat code block, link shown as a quiet line (the code block already copies it). */
+html body.mingrx-ui .mingrx-invite-code{background:var(--mx-panel-2)!important;border:1px solid var(--mx-line)!important;box-shadow:none!important;border-radius:14px!important}
+html body.mingrx-ui .mingrx-invite-code strong{letter-spacing:.08em!important;font-variant-numeric:tabular-nums}
+html body.mingrx-ui .mingrx-invite-link-card{background:none!important;border:0!important;padding:0 2px!important;margin-top:-4px!important;min-height:0!important}
+html body.mingrx-ui .mingrx-invite-link-card code{color:var(--mx-muted)!important;font-size:12px!important;background:none!important;padding:0!important}
+html body.mingrx-ui .mingrx-invite-link-card .mingrx-invite-copy-link{display:none!important}
+html body.mingrx-ui .mingrx-invite-head p{font-size:13px!important;color:var(--mx-muted)!important}
+html body.mingrx-ui .mingrx-invite-actions button,html body.mingrx-ui .mingrx-temp-row button{font-size:13px!important;font-weight:650!important;height:36px!important;padding:0 16px!important;border-radius:10px!important}
+html body.mingrx-ui .mingrx-temp-card small{font-size:12.5px!important;color:var(--mx-muted)!important}

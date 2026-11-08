@@ -44,6 +44,8 @@ async function seed(){
   })()`);
   await pause();
 }
+// The renderer can take ~1s to see a resize on small displays; measure only once it has.
+async function viewportAt(width){const target=win.getContentBounds().width;for(let i=0;i<60;i++){if(Math.abs(await js("innerWidth")-target)<=2)return;await new Promise(r=>setTimeout(r,50));}}
 async function state(){return js(`(() => {
   const app=document.getElementById('app'), panel=document.querySelector('.members'),main=document.querySelector('.main'),toggle=document.querySelector('.mingrx-members-toggle');
   const p=panel.getBoundingClientRect(),m=main.getBoundingClientRect();
@@ -56,7 +58,7 @@ app.whenReady().then(async()=>{
   const initial=await state();
   assert(initial.open&&initial.visible&&initial.docked&&initial.aria==='false'&&initial.pressed==='true',JSON.stringify(initial));
   for(const width of [980,1024,1366]){
-    win.setBounds({width,height:850});await pause();
+    win.setBounds({width,height:850});await pause();await viewportAt(width);
     const layout=await state();
     assert(layout.docked&&layout.mainWidth>350,`members overlap chat at ${width}: ${JSON.stringify(layout)}`);
     assert(await js('document.documentElement.scrollWidth<=innerWidth+2'),`horizontal overflow at ${width}`);
