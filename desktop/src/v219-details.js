@@ -211,10 +211,10 @@
   function permissionCards(colors, editable) {
     return `<div class="v219-permission-stack">${ROLE_ORDER.map(role => {
       const descriptions = {
-        owner:'Controle total do servidor e da hierarquia.',
-        admin:'Gerencia servidor, convites, canais e aparência dos cargos.',
-        moderator:'Organiza e modera canais, mantendo a operação do servidor.',
-        member:'Usa texto, voz, chamadas e recursos normais do servidor.'
+        owner:'Controle total da comunidade.',
+        admin:'Gerencia convites, canais e cargos.',
+        moderator:'Modera canais e mensagens.',
+        member:'Conversa, entra em chamadas e compartilha tela.'
       };
       return `<div class="v219-permission-card" data-role-card="${role}"><span class="v219-role-color" style="background:${colors[role]}"></span><div><div class="v219-role-card-title"><b>${ROLE_LABEL[role]}</b>${editable ? `<label class="v219-color-control" title="Cor de ${ROLE_LABEL[role]}"><input type="color" class="v219-role-color-input" data-role="${role}" value="${colors[role]}"><span>${colors[role].toUpperCase()}</span></label>` : `<span class="v219-color-preview" style="background:${colors[role]}"></span>`}</div><small>${descriptions[role]}</small></div></div>`;
     }).join('')}</div>`;
@@ -238,7 +238,7 @@
       return `<div class="v219-role-row"><div class="avatar v219-role-avatar" data-user="${escapeHtml(user.id)}"></div><div class="v219-role-user"><b style="color:${color}">${escapeHtml(user.name || 'Usuário')}</b><small>${STATUS_LABEL[user.status || 'offline'] || 'Offline'} · ${ROLE_LABEL[role] || 'Membro'}</small></div>${control}</div>`;
     }).join('');
 
-    openModal(`<div class="v219-role-settings"><div class="v219-role-hero"><h2>${escapeHtml(server.name)}</h2><p>Hierarquia do servidor · seu cargo: <b style="color:${colors[meRole] || colors.member}">${escapeHtml(ROLE_LABEL[meRole] || 'Membro')}</b></p></div>${can('admin') ? `<label>Nome do servidor</label><div style="display:flex;gap:8px"><input id="serverNameEdit" maxlength="40" value="${escapeHtml(server.name)}"><button id="saveServerName" style="width:auto;margin:0">Salvar</button></div>` : ''}<div><div class="channel-section-title"><span>Aparência dos cargos</span></div><p class="v219-settings-help">As cores aparecem no chat, na lista de membros e nos perfis. ${canStyleRoles ? 'Escolha uma cor e ela será aplicada para todo o servidor.' : 'Somente a administração pode alterar.'}</p>${permissionCards(colors, canStyleRoles)}</div><div><div class="channel-section-title"><span>Membros e cargos</span></div><div class="v219-role-table">${rows || '<p>Carregando membros…</p>'}</div></div></div>`);
+    openModal(`<div class="v219-role-settings"><div class="v219-role-hero"><h2>${escapeHtml(server.name)}</h2><p>Seu cargo: <b style="color:${colors[meRole] || colors.member}">${escapeHtml(ROLE_LABEL[meRole] || 'Membro')}</b></p></div>${can('admin') ? `<label class="v219-field-label">Nome da comunidade</label><div style="display:flex;gap:8px"><input id="serverNameEdit" maxlength="40" value="${escapeHtml(server.name)}"><button id="saveServerName" style="width:auto;margin:0">Salvar</button></div>` : ''}<div><div class="channel-section-title"><span>Cores dos cargos</span></div><p class="v219-settings-help">${canStyleRoles ? 'Cor do nome no chat e na lista de membros.' : 'Só a administração pode alterar.'}</p>${permissionCards(colors, canStyleRoles)}</div><div><div class="channel-section-title"><span>Membros e cargos</span></div><div class="v219-role-table">${rows || '<p>Carregando membros…</p>'}</div></div></div>`);
 
     for (const av of document.querySelectorAll('.v219-role-avatar')) avatarStyle(av, state.members.get(av.dataset.user));
     $('saveServerName')?.addEventListener('click', () => { state.socket.emit('server:update', { serverId:server.id, name:$('serverNameEdit').value }); closeModal(); });

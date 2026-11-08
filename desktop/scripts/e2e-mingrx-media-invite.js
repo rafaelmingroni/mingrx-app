@@ -108,7 +108,7 @@ app.whenReady().then(async () => {
       const choose=[...document.querySelectorAll('.mingrx-community-photo-actions button')].find(b=>/foto/i.test(b.textContent||'')&&!/remover/i.test(b.textContent||''));
       if(!choose) failures.push('community photo choose action missing');
       if(choose && getComputedStyle(choose).display==='none') failures.push('community photo choose action is hidden');
-      if(!(els.modalBody.textContent||'').includes('Spark')) failures.push('community photo UI does not explain Spark mode');
+      if(!(els.modalBody.textContent||'').includes('PNG, JPG ou WebP')) failures.push('community photo UI does not list accepted formats');
       closeModal();
       await sleep(40);
       if(document.querySelector('#modal > .modal-card')?.classList.contains('mingrx-server-settings-modal')) failures.push('wide settings modal class leaked after closing');

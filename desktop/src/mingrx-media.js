@@ -258,7 +258,7 @@
     const title = document.createElement('b');
     title.textContent = 'Foto da comunidade';
     const note = document.createElement('small');
-    note.textContent = 'PNG, JPG ou WebP. A foto é compactada automaticamente e salva no plano gratuito (Spark).';
+    note.textContent = 'PNG, JPG ou WebP. Ajustamos o tamanho automaticamente.';
     const actions = document.createElement('div');
     actions.className = 'mingrx-community-photo-actions';
     const choose = document.createElement('button');

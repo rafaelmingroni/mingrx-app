@@ -269,3 +269,38 @@ body.mingrx-ui .v219-member-name{display:flex;align-items:center;gap:5px;min-wid
 body.mingrx-ui .v219-role-icon{width:13px;height:13px;flex:0 0 13px;fill:none;stroke:#e9b949;stroke-width:2;stroke-linejoin:round;opacity:.9}
 body.mingrx-ui .mingrx-members-head h3{text-transform:none!important;letter-spacing:-.01em!important;font-size:14px!important;font-weight:700!important;color:var(--mx-text)!important}
 body.mingrx-ui .v219-member-meta b,body.mingrx-ui .v219-member-meta .v219-role-label{font-weight:600!important}
+/* Community settings: flat header, quiet labels, role colors as a single clickable swatch. */
+html body.mingrx-ui .v219-role-settings{display:grid;gap:22px}
+html body.mingrx-ui .v219-role-hero{background:none!important;border:0!important;box-shadow:none!important;padding:0 0 2px!important;margin:0!important}
+html body.mingrx-ui .v219-role-hero h2{font-size:22px!important;letter-spacing:-.025em!important;margin:0 0 4px!important}
+html body.mingrx-ui .v219-role-hero p{font-size:13px!important;color:var(--mx-muted)!important;margin:0!important}
+html body.mingrx-ui .v219-role-settings label.v219-field-label{display:block;text-transform:none!important;letter-spacing:0!important;font-size:13px!important;font-weight:600!important;color:var(--mx-text-2)!important;margin:0 0 -14px!important}
+html body.mingrx-ui .v219-role-settings .channel-section-title{padding:0!important;margin:0 0 4px!important;font-size:13px!important;color:var(--mx-text-2)!important}
+html body.mingrx-ui .v219-settings-help{font-size:12.5px!important;color:var(--mx-muted)!important;margin:0 0 10px!important}
+html body.mingrx-ui .v219-permission-stack{display:grid;gap:0;border:1px solid var(--mx-line);border-radius:14px;overflow:hidden}
+html body.mingrx-ui .v219-permission-card{display:flex!important;align-items:center;gap:12px;padding:12px 14px!important;margin:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important}
+html body.mingrx-ui .v219-permission-card+.v219-permission-card{border-top:1px solid var(--mx-line)!important}
+html body.mingrx-ui .v219-permission-card>div{flex:1;min-width:0}
+html body.mingrx-ui .v219-permission-card .v219-role-color{display:none!important}
+html body.mingrx-ui .v219-role-card-title{display:flex!important;align-items:center;justify-content:space-between;gap:10px}
+html body.mingrx-ui .v219-role-card-title b{font-size:13.5px!important;font-weight:650!important}
+html body.mingrx-ui .v219-permission-card small{display:block;font-size:12px!important;color:var(--mx-muted)!important;margin-top:2px}
+html body.mingrx-ui .v219-color-control{position:relative;display:inline-grid!important;place-items:center;width:26px!important;height:26px!important;padding:0!important;border:0!important;background:none!important;cursor:pointer}
+html body.mingrx-ui .v219-color-control>span{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
+html body.mingrx-ui .v219-color-control input[type=color]{appearance:none;-webkit-appearance:none;width:22px!important;height:22px!important;padding:0!important;border:2px solid color-mix(in srgb,var(--mx-text) 18%,transparent)!important;border-radius:50%!important;background:none!important;cursor:pointer;margin:0!important}
+html body.mingrx-ui .v219-color-control input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+html body.mingrx-ui .v219-color-control input[type=color]::-webkit-color-swatch{border:0;border-radius:50%}
+html body.mingrx-ui .v219-color-control:hover input[type=color]{border-color:color-mix(in srgb,var(--mx-text) 45%,transparent)!important}
+html body.mingrx-ui .v219-color-preview{width:14px!important;height:14px!important;border-radius:50%!important}
+html body.mingrx-ui .v219-role-table{display:grid;gap:0;border:1px solid var(--mx-line);border-radius:14px;overflow:hidden}
+html body.mingrx-ui .v219-role-table .v219-role-row{margin:0!important;border:0!important;border-radius:0!important;background:none!important;padding:10px 14px!important}
+html body.mingrx-ui .v219-role-table .v219-role-row+.v219-role-row{border-top:1px solid var(--mx-line)!important}
+html body.mingrx-ui .mingrx-community-photo-card{border-radius:14px!important}
+html body.mingrx-ui .v219-role-user b{font-size:13.5px!important;font-weight:650!important}
+html body.mingrx-ui .v219-role-user small{font-size:12px!important;color:var(--mx-muted)!important}
+html body.mingrx-ui .v219-role-row .v219-role-select,html body.mingrx-ui .v219-role-row .mingrx-role-picker,html body.mingrx-ui .v219-role-row .mingrx-role-picker button{font-size:13px!important;font-weight:600!important;min-height:0!important;height:34px!important}
+html body.mingrx-ui .v219-role-row .v219-remove-member{font-size:12.5px!important;font-weight:600!important;height:34px!important;padding:0 12px!important}
+html body.mingrx-ui .v219-role-row .v219-role-static{font-size:12.5px!important;font-weight:600!important}
+html body.mingrx-ui .mingrx-community-photo-actions button{font-size:13px!important;font-weight:650!important;height:36px!important;padding:0 16px!important}
+html body.mingrx-ui .mingrx-community-photo-copy b{font-size:14px!important}
+html body.mingrx-ui .mingrx-community-photo-copy small{font-size:12.5px!important;color:var(--mx-muted)!important}
