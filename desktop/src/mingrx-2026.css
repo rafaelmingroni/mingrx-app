@@ -250,3 +250,22 @@ body.mingrx-ui .v21-context-reactions button{display:grid!important;place-items:
 body.mingrx-ui .v21-context-reactions .mx-emoji{width:26px;height:26px;margin:0;transition:transform .16s cubic-bezier(.2,.8,.2,1)}
 body.mingrx-ui .v21-context-reactions button:hover .mx-emoji{transform:scale(1.18) translateY(-1px)}
 @media (prefers-reduced-motion:reduce){body.mingrx-ui .v21-context-reactions .mx-emoji{transition:none}}
+/* Section labels: sentence case, readable size, no tracking (no shouting caps). */
+body.mingrx-ui .channel-section-title,body.mingrx-ui .v214-private-section-title,body.mingrx-ui .v21-channel-head,body.mingrx-ui .v21-category-name,
+body.mingrx-ui .members>h3,body.mingrx-ui .v219-member-group-title,body.mingrx-ui .mingrx-social-section-head h3,body.mingrx-ui .mingrx-community-divider,
+body.mingrx-ui .v21-command-title,body.mingrx-ui .invite-link-preview span,body.mingrx-ui .mingrx-invite-code>span,body.mingrx-ui .mingrx-invite-kicker,
+body.mingrx-ui .premium-code-card>span,body.mingrx-ui .settings-kicker,body.mingrx-ui .mingrx-welcome-people h3,body.mingrx-ui .v218-call-copy small{
+  text-transform:none!important;letter-spacing:0!important;font-size:12px!important;font-weight:600!important}
+/* Labels whose source text is written in capitals: lower it, then capitalize the first letter. */
+body.mingrx-ui .channel-section-title>span,body.mingrx-ui .v214-private-section-title,body.mingrx-ui .mingrx-social-section-head h3,
+body.mingrx-ui .mingrx-invite-kicker,body.mingrx-ui .settings-kicker,body.mingrx-ui .mingrx-welcome-people h3,body.mingrx-ui .v21-command-title{text-transform:lowercase!important}
+body.mingrx-ui .channel-section-title>span,body.mingrx-ui .mingrx-invite-kicker,body.mingrx-ui .settings-kicker{display:inline-block}
+body.mingrx-ui .channel-section-title>span::first-letter,body.mingrx-ui .v214-private-section-title::first-letter,body.mingrx-ui .mingrx-social-section-head h3::first-letter,
+body.mingrx-ui .mingrx-invite-kicker::first-letter,body.mingrx-ui .settings-kicker::first-letter,body.mingrx-ui .mingrx-welcome-people h3::first-letter,body.mingrx-ui .v21-command-title::first-letter{text-transform:uppercase}
+body.mingrx-ui .members>h3,body.mingrx-ui .v219-member-group-title{color:var(--mx-muted)!important}
+/* Members: no colored hierarchy stripe; the owner gets a quiet drawn crown. */
+body.mingrx-ui .v219-hierarchy-mark{display:none!important}
+body.mingrx-ui .v219-member-name{display:flex;align-items:center;gap:5px;min-width:0}
+body.mingrx-ui .v219-role-icon{width:13px;height:13px;flex:0 0 13px;fill:none;stroke:#e9b949;stroke-width:2;stroke-linejoin:round;opacity:.9}
+body.mingrx-ui .mingrx-members-head h3{text-transform:none!important;letter-spacing:-.01em!important;font-size:14px!important;font-weight:700!important;color:var(--mx-text)!important}
+body.mingrx-ui .v219-member-meta b,body.mingrx-ui .v219-member-meta .v219-role-label{font-weight:600!important}

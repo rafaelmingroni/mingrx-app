@@ -5,7 +5,7 @@
 
   const DAY = 86400000;
   const ROLE_ORDER = ['owner','admin','moderator','member'];
-  const ROLE_ICON = { owner:'👑', admin:'◆', moderator:'●', member:'' };
+  const ROLE_ICON = { owner:'<svg class="v219-role-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg>', admin:'', moderator:'', member:'' };
   const ROLE_GROUP = { owner:'Dono', admin:'Administradores', moderator:'Moderadores', member:'Membros' };
   const DEFAULT_ROLE_COLORS = { owner:'#f2c94c', admin:'#c47cff', moderator:'#53b5df', member:'#d7dbe3' };
   const roleColorCache = new Map();
@@ -175,7 +175,7 @@
     const mark = document.createElement('span'); mark.className = 'v219-hierarchy-mark'; mark.style.background = color;
     const av = document.createElement('div'); av.className = 'avatar'; avatarStyle(av, user);
     const copy = document.createElement('div'); copy.className = 'v219-member-copy';
-    const icon = ROLE_ICON[role] ? `<span aria-hidden="true">${ROLE_ICON[role]}</span>` : '';
+    const icon = ROLE_ICON[role] || '';
     copy.innerHTML = `<div class="v219-member-name"><b style="color:${color}">${escapeHtml(user.name || 'Usuário')}</b>${icon}</div><div class="v219-member-meta"><span class="status-dot status-${escapeHtml(user.status || 'offline')}"></span><span>${STATUS_LABEL[user.status || 'offline'] || 'Offline'}</span><span class="v219-mini-role role-${role}" style="--role-color:${color}">${ROLE_LABEL[role] || 'Membro'}</span></div>`;
     row.append(mark, av, copy);
     row.title = `${user.name || 'Usuário'} · ${ROLE_LABEL[role] || 'Membro'}`;

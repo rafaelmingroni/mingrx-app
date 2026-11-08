@@ -470,7 +470,7 @@
       const av = document.createElement('div'); av.className = 'avatar'; avatarStyle(av, u);
       const tx = document.createElement('div'); tx.className = 'member-name';
       const sub = u.customStatus || `${STATUS_LABEL[u.status || 'offline'] || 'Offline'} · ${ROLE_LABEL[role]}`;
-      tx.innerHTML = `<b class="role-color-${role}">${escapeHtml(u.name)}${role === 'owner' ? ' 👑' : ''}${isFriend(u.id) ? ' · <span class="v1-friend-mark">amigo</span>' : ''}</b><small><span class="status-dot status-${escapeHtml(u.status || 'offline')}"></span>${escapeHtml(sub)}</small>`;
+      tx.innerHTML = `<b class="role-color-${role}">${escapeHtml(u.name)}${isFriend(u.id) ? ' · <span class="v1-friend-mark">amigo</span>' : ''}</b><small><span class="status-dot status-${escapeHtml(u.status || 'offline')}"></span>${escapeHtml(sub)}</small>`;
       row.append(av, tx); row.onclick = () => openMemberProfile(u.id); row.oncontextmenu = e => { e.preventDefault(); openMemberMenu(e.clientX, e.clientY, u.id); }; els.memberList.appendChild(row);
     }
   };
