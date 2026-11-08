@@ -6,7 +6,12 @@
   const F = require('firebase/firestore');
   const { doc, collection, getDoc, getDocFromServer, getDocs, setDoc, updateDoc, deleteDoc, onSnapshot,
     query, where, limit, writeBatch, runTransaction, serverTimestamp, Timestamp } = F;
-  const leaseMs = 90000;
+  // Firestore reads scale with every refresh (each listener re-reads the doc), so heartbeats are as
+  // sparse as the rules' limits allow with a safe margin: voice slot 45 s / 105 s, presence 85 s / 135 s.
+  const leaseMs = 105000;
+  const leaseRefreshMs = 45000;
+  const presenceTtlMs = 135000;
+  const presenceRefreshMs = 85000;
   const pairId = (a,b) => [String(a),String(b)].sort().join('_');
   const stamp = value => value?.toMillis?.() || Number(value) || 0;
   const media = value => ({ muted:!!value?.muted, camera:!!value?.camera, screen:!!value?.screen });
@@ -132,7 +137,7 @@
       const refs=[doc(this.db,'presence',uid,'connections',this.id)];
       // Scope community presence to communities actually joined, never a global directory.
       for(const serverId of this.knownServerIds) refs.push(doc(this.db,'servers',serverId,'presence',uid,'connections',this.id));
-      const data={state:this.__presenceState,activity:this.__activity,updatedAt:serverTimestamp(),expiresAt:Timestamp.fromMillis(now()+120000)};
+      const data={state:this.__presenceState,activity:this.__activity,updatedAt:serverTimestamp(),expiresAt:Timestamp.fromMillis(now()+presenceTtlMs)};
       for(let i=0;i<refs.length;i+=100){
         const batch=writeBatch(this.db);
         refs.slice(i,i+100).forEach(r=>{batch.set(r,data);this.__presenceRefs.set(r.path,r);});
@@ -142,7 +147,7 @@
     socket.startSession = async function() {
       await this.syncServerClock();
       await this.publishPresence();
-      this.__presenceTimer=setInterval(()=>this.publishPresence().catch(()=>{}),60000);
+      this.__presenceTimer=setInterval(()=>this.publishPresence().catch(()=>{}),presenceRefreshMs);
       this.__expiryTimer=setInterval(()=>{
         for(const p of this.__presenceWatches.values()) p.emit();
         for(const [serverId,tree] of this.__voiceTrees) this.processVoiceServer(serverId,this.activeVoiceTree(tree));
@@ -285,7 +290,7 @@
           this.__voiceTrees.set(serverId,tree);this.processVoiceServer(serverId,this.activeVoiceTree(tree));
         },()=>{if(this.voice===admitted){this.receive('voice:revoked');this.leaveVoice().catch(()=>{});}});
       }
-      this.__voiceTimer=setInterval(()=>this.refreshVoiceLease().catch(()=>{if(this.voice===admitted){this.receive('voice:revoked');this.leaveVoice().catch(()=>{});}}),30000);
+      this.__voiceTimer=setInterval(()=>this.refreshVoiceLease().catch(()=>{if(this.voice===admitted){this.receive('voice:revoked');this.leaveVoice().catch(()=>{});}}),leaseRefreshMs);
       this.receive('voice:peers',{channelId,peers:peers.rows.map(e=>({socketId:e.sessionId,user:e.user,mediaState:e.mediaState}))});
     };
     socket.refreshVoiceLease=async function() {

@@ -116,6 +116,24 @@
   const fillAll = () => document.querySelectorAll('input[type=range]').forEach(fill);
   document.addEventListener('input', event => { if (event.target instanceof HTMLInputElement && event.target.type === 'range') fill(event.target); }, true);
 
+  // Network status: the header badge only appears while offline, and the user is told once.
+  const badge = document.getElementById('connectionBadge');
+  const setOnline = online => {
+    if (!badge) return;
+    badge.textContent = online ? 'conectado' : 'sem internet';
+    badge.classList.toggle('offline', !online);
+    badge.setAttribute('role', 'status');
+  };
+  window.addEventListener('offline', () => {
+    setOnline(false);
+    if (typeof toast === 'function') toast('Sem internet. O Mingrx reconecta sozinho quando a conexão voltar.', 4200);
+  });
+  window.addEventListener('online', () => {
+    setOnline(true);
+    if (typeof toast === 'function') toast('Conexão restabelecida.', 2200);
+  });
+  if (navigator.onLine === false) setOnline(false);
+
   let queued = false;
   new MutationObserver(() => {
     if (queued) return;

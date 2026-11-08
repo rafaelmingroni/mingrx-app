@@ -242,7 +242,7 @@ app.whenReady().then(async () => {
     throw new Error('Startup presence did not receive a committed server timestamp');
   })()`);
   assert.equal(presence.state, 'online');
-  assert(presence.leaseMs>115000&&presence.leaseMs<=125000&&presence.clockErrorMs<5000,'Presence must use server time despite a clock 117 seconds behind');
+  assert(presence.leaseMs>130000&&presence.leaseMs<=140000&&presence.clockErrorMs<5000,'Presence must use server time despite a clock 117 seconds behind');
   const call = await win.webContents.executeJavaScript(`(async()=>{
     const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     const socket=window.BananaCloudSocket,F=window.MingrxFirebase.firestore;
