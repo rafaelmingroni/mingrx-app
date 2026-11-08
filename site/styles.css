@@ -438,7 +438,7 @@ html{scroll-padding-top:96px}
 }
 @keyframes header-glass{from{background-color:#070b17}to{background-color:#070b17b3;border-bottom-color:#2a3150}}
 @keyframes stage-rise{from{opacity:.35;transform:translate3d(0,48px,0);clip-path:inset(0 4% round 14px)}to{opacity:1;transform:none;clip-path:inset(0 0 round 14px)}}
-@keyframes hero-drift{from{transform:translate3d(0,0,0) scale(1.04)}to{transform:translate3d(0,96px,0) scale(1.1)}}
+@keyframes hero-drift{from{transform:translate3d(0,0,0) scale(1.02)}to{transform:translate3d(0,80px,0) scale(1.06)}}
 @keyframes hero-recede{to{opacity:.15;transform:translate3d(0,-40px,0);filter:blur(3px)}}
 
 /* Page transitions between site pages (Chromium: Chrome, Edge, Brave). */
@@ -452,3 +452,15 @@ main{view-transition-name:page}
 @keyframes page-out{to{opacity:0;transform:translate3d(0,-10px,0);filter:blur(4px)}}
 @keyframes page-in{from{opacity:0;transform:translate3d(0,16px,0);filter:blur(6px)}}
 @media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}.site-header,.product-intro .product-stage,.orbit-art img,.orbit-content{animation:none!important}}
+
+/* Hero art: portrait illustration on the right, feathered into the night sky. */
+.orbit-hero{background:radial-gradient(60% 80% at 78% 40%,#1c1250 0%,#0a0b22 55%,#060914 100%)}
+.orbit-hero::after{display:none}
+@media(min-width:851px){
+ .orbit-art{inset:0 0 0 auto;width:min(58%,980px);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%),linear-gradient(0deg,transparent 0,#000 18%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 30%),linear-gradient(0deg,transparent 0,#000 18%);mask-composite:intersect}
+ .orbit-art img{object-position:62% 30%}
+}
+@media(max-width:850px){
+ .orbit-art{height:auto;aspect-ratio:1182/1100;margin-top:8px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 82%,transparent 100%)}
+ .orbit-art img{object-position:center 40%}
+}

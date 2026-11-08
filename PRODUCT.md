@@ -46,8 +46,8 @@ The current app is distributed through GitHub Releases with automatic updates. A
 ## Evidence on Hand
 
 - Actual application source and release notes in the repository.
-- `site/assets/mingrx-private.webp`: genuine capture of Mingrx 3.1.10 using a demonstration account, without real conversations. Do not relabel it as a newer release without producing a new capture.
-- New demonstration scenes must use the actual app and clearly identified demonstration content. Unverified mockups must not be presented as shipped functionality.
+- Site captures (2026-11-07) come from the real app running against local Firebase emulators with fictional profiles; see `site/assets/mingrx-captures.provenance.json`.
+- App images must come from the actual app. Rafael decided on 2026-11-07 that fictional profiles in screenshots do not need "demo" labels. Unverified mockups must not be presented as shipped functionality.
 - No confirmed testimonials, adoption counts, comparative benchmarks or independent performance claims have been provided.
 
 ## Product Principles
