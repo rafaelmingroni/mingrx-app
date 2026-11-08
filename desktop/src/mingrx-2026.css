@@ -241,3 +241,12 @@ html body.mingrx-ui .update-badge{background:var(--mx-panel-2)!important;color:v
 html body.mingrx-ui .update-badge.ready{background:var(--mx-accent)!important;color:#fff!important;border-color:transparent!important}
 html body.mingrx-ui .cloud-brand{display:block!important;text-align:left!important;padding:0!important;width:100%!important}
 html body.mingrx-ui .cloud-brand .mingrx-auth-brand{width:100%!important;margin:0!important;padding:0!important}
+/* Fluent Emoji 3D in messages and reactions. */
+.mx-emoji{display:inline-block;width:1.375em;height:1.375em;vertical-align:-.32em;margin:0 .04em;object-fit:contain;user-select:text}
+.msg-text.mx-emoji-only .mx-emoji{width:42px;height:42px;margin:2px 3px 0 0;vertical-align:middle}
+body.mingrx-ui .v21-reaction{display:inline-flex!important;align-items:center;gap:5px}
+body.mingrx-ui .v21-reaction .mx-emoji{width:18px;height:18px;margin:0;vertical-align:middle}
+body.mingrx-ui .v21-context-reactions button{display:grid!important;place-items:center}
+body.mingrx-ui .v21-context-reactions .mx-emoji{width:26px;height:26px;margin:0;transition:transform .16s cubic-bezier(.2,.8,.2,1)}
+body.mingrx-ui .v21-context-reactions button:hover .mx-emoji{transform:scale(1.18) translateY(-1px)}
+@media (prefers-reduced-motion:reduce){body.mingrx-ui .v21-context-reactions .mx-emoji{transition:none}}

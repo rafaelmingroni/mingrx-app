@@ -90,7 +90,7 @@ app.whenReady().then(async () => {
     for(const [name,type] of [['clipes','text'],['ranked','text'],['Squad','voice'],['Só ouvindo','voice']])await socket.createChannel({serverId:s.id,name,type});
     const l=await socket.loadServer(s.id);return JSON.stringify({id:s.id,invite:l.inviteCode,text:l.channels.find(c=>c.type==='text').id,voice:l.channels.find(c=>c.name==='Squad').id})`));
   for (const p of [bruna, caio, davi]) await run(p.w, `await socket.joinServer(${q(room.invite)});`);
-  const msgs = [[bruna, 'alguém on hoje à noite? 🎮'], [caio, 'eu topo, saio do trampo às 19h'], [davi, 'bora, mas sem ninguém caindo da call no meio da partida 😂'], [lia, 'criei o canal de voz Squad pra gente'], [bruna, 'perfeito, entro às 19h30'], [caio, '19h30 fechado']];
+  const msgs = [[bruna, 'alguém on hoje à noite? 🎮'], [caio, 'eu topo, saio do trampo às 19h'], [davi, 'bora, mas sem ninguém caindo da call no meio da partida 😂'], [lia, 'criei o canal de voz Squad pra gente'], [bruna, 'perfeito, entro às 19h30'], [caio, '19h30 fechado 👍'], [davi, '🔥🔥']];
   for (const [p, text] of msgs) { await run(p.w, `await socket.sendMessage({serverId:${q(room.id)},channelId:${q(room.text)},text:${q(text)}});`); await wait(300); }
   const sel = (p, ch) => run(p.w, `for(let i=0;i<100&&!state.servers.some(s=>s.id===${q(room.id)});i++)await sleep(50);selectServer(${q(room.id)});selectChannel(${q(ch)});await sleep(500);`);
   await sel(lia, room.text); await shot(lia.w, 'chat');
