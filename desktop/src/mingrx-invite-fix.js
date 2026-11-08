@@ -53,8 +53,7 @@
         </div>
         ${code ? `<div class="mingrx-invite-code"><span>Código da comunidade</span><strong>${escape(code)}</strong><div class="mingrx-invite-actions"><button id="mxInviteCopyCode" class="primary">Copiar código</button><button id="mxInviteCopyLink">Copiar link</button></div></div>` : '<div class="premium-invite-warning">Esta comunidade ainda não possui um código de convite.</div>'}
         ${link ? `<div class="mingrx-invite-link-card"><code>${escape(link)}</code><button id="mxInviteCopyLinkCard" class="mingrx-invite-copy-link">Copiar</button></div>` : ''}
-        ${admin ? `<div class="mingrx-temp-card"><div><b>Convite temporário</b><small>Gere um código com expiração sem bloquear a interface.</small></div><div class="mingrx-temp-row"><select id="mxInviteDuration"><option value="30">30 minutos</option><option value="60" selected>1 hora</option><option value="1440">24 horas</option><option value="10080">7 dias</option></select><button id="mxInviteTemporary">Gerar código</button></div><div id="mxInviteTempResult" class="mingrx-temp-result hidden"></div></div>` : ''}
-        <p class="mingrx-invite-note">O modal permanece utilizável mesmo se a conexão estiver lenta. Voz e compartilhamento de tela continuam independentes do convite.</p>
+        ${admin ? `<div class="mingrx-temp-card"><div><b>Convite temporário</b><small>Gere um código que vale só pelo tempo escolhido.</small></div><div class="mingrx-temp-row"><select id="mxInviteDuration"><option value="30">30 minutos</option><option value="60" selected>1 hora</option><option value="1440">24 horas</option><option value="10080">7 dias</option></select><button id="mxInviteTemporary">Gerar código</button></div><div id="mxInviteTempResult" class="mingrx-temp-result hidden"></div></div>` : ''}
       </div>`);
 
     document.getElementById('mxInviteCopyCode')?.addEventListener('click', () => copy(code, 'Código da comunidade copiado.'));

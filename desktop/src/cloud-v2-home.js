@@ -5,7 +5,7 @@
   home.className = 'cloud-home hidden';
   home.innerHTML = `
     <aside class="cloud-home-servers">
-      <button class="cloud-home-logo" title="Banana Cord"><img src="../assets/banana-cord.png" alt=""></button>
+      <button class="cloud-home-logo" title="Mingrx"><img src="../assets/mingrx.svg" alt=""></button>
       <div id="cloudServerList" class="cloud-server-list"></div>
       <button id="cloudCreateServer" class="cloud-server-add" title="Criar servidor">+</button>
     </aside>
@@ -81,7 +81,7 @@
   }
 
   async function createServer() {
-    const name = window.prompt('Nome do novo servidor Banana Cord:');
+    const name = window.prompt('Nome da nova comunidade:');
     if (!name?.trim()) return;
     try {
       await window.BananaCloud.createServer(name.trim());

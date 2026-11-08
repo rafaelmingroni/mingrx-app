@@ -115,5 +115,10 @@ app.whenReady().then(async () => {
   await wait(2000);
   await shot(bruna.w, 'call-viewer');
   await sel(lia, room.text); await shot(lia.w, 'chat-in-call');
+  const click = (p, sel) => run(p.w, `document.querySelector(${q(sel)})?.click();await sleep(700);`);
+  const closeModal = p => run(p.w, "document.querySelector('.modal:not(.hidden) .modal-close')?.click();document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));await sleep(400);");
+  await click(lia, '#inviteBtn'); await shot(lia.w, 'invite'); await closeModal(lia);
+  await click(lia, '#profileBtn'); await shot(lia.w, 'settings'); await closeModal(lia);
+  await click(lia, '#homeServer'); await shot(lia.w, 'home');
   done(0, 'ui-snapshot complete: ' + OUT);
 }).catch(e => done(1, e.stack || String(e)));

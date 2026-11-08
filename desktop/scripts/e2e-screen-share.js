@@ -177,6 +177,8 @@ app.whenReady().then(async()=>{
     assert(layout.copy.right<=layout.parent.right+1,'Audio label must fit the picker');
     console.log('Capture checkbox alignment passed at '+zoom*100+'%');
   }
+  // Chromium persists per-file zoom in the shared profile; restore it so later E2E runs start at 100%.
+  win.webContents.setZoomFactor(1);
   assert.equal(channels.filter(c=>c==='sources').length,channels.filter(c=>c==='cancel').length,'Every picker must release its main-process grant');
   clearTimeout(timeout);win.destroy();console.log('Screen-share renderer regressions passed. Native Windows driver capture is not simulated by this test.');app.exit(0);
 }).catch(error=>{clearTimeout(timeout);console.error(error);app.exit(1)});

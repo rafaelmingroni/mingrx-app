@@ -151,8 +151,9 @@ app.whenReady().then(async () => {
           video: document.querySelector('#settingsArea .camera-preview') && {height:document.querySelector('#settingsArea .camera-preview').getBoundingClientRect().height}
         }));
         if (!scroller || !['auto','scroll'].includes(getComputedStyle(scroller).overflowY) || range <= 0) return { ok: false, reason: 'settings scroll regression' };
-        scroller.scrollTop = range; await sleep(20);
-        if (scroller.scrollTop < Math.max(1, range - 2)) return { ok: false, reason: 'settings cannot reach bottom' };
+        // The camera preview can settle a few pixels after the tab opens; check against the live height.
+        scroller.scrollTop = scroller.scrollHeight; await sleep(20);
+        if (scroller.scrollTop < Math.max(1, scroller.scrollHeight - scroller.clientHeight - 2)) return { ok: false, reason: 'settings cannot reach bottom' };
         mark('scroll-ok');
 
         document.getElementById('tabNotifications')?.click(); await sleep(50);

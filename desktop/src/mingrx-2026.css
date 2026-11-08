@@ -131,3 +131,19 @@ body.mingrx-ui .primary,body.mingrx-ui .modal-card .action{border-radius:11px!im
 body.mingrx-ui .composer{background:var(--mx-bg)!important;box-shadow:none!important}
 body.mingrx-ui .v219-hierarchy-mark{background:var(--mx-line)!important;opacity:1!important}
 body.mingrx-ui .audio-unlock{background:linear-gradient(135deg,#8a35fa,#6424df)!important;color:#fff!important;border:0!important;border-radius:999px!important;padding:9px 18px!important;font-weight:700!important;box-shadow:0 12px 30px -14px #7131eb!important}
+
+/* Autoplay unlock: a small pill in the tile corner instead of a banner over the stream. */
+body.mingrx-ui .video-card .audio-unlock{position:absolute!important;inset:auto auto 56px 12px!important;transform:none!important;margin:0!important;z-index:4;font-size:12.5px!important;padding:7px 13px!important;gap:6px}
+body.mingrx-ui .video-card .audio-unlock .mx-ico{width:15px;height:15px}
+
+/* Settings: calmer field type and a styled file picker. */
+body.mingrx-ui #settingsArea input:not([type=checkbox]):not([type=radio]):not([type=range]),body.mingrx-ui #settingsArea select{font-size:14px!important}
+body.mingrx-ui #settingsArea input[type=file]{font-size:13px!important;color:var(--mx-muted)!important;padding:8px!important}
+body.mingrx-ui #settingsArea input[type=file]::file-selector-button{margin-right:12px;padding:7px 14px;border:1px solid var(--mx-line);border-radius:9px;background:var(--mx-panel-3);color:var(--mx-text);font:600 13px var(--mx-font-ui);cursor:pointer}
+body.mingrx-ui #settingsArea input[type=file]::file-selector-button:hover{background:var(--mx-hover)}
+
+/* Dialogs share the app surface; invite and DM polish. */
+body.mingrx-ui .modal-card{background:linear-gradient(180deg,var(--mx-panel-2),var(--mx-panel))!important;border:1px solid var(--mx-line)!important;box-shadow:var(--mx-shadow)!important}
+body.mingrx-ui .modal-card select,body.mingrx-ui .modal-card input:not([type=checkbox]):not([type=radio]){font-size:14px!important}
+body.mingrx-ui .mingrx312-nav-icon .mx-ico,body.mingrx-ui #channelIcon .mx-ico{width:18px;height:18px;color:var(--mx-muted)}
+body.mingrx-ui #channelIcon .mx-ico{color:var(--mx-text-2)}
