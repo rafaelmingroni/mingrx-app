@@ -272,7 +272,7 @@
       const off=onSnapshot(query(collection(peers.slotRef,'signals'),where('targetSessionId','==',this.id),where('targetUserId','==',uid)),snap=>{
         for(const change of snap.docChanges())if(change.type==='added'){
           const s=change.doc.data();
-          if(s.targetSessionId===this.id&&stamp(s.createdAt)>now()-60000)this.receive('webrtc:signal',{fromSocketId:s.fromSocketId,fromUser:s.fromUser,data:s.data});
+          if(s.targetSessionId===this.id&&stamp(s.createdAt)>now()-60000){if(s.fromSocketId&&s.fromSlot)(this.__signalSlots||=new Map()).set(s.fromSocketId,s.fromSlot);this.receive('webrtc:signal',{fromSocketId:s.fromSocketId,fromUser:s.fromUser,data:s.data});}
           deleteDoc(change.doc.ref).catch(()=>{});
         }
       },()=>{if(this.connected&&this.voice===admitted){this.receive('voice:revoked');this.leaveVoice().catch(()=>{});}});
@@ -317,10 +317,25 @@
     socket.voiceSpeaking=async function(value) {if(this.voice)await updateDoc(this.voice.slotRef,{speaking:!!value.speaking});};
     socket.signal=async function(payload={}) {
       const current=this.voice;if(!current||!payload.targetSocketId)return;
-      const directory=this.__voiceTrees.get(current.serverId)?.[current.channelId]||{};
-      const target=Object.values(directory).find(row=>row.sessionId===payload.targetSocketId)
-        || current.initialPeers.find(row=>row.sessionId===payload.targetSocketId);
-      if(!target||!alive(target))return;
+      // The first person in a room learns about newcomers from the room listener,
+      // which can lag behind the newcomer's offer. Wait briefly for it, then use the
+      // slot carried by that offer (verified on the server) instead of dropping the
+      // answer, which left the newcomer stuck in "connecting" with the first member.
+      const lookup=()=>{
+        const directory=this.__voiceTrees.get(current.serverId)?.[current.channelId]||{};
+        return Object.values(directory).find(row=>row.sessionId===payload.targetSocketId)
+          || current.initialPeers.find(row=>row.sessionId===payload.targetSocketId);
+      };
+      let target=lookup();
+      for(let i=0;!target&&i<12&&this.voice===current;i++){await new Promise(r=>setTimeout(r,125));target=lookup();}
+      const knownSlot=this.__signalSlots?.get(payload.targetSocketId);
+      if(!target&&knownSlot&&this.voice===current){
+        try{
+          const snap=await getDocFromServer(doc(this.db,...current.base,'voiceSessions',knownSlot));
+          if(snap.exists()&&snap.data().sessionId===payload.targetSocketId)target={slot:snap.id,...snap.data()};
+        }catch{}
+      }
+      if(!target||!alive(target)||this.voice!==current)return;
       const targetRef=doc(this.db,...current.base,'voiceSessions',target.slot);
       const data=JSON.parse(JSON.stringify(payload.data||{}));
       const signalRef=doc(collection(targetRef,'signals'));

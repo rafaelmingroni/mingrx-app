@@ -29,7 +29,8 @@
     "release:next": "node scripts/release-version.js --next",
     "release:check": "node scripts/release-version.js --check",
     "perf:probe": "firebase emulators:exec --project demo-mingrx-site --config ../firebase/firebase.json --only auth,firestore \"electron scripts/perf-probe.js\"",
-    "ui:snapshot": "firebase emulators:exec --project demo-mingrx-site --config ../firebase/firebase.json --only auth,firestore \"electron scripts/ui-snapshot.js\""
+    "ui:snapshot": "firebase emulators:exec --project demo-mingrx-site --config ../firebase/firebase.json --only auth,firestore \"electron scripts/ui-snapshot.js\"",
+    "smoke:voice-race": "firebase emulators:exec --project demo-mingrx-site --config ../firebase/firebase.json --only auth,firestore \"electron scripts/e2e-voice-join-race.js\""
   },
   "dependencies": {
     "electron-updater": "6.8.11",
