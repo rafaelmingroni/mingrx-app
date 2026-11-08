@@ -176,6 +176,7 @@
     ['Sua primeira conversa começa aqui.','Your first conversation starts here.','Tu primera conversación empieza aquí.'],
     ['Continue suas conversas.','Continue your conversations.','Continúa tus conversaciones.'],
     ['Suas pessoas, por perto.','Your people, close by.','Tu gente, cerca de ti.'],
+    ['Quem você adicionou no Mingrx.','People you added on Mingrx.','Personas que agregaste en Mingrx.'],
     ['SEU PRIVADO','YOUR PRIVATE SPACE','TU ESPACIO PRIVADO'],
     ['CONVERSAS RECENTES','RECENT CONVERSATIONS','CONVERSACIONES RECIENTES'],
     ['PRONTOS PARA CONVERSAR','READY TO CHAT','LISTOS PARA CONVERSAR'],

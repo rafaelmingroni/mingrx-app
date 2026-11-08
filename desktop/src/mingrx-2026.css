@@ -356,3 +356,16 @@ html body.mingrx-ui .main>header .mingrx-members-toggle{margin-left:auto!importa
 html body.mingrx-ui .main>header .connection-badge.offline~.mingrx-members-toggle{margin-left:10px!important}
 html body.mingrx-ui .connection-badge.offline{margin-left:auto!important}
 html body.mingrx-ui .channel-section-title.v1-recent-title,html body.mingrx-ui .v214-private-section-title{letter-spacing:0!important;font-size:12px!important}
+/* Appearance: theme cards are neutral surfaces; only the chosen one is tinted. */
+html body.mingrx-ui #settingsArea .mingrx-theme-card{background:var(--mx-panel-2)!important;color:var(--mx-text)!important;border:1px solid var(--mx-line)!important;box-shadow:none!important;border-radius:14px!important;min-height:72px!important;font-weight:inherit!important}
+html body.mingrx-ui #settingsArea .mingrx-theme-card:hover{background:var(--mx-hover)!important;border-color:color-mix(in srgb,var(--mx-line) 50%,var(--mx-accent))!important}
+html body.mingrx-ui #settingsArea .mingrx-theme-card.active{background:color-mix(in srgb,var(--mx-accent) 12%,var(--mx-panel-2))!important;border-color:var(--mx-accent-border)!important}
+html body.mingrx-ui #settingsArea .mingrx-theme-copy b{font-size:13.5px!important;font-weight:650!important;color:var(--mx-text)!important}
+html body.mingrx-ui #settingsArea .mingrx-theme-copy small{font-size:12px!important;color:var(--mx-muted)!important;font-weight:450!important}
+html body.mingrx-ui #settingsArea .mingrx-theme-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--mx-line)!important;background:none!important;color:transparent!important;font-size:0!important;position:relative}
+html body.mingrx-ui #settingsArea .mingrx-theme-card.active .mingrx-theme-check{border-color:var(--mx-accent)!important;background:var(--mx-accent)!important}
+html body.mingrx-ui #settingsArea .mingrx-theme-card.active .mingrx-theme-check::after{content:"";position:absolute;left:6px;top:3px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+/* Create community, updates: sentence-case labels; friends empty state without a dashed box. */
+html body.mingrx-ui .modal-card label,html body.mingrx-ui .mingrx-create-community label,html body.mingrx-ui #settingsArea .settings-stat span,html body.mingrx-ui #settingsArea small{text-transform:none!important;letter-spacing:0!important}
+html body.mingrx-ui .modal-card label{font-size:13px!important;font-weight:600!important}
+html body.mingrx-ui .mingrx-social-empty,html body.mingrx-ui .mingrx-social-list [class*="empty"]{border:0!important;background:none!important}

@@ -70,7 +70,7 @@
     return `<button type="button" class="mingrx-theme-card ${active===theme.id?'active':''}" data-mingrx-theme-choice="${theme.id}" aria-pressed="${active===theme.id?'true':'false'}">
       <span class="mingrx-theme-preview" style="--preview-bg:${bg};--preview-panel:${panel};--preview-accent:${accent};--preview-text:${text}"></span>
       <span class="mingrx-theme-copy"><b>${label}</b><small>${theme.desc[locale()]}</small></span>
-      <span class="mingrx-theme-check">✓</span>
+      <span class="mingrx-theme-check" aria-hidden="true"></span>
     </button>`;
   }
 

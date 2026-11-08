@@ -107,7 +107,7 @@
     openModal(`
       <div class="mingrx-social-hub">
         <div class="mingrx-social-head">
-          <div><h2>Amigos</h2><p>Suas pessoas, por perto.</p></div>
+          <div><h2>Amigos</h2><p>Quem você adicionou no Mingrx.</p></div>
           <button type="button" class="mingrx-social-add-button" data-mx-tab="add"><span aria-hidden="true">＋</span> <span>Adicionar amigo</span></button>
         </div>
         <div class="mingrx-social-tabs" role="tablist" aria-label="Amigos">

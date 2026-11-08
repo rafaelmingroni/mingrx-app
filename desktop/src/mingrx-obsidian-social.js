@@ -53,7 +53,7 @@
     const description = head?.querySelector('p');
     if (description && description.dataset.mxObsidian !== 'true') {
       description.dataset.mxObsidian = 'true';
-      description.textContent = 'Suas pessoas, por perto.';
+      description.textContent = 'Quem você adicionou no Mingrx.';
     }
 
     for (const avatar of hub.querySelectorAll('[data-social-avatar]')) decorateAvatar(avatar);

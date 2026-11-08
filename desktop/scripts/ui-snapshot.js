@@ -118,14 +118,18 @@ app.whenReady().then(async () => {
   const click = (p, sel) => run(p.w, `document.querySelector(${q(sel)})?.click();await sleep(700);`);
   const closeModal = p => run(p.w, "document.querySelector('.modal:not(.hidden) .modal-close')?.click();document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));await sleep(400);");
   await click(lia, '#inviteBtn'); await shot(lia.w, 'invite'); await closeModal(lia);
-  await click(lia, '#profileBtn'); await shot(lia.w, 'settings'); await closeModal(lia);
+  await click(lia, '#profileBtn'); await shot(lia.w, 'settings');
+  for (const tab of ['tabAudio', 'tabVideo', 'tabGeneral', 'tabDiag', 'tabNotifications', 'tabUpdates', 'tabMingrxAppearance', 'tabMingrxSocial']) { await click(lia, '#' + tab); await shot(lia.w, 'settings-' + tab.replace(/^tab(Mingrx)?/, '').toLowerCase()); }
+  await closeModal(lia);
   await click(lia, '#serverSettingsBtn'); await shot(lia.w, 'server-settings');
   await run(lia.w, "const m=document.querySelector('.modal:not(.hidden) .modal-card, .modal:not(.hidden) .modal-body');const sc=[...document.querySelectorAll('.modal:not(.hidden) *')].find(e=>e.scrollHeight>e.clientHeight+40&&/auto|scroll/.test(getComputedStyle(e).overflowY));if(sc)sc.scrollTop=sc.scrollHeight;await sleep(400);");
   await shot(lia.w, 'server-settings-members'); await closeModal(lia);
   await run(lia.w, "const msg=[...document.querySelectorAll('.message')].pop();msg?.dispatchEvent(new MouseEvent('mouseover',{bubbles:true}));msg?.dispatchEvent(new MouseEvent('mouseenter',{bubbles:true}));await sleep(300);const more=[...(msg?.querySelectorAll('.v21-message-tools button')||[])].pop();more?.click();await sleep(500);");
   await shot(lia.w, 'message-menu');
-  await run(lia.w, "document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));document.body.click();await sleep(300);const row=document.querySelector('.v219-member-row');row?.click();await sleep(700);");
+  await run(lia.w, "document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));document.body.click();document.querySelectorAll('.v21-context-menu').forEach(m=>m.remove());await sleep(300);const row=document.querySelector('.v219-member-row');row?.click();await sleep(700);");
   await shot(lia.w, 'profile-card'); await closeModal(lia);
   await click(lia, '#homeServer'); await shot(lia.w, 'home');
+  await run(lia.w, "[...document.querySelectorAll('.mingrx312-private-nav button, .mingrx312-private-nav a, button')].find(b=>/^\s*Amigos\s*$/.test(b.textContent||''))?.click();await sleep(700);"); await shot(lia.w, 'friends');
+  await click(lia, '#addServerBtn'); await shot(lia.w, 'create-community'); await closeModal(lia);
   done(0, 'ui-snapshot complete: ' + OUT);
 }).catch(e => done(1, e.stack || String(e)));

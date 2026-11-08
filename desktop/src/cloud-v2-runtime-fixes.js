@@ -228,7 +228,7 @@
       const prefs = current();
       area.innerHTML = `
         <div class="settings-card">
-          <div class="settings-card-head compact"><div><span class="settings-kicker">SONS</span><h3>Alertas do aplicativo</h3><p>Escolha quais eventos devem tocar um som. Tudo é processado localmente e é bem leve.</p></div></div>
+          <div class="settings-card-head compact"><div><span class="settings-kicker">SONS</span><h3>Alertas do aplicativo</h3><p>Escolha quais eventos tocam um som.</p></div></div>
           <div class="switch-grid">
             <label class="switch-line"><input id="soundMaster" type="checkbox" ${prefs.master ? 'checked' : ''}> Ativar sons do Banana Cord</label>
             <label class="switch-line"><input id="soundCall" type="checkbox" ${prefs.call ? 'checked' : ''}> Entrar / sair da chamada</label>
@@ -238,7 +238,7 @@
             <label class="switch-line"><input id="soundDm" type="checkbox" ${prefs.dm ? 'checked' : ''}> Mensagem privada recebida</label>
           </div>
           <div class="settings-field"><label>Volume dos alertas <span id="soundVolumeLabel">${Math.round(prefs.volume * 100)}%</span></label><input id="soundVolume" type="range" min="0" max="1" step="0.01" value="${prefs.volume}"></div>
-          <div class="settings-actions"><button class="secondary" id="testNotificationSound">🔊 Testar som</button><button class="action" id="saveNotificationSounds">Salvar notificações</button></div>
+          <div class="settings-actions"><button class="secondary" id="testNotificationSound">Testar som</button><button class="action" id="saveNotificationSounds">Salvar notificações</button></div>
         </div>`;
       const volume = document.getElementById('soundVolume');
       const volumeLabel = document.getElementById('soundVolumeLabel');
