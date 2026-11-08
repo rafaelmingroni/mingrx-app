@@ -31,7 +31,12 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Audit production dependencies
         working-directory: desktop
-        run: npm run security:audit
+        # One retry absorbs a transient registry error; real high-severity findings still fail both attempts.
+        shell: pwsh
+        run: |
+          npm run security:audit
+          if ($LASTEXITCODE -ne 0) { Start-Sleep -Seconds 20; npm run security:audit }
+          exit $LASTEXITCODE
       - name: Prepare source
         working-directory: desktop
         run: npm run prepare:source
