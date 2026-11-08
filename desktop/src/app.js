@@ -18,7 +18,7 @@ const ROLE_LABEL={owner:'Dono',admin:'Administrador',moderator:'Moderador',membe
 const STATUS_LABEL={online:'Online',busy:'Ocupado',away:'Ausente',offline:'Offline'};
 const ls=(key,def='')=>localStorage.getItem(`banana.${key}`)??def;
 const bool=(key,def=false)=>{const v=localStorage.getItem(`banana.${key}`);return v==null?def:v==='true'};
-const num=(key,def)=>{const v=Number(localStorage.getItem(`banana.${key}`));return Number.isFinite(v)?v:def};
+const num=(key,def)=>{const raw=localStorage.getItem(`banana.${key}`);if(raw==null||String(raw).trim()==='')return def;const v=Number(raw);return Number.isFinite(v)?v:def};
 let peerVolumes={};try{peerVolumes=JSON.parse(ls('peerVolumes','{}'))||{}}catch{}
 
 const state={

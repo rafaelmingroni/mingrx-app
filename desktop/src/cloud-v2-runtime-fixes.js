@@ -10,7 +10,9 @@
     return value == null ? fallback : value === 'true';
   };
   const storageNumber = (name, fallback = 0.55) => {
-    const value = Number(localStorage.getItem(`banana.${name}`));
+    const raw = localStorage.getItem(`banana.${name}`);
+    if (raw == null || String(raw).trim() === '') return fallback;
+    const value = Number(raw);
     return Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : fallback;
   };
   const saveBool = (name, value) => localStorage.setItem(`banana.${name}`, String(!!value));
