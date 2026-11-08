@@ -24,5 +24,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Prepare the licensed self-hosted font
+        run: node site/prepare-fonts.mjs
+      - name: Lint website JavaScript
+        run: npm exec --yes --package=eslint@10.14.0 -- eslint --config site/eslint.config.mjs site/
       - name: Validate static site
         run: node site/validate.mjs && node site/test-invites.mjs

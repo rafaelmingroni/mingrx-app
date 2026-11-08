@@ -1,0 +1,13 @@
+/* Loaded only through noscript: no runtime layout switch on script-enabled pages. */
+[data-copy-site],.stage-toolbar{display:none!important}
+.copy-native{font-size:var(--text-label);line-height:1.8;overflow-wrap:anywhere;user-select:all}
+.copy-native a,.gallery-fallback a{display:inline-flex;align-items:center;min-height:44px}
+.gallery-fallback{display:flex;flex-wrap:wrap;gap:8px 24px;padding:12px 20px}
+.gallery-fallback a{font-size:var(--text-small)}
+@media(max-width:850px){
+ .site-header{position:relative}
+ .header-inner{height:auto;min-height:74px;padding-block:16px;flex-wrap:wrap;gap:8px}
+ .menu-button{display:none}
+ .topnav{position:static;display:flex;flex-direction:row;flex-wrap:wrap;flex-basis:100%;justify-content:flex-start;gap:4px 20px;padding:0;border:0;opacity:1;transform:none}
+ .topnav a{padding:0}
+}

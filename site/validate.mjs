@@ -7,17 +7,17 @@ import {createHash} from 'node:crypto';
 const root=fileURLToPath(new URL('.',import.meta.url));
 const names=await readdir(root);
 const pages=names.filter(name=>name.endsWith('.html'));
-const files=Object.fromEntries(await Promise.all([...pages,'styles.css','legal.css','app.js','invite.js','CNAME','robots.txt','sitemap.xml'].map(async name=>[name,await readFile(path.join(root,name),'utf8')])));
+const files=Object.fromEntries(await Promise.all([...pages,'styles.css','legal.css','app.js','components.js','invite.js','CNAME','robots.txt','sitemap.xml'].map(async name=>[name,await readFile(path.join(root,name),'utf8')])));
 const check=(label,condition)=>{assert(condition,label);console.log(`OK: ${label}`)};
 check('custom domain is mingrx.site',files.CNAME.trim()==='mingrx.site');
 check('clear product and Windows headline',/Mensagens, chamadas/.test(files['index.html'])&&/Baixar para Windows/.test(files['index.html']));
-check('authentic application capture is explicitly labeled',files['index.html'].includes('Captura real do Mingrx 3.2')&&files['index.html'].includes('Contas de demonstração')&&(await stat(path.join(root,'assets/mingrx-conversation.webp'))).size>1000&&(await stat(path.join(root,'assets/mingrx-call.webp'))).size>1000);
+check('application captures are present',(await stat(path.join(root,'assets/mingrx-conversation.webp'))).size>1000&&(await stat(path.join(root,'assets/mingrx-call.webp'))).size>1000);
 check('no invented social proof or online counters',!/testimonial|reviewRating|aggregateRating|data-counter|real-friend|chip-online|voice-rings|disponível agora|sua galera está online/i.test(files['index.html']));
-check('no generated people or stock portraits',![...files['index.html'].matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)].some(([,src])=>!['./assets/mingrx-mark.svg','./assets/mingrx-conversation.webp','./assets/mingrx-call.webp'].includes(src)));
+check('images are verified product captures or the user-approved decorative orbit artwork',![...files['index.html'].matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)].some(([,src])=>!['./assets/mingrx-mark.svg','./assets/mingrx-conversation.webp','./assets/mingrx-call.webp','./assets/mingrx-conversation-detail.webp','./assets/mingrx-call-detail.webp','./assets/mingrx-community.webp','./assets/mingrx-orbit-hero.webp'].includes(src)));
 const css=Object.entries(files).filter(([name])=>name.endsWith('.css')).map(([,value])=>value).join('\n');
-check('solid surfaces without gradients',!/(?:linear|radial|conic)-gradient\s*\(/i.test(css));
-check('no animation or cursor effect',!/@keyframes|\banimation\s*:/.test(css)&&!/pointermove|mousemove|IntersectionObserver|cursor-glow|localStorage|sessionStorage/.test(files['app.js']));
-check('rectangular buttons',!/border-radius\s*:\s*(?:999|50%)/i.test(css)&&/\.button\{[^}]*border-radius:6px/.test(css));
+check('user-approved orbit theme has a dedicated illustrated hero',files['index.html'].includes('class="orbit-art"')&&css.includes('--orbit-button:')&&css.includes('--orbit-title:'));
+check('motion is optional and no cursor or tracking effects',css.includes('@media(prefers-reduced-motion:reduce)')&&css.includes('animation:none!important')&&!/pointermove|mousemove|cursor-glow|localStorage|sessionStorage/.test(files['app.js']));
+check('user-approved rounded actions use a shared radius token',css.includes('--radius-action:28px')&&css.includes('border-radius:var(--radius-action)'));
 check('local fonts and no advertising or analytics code',!Object.values(files).some(value=>/fonts\.googleapis|googletagmanager|google-analytics|facebook\.net|hotjar|clarity\.ms|made with ai|feito com ia/i.test(value)));
 check('no typographic dashes in website text',pages.every(name=>!/[\u2013\u2014]/u.test(files[name])));
 const iconEmoji=/[\u{1F000}-\u{1FAFF}\u2600-\u27BF]/u;
@@ -30,8 +30,15 @@ check('only applicable documents are promoted',pages.includes('accessibility.htm
 check('no unnecessary data collection forms',pages.every(name=>!/<form\b|<input\b|<textarea\b/i.test(files[name])));
 check('confirmed support and privacy email is available',files['about.html'].includes('Rafael Mingroni')&&['about.html','privacy.html','terms.html','support.html','accessibility.html'].every(name=>files[name].includes('href="mailto:mingrxapp@gmail.com"')&&!/em ativação|sendo criado|confirmação de ativação/.test(files[name])));
 check('robots and sitemap use the actual custom domain',files['robots.txt'].includes('https://mingrx.site/sitemap.xml')&&files['sitemap.xml'].includes('<loc>https://mingrx.site/</loc>'));
+const illustration=JSON.parse(await readFile(path.join(root,'assets/mingrx-orbit.provenance.json'),'utf8'));
+check('brand illustration is distinguished from genuine product evidence',illustration.notProductEvidence===true);
+for(const [name,expected] of Object.entries(illustration.files)){
+ const bytes=await readFile(path.join(root,'assets',name));
+ check(`${name}: illustration provenance matches shipping bytes`,createHash('sha256').update(bytes).digest('hex')===expected);
+ check(`${name}: responsive artwork stays within payload budget`,bytes.length<=(name.includes('small')?120000:name.includes('2x')?260000:200000));
+}
 const provenance=JSON.parse(await readFile(path.join(root,'assets/mingrx-captures.provenance.json'),'utf8'));
-check('real demonstration captures have provenance',provenance.publicVersion==='3.2');
+check('application captures have provenance',provenance.publicVersion==='3.2');
 for(const capture of provenance.captures){
   const name=path.basename(capture.file);
   const bytes=await readFile(path.join(root,'assets',name));
@@ -53,7 +60,7 @@ for(const name of pages){
     const [raw,fragment]=url.split('#');
     const clean=raw.split('?')[0];
     const target=raw?path.resolve(root,clean.startsWith('/')?'.'+clean:clean):path.join(root,name);
-    check(`${name}: local ${attr} ${url}`,(target===root.replace(/\/$/,'')||target.startsWith(root))&&await stat(target).then(()=>true,()=>false));
+    check(`${name}: local ${attr} ${url}`,(target===root.replace(/[\\/]$/,'')||target.startsWith(root))&&await stat(target).then(()=>true,()=>false));
     if(fragment){const targetHtml=raw?await readFile(target,'utf8'):html;check(`${name}: anchor ${fragment}`,new RegExp(`\\bid="${fragment}"`).test(targetHtml));}
   }
 }

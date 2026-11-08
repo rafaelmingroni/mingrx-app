@@ -2,27 +2,44 @@
 name: Mingrx — mingrx.site
 description: Sistema visual escuro do site público, baseado no aplicativo real.
 colors:
-  primary: "#c3acff"
-  primary-hover: "#d4c3ff"
-  action-ink: "#20152f"
-  canvas: "#0c0d12"
-  surface: "#161720"
-  ink: "#f6f3ff"
-  muted: "#b3b0c1"
-  border: "#30303e"
+  primary: "#b894ff"
+  primary-hover: "#7e35ed"
+  action-ink: "#ffffff"
+  action: "#6c27d9"
+  soft: "#0c1122"
+  canvas: "#070b17"
+  surface: "#11172a"
+  ink: "#f4f2ff"
+  muted: "#bfc0d5"
+  border: "#28304b"
   surface-hover: "#242330"
   border-hover: "#666174"
   scene-hover: "#23222e"
   scene-selected: "#33283f"
   scene-selected-ink: "#f0e6ff"
-  violet-field: "#21192f"
+  violet-field: "#11112b"
+  surface-raised: "#1b2240"
+  surface-blue: "#101b35"
+  blue: "#a8c8ff"
+  card-border-hover: "#6c5694"
+gradients:
+  orbit-button: "linear-gradient(135deg,#8a35fa,#6424df)"
+  orbit-title: "linear-gradient(110deg,#8e65f7,#c47bff)"
+text-sizes:
+  body: "16px"
+  small: "14px"
+  caption: "12px"
+  label: "13px"
+  section: "clamp(34px,4vw,54px)"
+borders:
+  default: "1px solid {colors.border}"
 typography:
   display:
     fontFamily: "Satoshi, Arial, sans-serif"
-    fontSize: "clamp(44px, 6.2vw, 88px)"
-    fontWeight: 750
-    lineHeight: 1.08
-    letterSpacing: "-0.04em"
+    fontSize: "clamp(48px,5.25vw,76px)"
+    fontWeight: 500
+    lineHeight: 1.07
+    letterSpacing: "-0.035em"
   headline:
     fontFamily: "Satoshi, Arial, sans-serif"
     fontSize: "clamp(34px, 4vw, 54px)"
@@ -46,22 +63,51 @@ typography:
     fontWeight: 750
     lineHeight: 1.5
 rounded:
+  action: "28px"
   control: "6px"
   image: "12px"
   frame: "14px"
+  card: "14px"
 spacing:
+  space-1: "8px"
+  space-2: "12px"
+  space-3: "16px"
+  space-4: "24px"
+  space-5: "32px"
+  space-6: "48px"
+  space-7: "80px"
+  space-8: "112px"
   control-gap: "12px"
   compact: "20px"
   content: "24px"
   section-gap: "35px"
   wide-gap: "48px"
   story-gap: "80px"
+  panel: "32px"
+  control-py: "13px"
+  control-px: "23px"
+  space-card: "28px"
+  space-card-compact: "24px"
+motion:
+  duration-quick: "160ms"
+  duration-scene: "360ms"
+  duration-reveal: "440ms"
+  duration-disclosure: "240ms"
+  duration-dialog: "200ms"
+  duration-tooltip: "120ms"
+  duration-stagger: "40ms"
+  orbit-depth: "8px"
+  ease-out: "cubic-bezier(.16,1,.3,1)"
+shadows:
+  stage: "0 30px 80px -50px #6543b866"
+  card-hover: "0 12px 28px -20px #8d64cc66"
 components:
   button-primary:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.action}"
+    backgroundImage: "{gradients.orbit-button}"
     textColor: "{colors.action-ink}"
     typography: "{typography.label}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.action}"
     padding: "13px 23px"
   button-primary-hover:
     backgroundColor: "{colors.primary-hover}"
@@ -92,70 +138,75 @@ components:
 
 ## Overview
 
-**Creative North Star: "Seu grupo de amigos, em cena"**
+**Creative North Star: "Converse, jogue e compartilhe — no universo Mingrx"**
 
-O sistema de mingrx.site coloca o uso social real em primeiro plano: fundo quase preto, tipografia clara e generosa, violeta sólido nas ações e capturas autênticas do produto. A apresentação é expressiva, direta e sem ornamentação em movimento.
+A referência cósmica fornecida e aprovada mais recentemente pelo usuário é a autoridade visual principal: pessoa fictícia sentada em uma crista rochosa, lua enorme com contorno violeta e M luminoso, céu navy, título branco e “compartilhe” violeta. Esta direção Orbit está implementada e substitui as antigas regras de hero editorial dividido, ação sólida, ausência de gradientes, cápsulas e ilustração. Satoshi e a marca Mingrx permanecem.
 
-Este documento governa somente o site público, incluindo início, convites, suporte e páginas de leitura. Não substitui o CSS nem a identidade de componentes do aplicativo Windows. A direção escrita já foi aprovada; os tokens registram a implementação concluída.
-
-**Key Characteristics:**
-- Fundo escuro com limites finos e campos tonais.
-- Satoshi de peso substancial e controles de cantos curtos.
-- Demonstrações reais identificadas e interações deliberadas.
+O sistema governa somente o site público, incluindo início, convites, suporte e páginas legais. Mantém arquitetura estática e fatos do aplicativo Windows. A ilustração de marca é ficcional e decorativa; a demonstração do produto usa uma captura genuína sob as ações do hero e a galeria completa abaixo dele.
 
 ## Colors
 
-O violeta claro conduz a ação; a base neutra sustenta imagens, navegação e leitura prolongada. O frontmatter é a referência normativa dos valores.
+Canvas navy #070b17, surface #11172a e soft #0c1122 sustentam texto claro #f4f2ff e muted #bfc0d5. Border #28304b delimita os planos; surface-raised #1b2240, surface-blue #101b35 e violet-field #11112b mantêm profundidade tonal. O acento #b894ff identifica foco, links e seleção de cenas.
 
-### Primary
-
-O violeta de marca aparece no download, nos destaques tipográficos, nos links de leitura e no foco. O estado hover clareia o preenchimento; a tinta escura mantém a legibilidade do botão. O campo violeta profundo contextualiza a passagem de chamadas.
-
-### Neutral
-
-Canvas e surface distinguem página e contêiner. Ink identifica títulos e ações; muted organiza descrições. Border delimita navegação, sumários e conteúdo sem sombras. As cenas selecionadas têm seu próprio par tonal.
-
-**The Solid Action Rule.** A ação principal usa violeta sólido; nunca um gradiente.
+**Orbit Action Rule.** Ações principais e download do header usam tinta branca, base #6c27d9, gradiente violeta `linear-gradient(135deg,#8a35fa,#6424df)` e raio 28px. Hover usa base #7e35ed e gradiente #9242ef → #7633ee. O destaque “compartilhe” usa `linear-gradient(110deg,#8e65f7,#c47bff)`. Gradientes de superfície e o reaproveitamento discreto da arte no fechamento pertencem à direção aprovada; não indicam capacidades do produto.
 
 ## Typography
 
 Satoshi variável é auto-hospedada em `site/assets/fonts/satoshi-variable.woff2`, com licença ITF Free Font License preservada ao lado. O arquivo oficial, sem modificações, é obtido no build e verificado por SHA-256; não é redistribuído no repositório. O arquivo cobre pesos 300–900; Arial e sans-serif são os fallbacks.
 
+Os tokens CSS compartilhados `--text-body`, `--text-small`, `--text-caption` e `--text-label` usam 16, 14, 12 e 13px; `--type-section` usa `clamp(34px,4vw,54px)`. O label do botão padrão conserva 14px pela variante small.
+
 Display serve à abertura; headline às passagens principais; title aos passos; body ao texto corrente; label ao botão padrão. A navegação usa texto de 13px com peso 650, e notas/captions usam 12–13px. Textos legais usam 15px com entrelinha 1.95, reduzindo a 14px no telefone; a coluna de artigo limita-se a 74ch.
 
-Títulos têm quebra balanceada. Em telas até 540px, o título inicial usa 42px com entrelinha 1.13; títulos de seção usam 36px. Não simular outra família tipográfica com peso ou espaçamento.
+O hero usa “Converse, jogue” / “e compartilhe.” em Satoshi 500, `clamp(48px,5.25vw,76px)`, entrelinha 1.07 e tracking -.035em; o destaque usa peso 750. Acima de 1600px chega a 80px. Até 850px usa clamp de 46–64px; até 540px usa `clamp(38px,10.5vw,56px)` e entrelinha 1.08. Títulos de seção no telefone usam 36px. Não simular outra família tipográfica com peso ou espaçamento.
 
 ## Layout
 
 A largura principal é limitada a 1240px, com 40px de margem lateral no desktop. Os pontos de adaptação são 1100px, 850px e 540px: margens laterais passam a 32px, 24px e 20px. A navegação fixa ocupa 82px no desktop e 74px até 850px.
 
-Passagens de produto alternam imagem e texto em duas colunas; tornam-se uma coluna até 850px. O ritmo das seções passa de 112px para 75px e 65px. Passos e tópicos de suporte tornam-se uma coluna até 540px. Não transformar todas as passagens em cartões iguais.
+O `.orbit-hero` apresenta copy à esquerda, com largura de 53% (máximo 640px), e a arte preenchendo o palco, com gamer e lua à direita. O hero tem altura mínima limitada a 820px/viewport no desktop e 860px acima de 1600px. Até 850px copy e arte se empilham; a arte tem 420px, reduzidos a 330px até 540px, com enquadramento à direita. A prova imediata `.orbit-proof` fica sob as ações do hero, com largura máxima de 460px, imagem inteira (`object-fit: contain`, altura automática), legenda demonstrativa e abertura no diálogo. No telefone ela precede a arte. A galeria completa fica em `.product-intro` abaixo, com título próprio. No desktop a arte alinha à direita com overlay escuro à esquerda para preservar pessoa e lua quando o hero cresce. O bento tem dois cartões amplos e três compactos, todos com iconografia SVG coerente; até 850px os compactos se reorganizam e até 540px todos ocupam uma coluna. O showcase tem wrapper `.showcase-display` sticky à esquerda, reunindo navegação de progresso e visual, e quatro etapas à direita, sem interceptar a rolagem nativa; até 850px usa apresentação estática em sequência, com imagens nas duas primeiras etapas. O ritmo das seções passa de 112px para 75px e 65px. Passos e tópicos de suporte tornam-se uma coluna até 540px. Não transformar todas as passagens em cartões iguais.
+
+O ritmo compartilhado `--space-1` a `--space-8` usa 8, 12, 16, 24, 32, 48, 80 e 112px. `--border-default` centraliza `1px solid var(--line)` e `--radius-control` centraliza 6px nos controles. O rodapé usa grid de marca e três grupos de links, gap de 80px no desktop, títulos de grupo de 14px e links de 13px; até 850px a marca fica acima dos grupos e até 540px os links usam duas colunas, com o último grupo em largura total.
 
 As páginas legais usam largura máxima de 1100px, sumário de 200px e artigo em coluna fluida, com intervalo de 75px. Até 850px, o sumário entra no fluxo antes do artigo; o título permanece fora do disclosure. Convites usam um contêiner de até 660px.
 
-As capturas mantêm acesso à imagem completa. No telefone, a regra final usa altura automática e `object-fit: contain` nas cenas e figuras de história, preservando todo o conteúdo após a revisão dos recortes.
+As capturas mantêm acesso à imagem completa. No telefone, a galeria abaixo do hero mostra recortes reais de detalhe em um quadro de proporção 430/164 com `object-fit: contain`; o link para a captura completa continua disponível. O showcase móvel evita repetir imagens nas etapas de tela e comunidade.
 
 ## Elevation & Depth
 
-Não há sombras, halos ou animação de entrada. Profundidade vem do contraste entre canvas, superfícies, campos violetas e bordas finas. Hover e abertura de disclosures mudam estado imediatamente; não há autoplay. A preferência por movimento reduzido desativa transições e preserva rolagem automática padrão.
+A sombra do palco de produto é `0 30px 80px -50px #6543b866`. Botões têm borda e luz interna discretas; a lua e a iluminação violeta pertencem à ilustração decorativa. Ações e cartões têm hover discreto. Os tokens de duração são quick 160ms, scene 360ms e reveal 440ms; a curva de saída é `cubic-bezier(.16,1,.3,1)`. O título do hero entra em 440ms; descrição atrasa 50ms, ações 90ms e a prova real 130ms. A prova usa opacidade 0→1, escala .99→1 e deslocamento de 16px; as capturas não recebem parallax. A galeria entra pela mesma revelação de seção em 440ms. O disclosure usa 240ms para interpolar altura quando `interpolate-size` está disponível, além da entrada de conteúdo existente em 200ms. O diálogo usa 200ms para entrada e saída nativas com transições discretas de display e overlay quando suportadas.
+
+Conteúdo é visível por padrão. IntersectionObserver adiciona revelações uma única vez: opacidade 0→1 e deslocamento vertical de 16px em 440ms. WeakSet e unobserve preservam essa condição mesmo após mudanças de preferência de movimento; elementos que contêm foco não animam. Galeria, showcase, download, FAQ e filhos do rodapé estão entre os alvos, além de headings e cards. Cards alternam atrasos de 40/80ms no desktop; no mobile os atrasos são zero. Sem JavaScript ou IntersectionObserver, o conteúdo permanece visível. O showcase só é acompanhado quando se aproxima da viewport. O acompanhamento usa listeners passivos e requestAnimationFrame, sem scroll hijack. As imagens do showcase alternam opacidade e escala discreta; as abas usam crossfade com Web Animations API, sem depender de View Transitions. A imagem anterior permanece em uma cópia inerte e oculta à acessibilidade durante a decodificação da próxima; o palco sinaliza `aria-busy` enquanto aguarda. Foco ou pointerenter antecipa a carga. Erros mantêm os links originais disponíveis; movimento reduzido ou ausência da API resulta em troca direta. Não há autoplay, rolagem imposta ou dependência de animação para ler.
+
+`prefers-reduced-motion: reduce` remove animações, transições, transformações de hover e sticky; a narrativa permanece legível. Até 850px, o showcase também dispensa sticky e oculta o visual persistente; a narrativa e os quatro links de progresso ficam no fluxo nativo. A etapa mais próxima da linha central e `aria-current="step"` continuam sincronizados em todas as larguras, inclusive com movimento reduzido, sem animação ou rolagem imposta.
+
+A profundidade da arte Orbit usa parallax decorativo limitado a 8px (`--orbit-depth`), apenas a partir de 851px, com no-preference e enquanto o hero está próximo da viewport. IntersectionObserver ativa listeners passivos de scroll/resize; requestAnimationFrame é agendado por eventos, sem loop contínuo. `will-change` existe somente durante a atividade; escala 1.025 evita bordas expostas. Mobile e reduced motion removem listeners, profundidade e transformações. A rolagem permanece nativa e as capturas ficam sem parallax.
 
 ## Shapes
 
-Controles usam cantos curtos; figuras e blocos de contato usam o raio image, e a moldura principal e o convite usam frame. A moldura principal passa a image no telefone. Bordas estruturais têm 1px. Botões não têm formato de cápsula.
+Ações principais e download do header usam raio 28px; os demais controles mantêm 6px. Figuras e blocos de contato usam o raio image, e a moldura principal e o convite usam frame. A moldura principal passa a image no telefone. Bordas estruturais têm 1px. O formato arredondado das ações é explicitamente autorizado pela nova referência.
 
 ## Components
 
-**Botões.** Primary destaca download ou abertura do aplicativo; secondary oferece o caminho alternativo. Ambos têm altura mínima de 52px; a variante compacta tem 44px. O link textual sublinhado tem alvo mínimo de 44px. Hover altera cor/preenchimento; botões em operação ficam desabilitados, com opacidade .7 e cursor de espera.
+A camada reutilizável está em `site/components.js`, carregada com defer antes de `app.js` e incluída no build. `MingrxUI.mount(scope)` monta raízes com registro WeakMap idempotente. `MingrxUI.tabs(root).select(nome)` controla somente painéis da própria raiz, identificados por aria-controls, sem IDs de painel hardcoded. `MingrxUI.setButtonBusy` preserva rótulo e disabled originais, suporta `[data-button-label]` e chamadas repetidas. App.js fica com controle de página: convites, download, cópia, progresso nativo e seção ativa. Contratos e exemplos estão em [docs/design/site-components.md](docs/design/site-components.md).
 
-**Foco e seleção.** O foco visível usa contorno violeta de 3px e afastamento de 5px. A seleção de texto usa o mesmo violeta com tinta escura. O skip link aparece ao receber foco; alvos de navegação programática não recebem contorno artificial.
+Navegação e diálogos têm instâncias por raiz. Links `data-preview-dialog` escolhem um diálogo explicitamente; os demais usam `data-primary-dialog`. Cards e accordion são padrões HTML/CSS nativos, sem React. Botões base usam control-py13px/control-px23px; cards usam space-card28px e compact24px, borda hover #6c5694 e sombra `0 12px 28px -20px #8d64cc66`.
 
-**Navegação.** Links discretos clareiam em hover. Até 850px, o botão Menu alterna `aria-expanded` e abre links em coluna. Escape fecha e devolve foco ao botão; clique externo, navegação e retorno ao desktop fecham o menu.
+**Botões.** Primary destaca download ou abertura do aplicativo; secondary oferece o caminho alternativo. Ambos têm altura mínima de 52px; a variante compacta tem 44px. O link textual sublinhado tem alvo mínimo de 44px. Hover altera cor/preenchimento e desloca o botão em 2px; botões em operação ficam desabilitados, com opacidade .7 e cursor de espera.
 
-**Cenas.** Duas abas, Conversas e Em chamada, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco. Não há rotação automática. As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
+**Foco e seleção.** O foco visível usa contorno violeta de 3px e afastamento de 5px; links de captura e painéis usam offset interno de -4px para evitar recorte. Links da marca têm altura mínima de 44px. A seleção de texto usa #6930c9 com tinta branca; o skip link usa #6c27d9 com tinta branca. O skip link aparece ao receber foco; alvos de navegação programática não recebem contorno artificial.
 
-**Leitura e disclosure.** FAQ usa `details/summary` nativos, divisórias e símbolo de mais que gira ao abrir. O sumário legal é outro disclosure real: abre inicialmente em larguras acima de 850px; em telas menores inicia recolhido. Os tópicos de suporte são links de tarefa com divisórias, sem campos de formulário.
+**Navegação.** Links discretos clareiam em hover. IntersectionObserver identifica a seção corrente dos links internos com `aria-current="location"` e sublinhado violeta; Download leva à seção dedicada `#download`. Até 850px, o botão Menu alterna `aria-expanded` e abre links em coluna. Escape fecha e devolve foco ao botão; clique externo, navegação e retorno ao desktop fecham o menu. A entrada e saída móvel usam 160ms com opacidade, deslocamento de 6px e display discreto quando suportado; ao fechar, `inert` retira imediatamente os links da interação, antes de terminar a transição. A inicialização executa closeMenu para estabelecer inert corretamente no mobile.
 
-**Convite e retorno de estado.** O cartão mostra código e mensagem em região de status. Código malformado oculta a abertura e pede outro convite; instalação continua secundária. Código de formato válido tenta o protocolo e oferece recuperação, sem afirmar validade ou autorização da comunidade. Cópia anuncia sucesso somente após confirmação da API; falha revela texto selecionável. Downloads têm fallback oficial disponível antes da consulta de versão.
+**Cenas.** Três abas, Conversas, Em chamada e Comunidades, controlam um painel visível com imagem e legenda. `aria-selected`, `tabindex` itinerante e `hidden` representam o estado; setas, Home e End selecionam e movem foco entre as três abas. A aba Comunidades reutiliza a captura verdadeira de conversa/comunidade, com alternativa textual e legenda próprias; não representa uma terceira captura distinta. As legendas reservam 128px até 850px e 140px até 540px; a troca entre três vistas mantém variação de altura do palco inferior a 2px nos testes. O indicador de seleção se move em 160ms por `--tab-x` e `--tab-width`; ResizeObserver e o término da carga das fontes recalculam posição e largura. A faixa é decorativa (`aria-hidden`), enquanto a seleção continua representada por `aria-selected`. Não há rotação automática. O showcase tem quatro etapas (conversas, chamada, tela e comunidade), mas reutiliza somente duas capturas reais. A etapa de compartilhamento declara explicitamente que a imagem mostra controles, não uma transmissão de tela. O usuário autorizou prosseguir sem uma captura dedicada de transmissão ("prossiga sem isso"). As capturas são do renderer real 3.2 com conteúdo demonstrativo; a proveniência está em `site/assets/mingrx-captures.provenance.json`.
+
+**Leitura e disclosure.** FAQ usa `details/summary` nativos, divisórias e símbolo de mais que gira ao abrir. `interpolate-size: allow-keywords` e `::details-content` acrescentam transição de altura em 240ms quando suportados; sem suporte, o disclosure nativo continua operacional. O sumário legal é outro disclosure real: abre inicialmente em larguras acima de 850px; em telas menores inicia recolhido. Os tópicos de suporte são links de tarefa com divisórias, sem campos de formulário.
+
+**Inspeção de capturas.** Links `data-preview` abrem um `<dialog>` nativo quando `showModal` está disponível. Fechar, Escape e clique no backdrop encerram a inspeção e devolvem foco ao acionador, sem rolar a página. O botão Fechar tem tooltip “Fechar (Esc)” associado por `aria-describedby`, visível em hover e foco, com entrada discreta de 120ms. O componente tooltip usa popover manual no top layer quando disponível, limita posição à viewport e troca para cima se faltar espaço abaixo. Abre por foco/hover e fecha com Escape, saída/blur adequados, scroll/resize ou fechamento do diálogo. O diálogo tem título acessível, alternativa textual, status de carregamento/erro e link permanente à imagem original. Cliques modificados e ambientes sem suporte mantêm o link original. A imagem usa `object-fit: contain`; a página bloqueia rolagem de fundo durante o modal. Entrada e saída usam opacidade e deslocamento mínimos, sem movimento em reduced motion.
+
+**Download e perfil.** A seção `#download` apresenta Windows 10 ou 11, instalador de 64 bits e GitHub Releases oficial, com ajuda de instalação e aviso de ausência de versão para celular/navegador. A arquitetura x64 foi conferida no instalador. O painel usa padding de 32px (24px até 540px), raio card e ação em largura total; as duas colunas viram uma até 850px. O cartão “Do seu jeito” descreve status personalizável no perfil, capacidade verificada em `desktop/src/v1.js:149`, além de amigos e conversas recentes.
+
+**Convite e retorno de estado.** O cartão mostra código e mensagem em região de status. Código malformado oculta a abertura e pede outro convite; instalação continua secundária. Código de formato válido tenta o protocolo e oferece recuperação, sem afirmar validade ou autorização da comunidade. Durante a cópia, o botão fica desabilitado, recebe `aria-busy` e texto “Copiando link…”. Ao terminar, restaura o rótulo e o estado disabled original, inclusive se o botão já estava desabilitado. Cópia anuncia sucesso somente após confirmação da API; falha revela texto selecionável. Downloads têm fallback oficial disponível antes da consulta de versão. Convites iniciam com aviso explícito de necessidade de JavaScript; Abrir Mingrx permanece oculto até um código válido preparar o protocolo.
 
 ## Do's and Don'ts
 
@@ -165,6 +216,28 @@ Controles usam cantos curtos; figuras e blocos de contato usam o raio image, e a
 - Do manter download, convite e leitura compreensíveis também no telefone.
 
 ### Don't:
-- Don't usar gradientes, cápsulas, halos ou animações decorativas.
-- Don't inventar depoimentos, métricas, retratos ou diferenciação do produto.
+- Don't adicionar animação excessiva ou infinita, cursor especial ou scroll hijack.
+- Don't inventar depoimentos, métricas, usuários reais ou diferenciação do produto; a pessoa fictícia da arte não é testemunho.
 - Don't aplicar estes tokens ao aplicativo Windows como se fossem seu sistema existente.
+
+## Arte própria e proveniência
+
+A ilustração gerada por image_gen representa uma pessoa anônima fictícia na crista rochosa, lua violeta e monograma M. Não é captura, usuário real ou evidência funcional. O `<picture>` é decorativo (`aria-hidden`, alt vazio), enquanto headline e controles permanecem HTML. O WebP desktop tem 1672×941 e cerca de 72KB; a versão pequena tem 1000×563 e cerca de 28KB. `site/assets/mingrx-orbit.provenance.json` registra original, transformações e SHA-256; `site/assets/mingrx-orbit.prompt.txt` conserva o prompt. As transformações foram resize e WebP, sem UI composta na imagem.
+
+A direção usa HTML/CSS, arte otimizada e um módulo JavaScript próprio de componentes, sem framework ou dependência adicional de runtime, efeitos infinitos ou cursor especial. As duas capturas genuínas e suas três vistas de galeria continuam separadas da ilustração.
+
+## Fontes e pesquisa do briefing ampliado
+
+A referência visual cósmica mais recente do usuário prevalece sobre a pesquisa anterior. O registro histórico suplementar está em [docs/design/site-reference-research.md](docs/design/site-reference-research.md). Foram examinados os DESIGN.md e capturas de Intercom, Dimension, Notion e Vercel no Refero Styles. São materiais interpretados do catálogo, não código oficial das marcas. O tema escuro, a fonte Satoshi e a realidade do produto Mingrx prevalecem sobre os materiais claros e as regras tipográficas das referências.
+
+A pesquisa específica no Refero ocorreu na continuação do briefing, depois da implementação inicial; não é atribuída retroativamente à primeira passagem. HTML oficial de Linear, Raycast, Vercel, shadcn/ui e Motion foi consultado. O navegador encontrou falhas de certificado nessas fontes; não se afirma que animações externas tenham sido verificadas ao vivo.
+
+A galeria oferece Conversas, Em chamada e Comunidades. A comunidade usa a captura real já disponível, sem fabricar uma terceira imagem. O showcase expõe quatro links nativos de progresso; `aria-current="step"` acompanha o texto em foco de leitura. O scroll continua nativo. A captura dedicada de transmissão foi dispensada pelo usuário; não é criada uma aba fictícia de compartilhamento.
+
+Em desktop de pouca altura, o wrapper sticky respeita topo mínimo de 110px abaixo do header; até 700px de altura, a moldura limita-se a `calc(100svh - 250px)`. A navegação de progresso continua clicável, validada por hit testing em 700, 600 e 500px de altura.
+
+## Fallback sem scripts e verificação responsiva
+
+`site/no-script.css` é carregado exclusivamente por link dentro de `head/noscript`: apresenta navegação móvel nativa no fluxo, oculta menu/toolbar/cópia sem comportamento e usa links diretos às capturas e endereço selecionável em noscript. FAQ e download continuam nativos. Não existe flag navigation-ready, alternância de layout em runtime ou solução hidden/unhidden dependente de inicialização. Essa abordagem anterior foi rejeitada por produzir layout shift; não é a regra atual.
+
+O stop claro de hover #9242ef mantém aproximadamente 4,94:1 com branco; o stop #7633ee foi preservado. A verificação cobre stops reais e pares de texto, sem certificar cada pixel sobre arte/gradientes. A revisão responsiva final concluiu SHIP. O relatório [docs/design/site-responsive-accessibility.md](docs/design/site-responsive-accessibility.md) registra Chromium em doze larguras de 320–2560px, text spacing, zoom 200/400%, teclado, sem scripts e axe, além dos limites: sem leitor de tela, aparelhos físicos ou certificação entre navegadores. A direção cósmica permanece e não foram adicionadas dependências, mudanças de backend ou publicação.

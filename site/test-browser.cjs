@@ -12,12 +12,17 @@ app.setPath('userData',profile);
 app.commandLine.appendSwitch('disable-gpu');
 app.commandLine.appendSwitch('disable-dev-shm-usage');
 app.on('window-all-closed',()=>{});
-let win,server,finished=false;
+let win,server,finished=false,scriptless=false;
 const errors=[],unexpectedRequests=[];
 const deadline=setTimeout(()=>finish(1,'Site browser checks timed out'),60000);
 function finish(code,message){if(finished)return;finished=true;clearTimeout(deadline);(code?console.error:console.log)(message);try{win?.destroy();server?.close();fs.rmSync(profile,{recursive:true,force:true})}catch{}app.exit(code)}
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-const js=code=>win.webContents.executeJavaScript(code,true);
+const js=async code=>{
+  if(!scriptless)return win.webContents.executeJavaScript(code,true);
+  const result=await win.webContents.debugger.sendCommand('Runtime.evaluate',{expression:code,returnByValue:true,awaitPromise:true});
+  if(result.exceptionDetails)throw Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);
+  return result.result.value;
+};
 async function press(keyCode,modifiers=[]){
   win.webContents.sendInputEvent({type:'keyDown',keyCode,modifiers});
   if(keyCode==='Enter'||keyCode==='Space')win.webContents.sendInputEvent({type:'char',keyCode:keyCode==='Enter'?'\r':' ',modifiers});
@@ -70,24 +75,37 @@ app.whenReady().then(async()=>{
     assert(await js("document.fonts.check('750 32px Satoshi')&&[...document.fonts].some(font=>font.family==='Satoshi'&&font.status==='loaded')"),'The locally hosted Satoshi font must load');
     for(let i=0;i<100;i++){if(await js("document.querySelector('.release-note').textContent.includes('Mingrx 3.2.')"))break;await wait(50);}
     const layout=await js(`(()=>({width:innerWidth,overflow:document.documentElement.scrollWidth>innerWidth+1,images:[...document.images].filter(img=>{const r=img.getBoundingClientRect();return r.width>0&&r.top<innerHeight&&r.bottom>0}).every(img=>img.complete&&img.naturalWidth>0),heading:document.querySelector('h1').textContent,version:document.querySelector('.release-note').textContent,animations:document.getAnimations().length,radii:[...document.querySelectorAll('.button,.menu-button')].map(el=>parseFloat(getComputedStyle(el).borderTopLeftRadius)),download:document.querySelector('.download-link').href}))()`);
-    assert.equal(layout.width,width);assert(!layout.overflow,`Horizontal overflow at ${width}`);assert(layout.images,`Missing image at ${width}`);assert.equal(layout.animations,0);assert(layout.radii.every(radius=>radius<=8));assert.match(layout.version,/Mingrx 3\.2\./);assert.match(layout.download,/releases\/download\/v3\.2\.0\/Mingrx-Setup-3\.2\.0-x64\.exe$/);
+    assert.equal(layout.width,width);assert(!layout.overflow,`Horizontal overflow at ${width}`);assert(layout.images,`Missing image at ${width}`);assert(await js("document.getAnimations().every(animation=>animation.effect.getTiming().iterations!==Infinity)"),'Decorative animation must never run indefinitely');assert(layout.radii.every(radius=>radius<=32));assert.match(layout.version,/Mingrx 3\.2\./);assert.match(layout.download,/releases\/download\/v3\.2\.0\/Mingrx-Setup-3\.2\.0-x64\.exe$/);
     assert(await js("[...document.images].every(img=>img.hasAttribute('alt'))&&document.querySelector('.product-image img').alt.length>30"),'Image alternatives are missing');
     if(width===1440){
-      const colors=await js("(()=>{const body=getComputedStyle(document.body),copy=getComputedStyle(document.querySelector('.hero-description')),button=getComputedStyle(document.querySelector('.hero-actions .button-primary'));return{body:body.color,bg:body.backgroundColor,muted:copy.color,button:button.color,buttonBg:button.backgroundColor}})()");
+      const colors=await js("(()=>{const body=getComputedStyle(document.body),copy=getComputedStyle(document.querySelector('.hero-description')),button=getComputedStyle(document.querySelector('.hero-actions .button-primary'));return{body:body.color,bg:body.backgroundColor,muted:copy.color,button:button.color,buttonBg:button.backgroundColor,gradient:button.backgroundImage}})()");
       assert(contrast(colors.body,colors.bg)>=4.5&&contrast(colors.muted,colors.bg)>=4.5&&contrast(colors.button,colors.buttonBg)>=4.5,'Text contrast below 4.5:1');
+      assert(colors.gradient.match(/rgb\([^)]+\)/g).every(color=>contrast(colors.button,color)>=4.5),'Every primary gradient stop must preserve text contrast');
+      const buttonRect=await js("(()=>{const r=document.querySelector('.hero-actions .button-primary').getBoundingClientRect();return{x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()");
+      win.webContents.sendInputEvent({type:'mouseMove',...buttonRect});await wait(180);
+      const hover=await js("(()=>{const s=getComputedStyle(document.querySelector('.hero-actions .button-primary'));return{ink:s.color,gradient:s.backgroundImage}})()");
+      assert(hover.gradient.match(/rgb\([^)]+\)/g).every(color=>contrast(hover.ink,color)>=4.5),'Hover gradient must preserve text contrast at every stop');
+      win.webContents.sendInputEvent({type:'mouseMove',x:0,y:0});
+      assert(await js("[...document.querySelectorAll('.brand')].every(el=>el.getBoundingClientRect().height>=44)"),'Brand links must offer a 44px touch target');
       win.webContents.focus();await press('Tab');
       assert(await js("document.activeElement.classList.contains('skip-link')"),'First Tab must reach the skip link');
       await press('Enter');assert.equal(await js('document.activeElement.id'),'conteudo');
       await js("document.getElementById('tab-conversation').focus()");await press('Right');
       assert(await js("document.getElementById('tab-call').getAttribute('aria-selected')==='true'&&!document.getElementById('scene-call').hidden&&document.getElementById('scene-conversation').hidden"),'ArrowRight must select the call scene');
       await js("document.querySelector('#scene-call img').decode()");
+      await press('End');assert.equal(await js('document.activeElement.id'),'tab-community');
+      assert(await js("!document.getElementById('scene-community').hidden"),'End must select the real community view');
       await press('Home');assert.equal(await js('document.activeElement.id'),'tab-conversation');
       assert(await js("!document.getElementById('scene-conversation').hidden&&document.getElementById('scene-call').hidden"));
+      await js("document.getElementById('tab-call').click();document.getElementById('tab-call').click();document.getElementById('tab-conversation').click();void 0");
+      for(let attempt=0;attempt<30;attempt++){if(await js("document.querySelector('.product-stage').getAttribute('aria-busy')!=='true'&&document.querySelectorAll('.scene-outgoing').length===0"))break;await wait(50);}
+      assert(await js("document.querySelector('.product-stage').getAttribute('aria-busy')!=='true'&&document.querySelectorAll('.scene-outgoing').length===0&&!document.getElementById('scene-conversation').hidden"),'Rapid scene changes must settle: '+JSON.stringify(await js("({busy:document.querySelector('.product-stage').getAttribute('aria-busy'),overlays:document.querySelectorAll('.scene-outgoing').length,conversation:document.getElementById('scene-conversation').hidden,animations:document.getAnimations().map(a=>({state:a.playState,time:a.currentTime}))})")));
       await js("document.querySelector('summary').focus()");await press('Space');
       assert(await js("document.querySelector('details').open"),'Space must open the FAQ');
       await press('Enter');assert(!(await js("document.querySelector('details').open")),'Enter must close the FAQ');
     }
     if(width<=850){
+      assert(await js("(()=>{const heading=document.querySelector('.features-heading h2').getBoundingClientRect(),copy=document.querySelector('.features-heading p').getBoundingClientRect();return copy.top>=heading.bottom&&heading.width>=innerWidth*.7})()"),'Mobile feature introduction must stack without squeezing its heading');
       await js("document.querySelector('.menu-button').focus()");await press('Space');
       assert(await js("document.querySelector('.menu-button').getAttribute('aria-expanded')==='true'&&getComputedStyle(document.querySelector('.topnav')).display==='flex'"));
       await press('Escape');
@@ -106,11 +124,82 @@ app.whenReady().then(async()=>{
       await js("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{}}});document.querySelector('[data-copy-site]').click();void 0");await wait(30);
       assert(await js("document.querySelector('.pc-link .copy-fallback').hidden&&document.querySelector('.pc-link .copy-status').textContent.includes('Link copiado')"),'Clipboard success must announce completion');
     }
+    const stageHeight=await js("document.querySelector('.product-stage').offsetHeight");
+    for(const scene of ['call','community','conversation']){
+      await js(`document.querySelector('[data-scene="${scene}"]').click();void 0`);await wait(400);
+      assert(Math.abs((await js("document.querySelector('.product-stage').offsetHeight"))-stageHeight)<2,'Gallery must preserve layout height when switching real captures at '+width+'px');
+    }
     if(width===1440)await capture('desktop.png');if(width===390)await capture('mobile.png');
-    console.log(`Site ${width}px: layout, images, live version, rectangular buttons and navigation passed`);
+    console.log(`Site ${width}px: layout, images, live version, consistent action shapes and navigation passed`);
   }
+  win.setContentSize(1440,1000);await win.loadURL(origin+'/');
+  await js('document.fonts.ready');
+  await js("scrollTo(0,document.querySelector('.orbit-hero').offsetHeight*.4);void 0");await wait(150);
+  assert(await js("(()=>{const img=document.querySelector('.orbit-art img'),s=getComputedStyle(img),header=getComputedStyle(document.querySelector('.site-header .header-inner'));return s.animationName==='hero-drift'&&String(s.animationTimeline).includes('scroll')&&header.animationName==='pill-glass'&&!document.querySelector('.orbit-art').classList.contains('parallax-active')})()"),'Desktop hero depth and header must run on scroll timelines, not scroll listeners');
+  await js("window.__revealCount=0;const card=document.querySelector('.feature-card');card.addEventListener('animationstart',event=>{if(event.target===card&&event.animationName==='scroll-arrive')window.__revealCount++});card.scrollIntoView({block:'center'});void 0");await wait(600);
+  assert.equal(await js('window.__revealCount'),1,'A card must receive one real reveal animation');
+  await js('scrollTo(0,0);void 0');await wait(100);
+  await js("document.querySelector('.feature-card').scrollIntoView({block:'center'});void 0");await wait(150);
+  assert.equal(await js('window.__revealCount'),1,'Scrolling back must not restart a previously revealed card');
+  for(const scene of ['call','community','conversation']){
+    await js(`document.querySelector('[data-open-scene="${scene}"]').click();void 0`);await wait(450);
+    assert(await js(`!document.getElementById('scene-${scene}').hidden&&document.querySelector('[data-scene="${scene}"]').getAttribute('aria-selected')==='true'`),'Feature links must open the corresponding real capture');
+  }
+  await js('document.activeElement.blur();void 0');
+  await js(`(()=>{
+    const original=document.querySelector('[data-ui-tabs]');
+    const secondary=original.cloneNode(true);secondary.id='secondary-gallery';
+    secondary.querySelector('.scene-indicator')?.remove();
+    secondary.querySelectorAll('[id]').forEach(element=>element.id='secondary-'+element.id);
+    secondary.querySelectorAll('[aria-controls]').forEach(element=>element.setAttribute('aria-controls','secondary-'+element.getAttribute('aria-controls')));
+    secondary.querySelectorAll('[aria-labelledby]').forEach(element=>element.setAttribute('aria-labelledby','secondary-'+element.getAttribute('aria-labelledby')));
+    document.body.append(secondary);window.MingrxUI.mount(secondary);window.MingrxUI.mount(secondary);
+    secondary.querySelector('[data-scene="call"]').click();return true;
+  })()`);await wait(450);
+  assert(await js("!document.getElementById('secondary-scene-call').hidden&&!document.getElementById('scene-conversation').hidden&&document.querySelector('#secondary-gallery .scene-tabs').querySelectorAll('.scene-indicator').length===1"),'Independent galleries must isolate state and repeated mounting must not duplicate indicators');
+  await js("document.getElementById('secondary-gallery').remove();void 0");
+  await js("(()=>{const button=document.createElement('button');button.textContent='Original';button.disabled=true;window.MingrxUI.setButtonBusy(button,true);window.MingrxUI.setButtonBusy(button,true);window.MingrxUI.setButtonBusy(button,false);if(button.textContent!=='Original'||!button.disabled)throw Error('Busy state must preserve the original label and disabled state')})()");
+  win.setContentSize(1440,1000);
+  await js("document.querySelector('.product-image').focus()");
+  assert(await js("(()=>{const s=getComputedStyle(document.activeElement);return s.outlineStyle!=='none'&&parseFloat(s.outlineWidth)>=3&&parseFloat(s.outlineOffset)<0})()"),'Screenshot keyboard focus must remain inside its clipped frame');
+  await press('Enter');await wait(250);
+  assert(await js("document.querySelector('.capture-dialog').open"),'Image inspection must open a native dialog');
+  assert(await js("document.querySelector('.capture-dialog img').getAttribute('src').includes('mingrx-conversation')"),'Dialog must show the actual selected capture');
+  await js("document.activeElement.blur();document.querySelector('.capture-close').focus();void 0");await wait(150);
+  assert(await js("(()=>{const tip=document.getElementById('close-capture-hint'),r=tip.getBoundingClientRect();return !tip.hidden&&r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight})()"),'Focused tooltip must stay inside the viewport');
+  await press('Escape');await wait(250);
+  assert(await js("!document.querySelector('.capture-dialog').open&&document.activeElement.matches('.product-image')"),'Escape must close inspection and restore focus');
+  assert(await js("document.querySelector('#download .download-link').href.includes('github.com/rafaelmingroni/mingrx-app/releases/')"),'Dedicated download must preserve official distribution');
+  if(!win.webContents.debugger.isAttached())win.webContents.debugger.attach('1.3');
+  await js("document.querySelector('[data-scene=call]').click();void 0");
+  await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+  await wait(150);
+  assert(await js('document.getAnimations().length===0'),'Switching to reduced motion must cancel an in-progress UI transition');
+  assert(await js("!document.querySelector('.orbit-art').classList.contains('parallax-active')&&getComputedStyle(document.querySelector('.orbit-art img')).animationName==='none'&&getComputedStyle(document.querySelector('.orbit-art img')).transform==='none'&&getComputedStyle(document.querySelector('.site-header')).animationName==='none'"),'Reduced motion must disable decorative depth and scroll-linked effects');
+  await win.loadURL(origin+'/');await wait(100);
+  assert(await js('document.getAnimations().length===0'),'Reduced motion must disable entrance and reveal animation');
+  await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[]});
   win.setContentSize(1440,1000);await win.loadURL(origin+'/');win.webContents.setZoomFactor(2);await wait(100);
   assert(await js('document.documentElement.scrollWidth<=innerWidth+1'),'Content must reflow at 200% zoom');win.webContents.setZoomFactor(1);
+  win.setContentSize(1280,1000);win.webContents.setZoomFactor(4);await wait(100);
+  assert(await js('innerWidth<=320&&document.documentElement.scrollWidth<=innerWidth+1'),'Content must reflow at 400% zoom to a 320px CSS viewport');win.webContents.setZoomFactor(1);
+  // Disable document scripts before navigation; Runtime evaluation is test instrumentation only.
+  await win.webContents.debugger.sendCommand('Emulation.setScriptExecutionDisabled',{value:true});scriptless=true;
+  for(const width of [1440,390]){
+    win.setContentSize(width,900);await win.loadURL(origin+'/');await wait(100);
+    assert(await js("typeof window.MingrxUI==='undefined'"),'Scriptless checks must not execute application code');
+    assert(await js("(()=>{const nav=document.querySelector('.topnav'),r=nav.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(nav).opacity==='1'&&!nav.inert})()"),'Native navigation must remain available without scripts');
+    assert(await js("getComputedStyle(document.querySelector('.menu-button')).display==='none'&&getComputedStyle(document.querySelector('.stage-toolbar')).display==='none'&&[...document.querySelectorAll('[data-copy-site]')].every(button=>getComputedStyle(button).display==='none')"),'Script-dependent controls must not appear functional without scripts');
+    assert(await js("document.querySelector('.gallery-fallback a[href*=call]').getBoundingClientRect().height>=44&&[...document.querySelectorAll('.copy-native a')].length===2&&[...document.querySelectorAll('.copy-native a')].every(el=>el.href==='https://mingrx.site/')&&document.querySelector('.download-link').href.endsWith('/releases/latest')"),'Native capture, copy-address and official download links must remain available');
+    assert(await js('document.documentElement.scrollWidth<=innerWidth+1'),'Scriptless page must reflow');
+    await js("document.querySelector('.topnav a[href=\"#download\"]').focus()");await press('Enter');
+    assert.equal(await js('document.activeElement.id'),'download','Native navigation must focus its destination without scripts');
+    await js("document.querySelector('.faq summary').focus()");await press('Space');
+    assert(await js("document.querySelector('.faq details').open"),'FAQ must remain keyboard-operable without scripts');
+  }
+  await win.loadURL(origin+'/invite.html?invite=ABCD2345');
+  assert(await js("document.getElementById('openApp').hidden&&document.getElementById('status').textContent.includes('JavaScript')&&document.getElementById('download').href.endsWith('/releases/latest')"),'Scriptless invite must explain its requirement and preserve installation, without a dead app link');
+  await win.webContents.debugger.sendCommand('Emulation.setScriptExecutionDisabled',{value:false});scriptless=false;
   for(const page of ['privacy.html','terms.html','support.html','accessibility.html','about.html','invite.html?invite=BAD','404.html']){
     win.setContentSize(390,844);await win.loadURL(origin+'/'+page);await wait(50);
     assert(await js('document.documentElement.scrollWidth<=innerWidth+1'),`Overflow on ${page}`);
@@ -126,4 +215,4 @@ app.whenReady().then(async()=>{
   assert.deepEqual(unexpectedRequests,[],'Unexpected external resource or tracking request');
   assert.deepEqual(errors,[],'Browser errors');
   finish(0,'Site browser checks: desktop/mobile, menu, assets, factual release, legal pages and no external tracking passed');
-}).catch(error=>finish(1,error.stack||String(error)));
+}).catch(error=>finish(1,(error.stack||String(error))+'\n'+JSON.stringify(errors)));

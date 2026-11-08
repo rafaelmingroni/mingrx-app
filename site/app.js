@@ -7,60 +7,15 @@
     return;
   }
 
-  const menuButton = document.querySelector('.menu-button');
-  const nav = document.querySelector('.topnav');
-  if (menuButton && nav) {
-    const closeMenu = () => {
-      nav.classList.remove('open');
-      menuButton.setAttribute('aria-expanded', 'false');
-    };
-    menuButton.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      menuButton.setAttribute('aria-expanded', String(open));
-    });
-    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && nav.classList.contains('open')) {
-        closeMenu();
-        menuButton.focus();
-      }
-    });
-    document.addEventListener('click', event => {
-      if (!nav.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
-    });
-    window.matchMedia('(min-width: 851px)').addEventListener?.('change', closeMenu);
-  }
+  window.MingrxUI?.mount(document);
 
-  // One visible scene, keyboard-operable tabs, and no autoplay.
-  const sceneTabs = [...document.querySelectorAll('[data-scene]')];
-  const activateScene = (name, focus = false) => {
-    const selected = sceneTabs.find(tab => tab.dataset.scene === name);
-    if (!selected) return;
-    sceneTabs.forEach(tab => {
-      const active = tab === selected;
-      tab.setAttribute('aria-selected', String(active));
-      tab.tabIndex = active ? 0 : -1;
-      const panel = document.getElementById(tab.getAttribute('aria-controls'));
-      if (panel) panel.hidden = !active;
-    });
-    if (focus) selected.focus();
-  };
-  sceneTabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => activateScene(tab.dataset.scene));
-    tab.addEventListener('keydown', event => {
-      const destinations = {ArrowRight:(index+1)%sceneTabs.length, ArrowLeft:(index-1+sceneTabs.length)%sceneTabs.length, Home:0, End:sceneTabs.length-1};
-      if (!(event.key in destinations)) return;
-      event.preventDefault();
-      activateScene(sceneTabs[destinations[event.key]].dataset.scene, true);
-    });
-  });
-  document.querySelectorAll('[data-show-scene]').forEach(link => link.addEventListener('click', () => activateScene(link.dataset.showScene)));
+  document.querySelectorAll('[data-show-scene]').forEach(link => link.addEventListener('click', () => window.MingrxUI?.tabs(document.querySelector('[data-ui-tabs]'))?.select(link.dataset.showScene)));
   document.querySelectorAll('.legal-toc').forEach(toc => { if (window.matchMedia?.('(min-width: 851px)').matches) toc.open = true; });
   document.querySelectorAll('[data-copy-site]').forEach(button => button.addEventListener('click', async () => {
     const group = button.closest('.pc-link');
     const status = group?.querySelector('.copy-status');
     const fallback = group?.querySelector('.copy-fallback');
-    button.disabled = true;
+    window.MingrxUI?.setButtonBusy(button,true,'Copiando link…');
     try {
       await navigator.clipboard.writeText('https://mingrx.site/');
       if (status) status.textContent = 'Link copiado. Abra no seu computador.';
@@ -68,8 +23,89 @@
     } catch {
       if (status) status.textContent = 'Não foi possível copiar automaticamente. Use o endereço abaixo.';
       if (fallback) fallback.hidden = false;
-    } finally { button.disabled = false; }
+    } finally {
+      window.MingrxUI?.setButtonBusy(button,false);
+    }
   }));
+
+  const mediaQuery = query => window.matchMedia?.(query) || {matches: false, addEventListener() {}};
+  let revealObserver;
+  const revealedElements = new WeakSet();
+
+  // Feature links open the matching real capture in the product tabs.
+  document.querySelectorAll('[data-open-scene]').forEach(link => link.addEventListener('click', () => {
+    document.querySelector(`[role=tab][data-scene="${link.dataset.openScene}"]`)?.click();
+  }));
+
+  // Content stays visible with no JS, unsupported observers, or reduced motion.
+  const reducedMotion = mediaQuery('(prefers-reduced-motion: reduce)');
+  // Browsers with scroll-driven animations run the stage, hero depth and header in CSS.
+  const scrollTimelines = window.CSS?.supports?.('animation-timeline: scroll()') === true;
+  const configureReveals = () => {
+    revealObserver?.disconnect();
+    document.querySelectorAll('.reveal-in').forEach(element => element.classList.remove('reveal-in'));
+    if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
+    revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        revealObserver.unobserve(entry.target);
+        if(revealedElements.has(entry.target))return;
+        revealedElements.add(entry.target);
+        if(!entry.target.contains(document.activeElement))entry.target.classList.add('reveal-in');
+      });
+    }, {threshold: .12});
+    document.querySelectorAll((scrollTimelines ? '' : '.product-stage,') + '.product-intro-heading,.features-heading,.feature-card,.download-copy,.download-panel,.privacy-section,.faq .section-heading,.faq-list,.footer-brand,.footer-links').forEach(element => revealObserver.observe(element));
+  };
+  reducedMotion.addEventListener('change', configureReveals);
+  configureReveals();
+
+  // Decorative depth only: bounded to 8px, desktop/no-preference, and visible hero.
+  const decoration=document.querySelector('.orbit-art');
+  const depthMedia=mediaQuery('(min-width:851px) and (prefers-reduced-motion:no-preference)');
+  let depthObserver,depthFrame=0;
+  const updateDepth=()=>{
+    depthFrame=0;
+    const hero=decoration?.closest('.orbit-hero');
+    if(!hero)return;
+    const rect=hero.getBoundingClientRect();
+    const distance=parseFloat(getComputedStyle(hero).getPropertyValue('--orbit-depth'))||8;
+    const progress=Math.max(0,Math.min(1,-rect.top/Math.max(rect.height,1)));
+    decoration.style.setProperty('--orbit-parallax',`${(progress*distance).toFixed(2)}px`);
+  };
+  const scheduleDepth=()=>{if(!depthFrame)depthFrame=requestAnimationFrame(updateDepth);};
+  const stopDepth=()=>{
+    window.removeEventListener('scroll',scheduleDepth);window.removeEventListener('resize',scheduleDepth);
+    if(depthFrame)cancelAnimationFrame(depthFrame);depthFrame=0;
+    decoration?.classList.remove('parallax-active');
+  };
+  const configureDepth=()=>{
+    if(!decoration||scrollTimelines)return;
+    stopDepth();depthObserver?.disconnect();decoration.style.removeProperty('--orbit-parallax');
+    if(!depthMedia.matches||!('IntersectionObserver' in window))return;
+    depthObserver=new IntersectionObserver(entries=>{
+      stopDepth();
+      if(entries.some(entry=>entry.isIntersecting)){
+        decoration.classList.add('parallax-active');
+        window.addEventListener('scroll',scheduleDepth,{passive:true});window.addEventListener('resize',scheduleDepth,{passive:true});scheduleDepth();
+      }
+    },{rootMargin:'100px 0px'});
+    depthObserver.observe(decoration.closest('.orbit-hero'));
+  };
+  depthMedia.addEventListener('change',configureDepth);configureDepth();
+
+  const sectionLinks = [...document.querySelectorAll('.topnav a[href^="#"]')];
+  if ('IntersectionObserver' in window && sectionLinks.length) {
+    const visibleSections = new Set();
+    const navigationObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if(entry.isIntersecting)visibleSections.add(entry.target);else visibleSections.delete(entry.target); });
+      const visible=[...visibleSections].sort((a,b)=>Math.abs(a.getBoundingClientRect().top-window.innerHeight*.15)-Math.abs(b.getBoundingClientRect().top-window.innerHeight*.15))[0];
+      sectionLinks.forEach(link => {
+        if (visible && link.hash === `#${visible.id}`) link.setAttribute('aria-current','location');
+        else link.removeAttribute('aria-current');
+      });
+    }, {rootMargin:'-15% 0px -55% 0px',threshold:0});
+    sectionLinks.forEach(link => { const target = document.getElementById(link.hash.slice(1)); if (target) navigationObserver.observe(target); });
+  }
 
   const year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
