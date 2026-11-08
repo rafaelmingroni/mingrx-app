@@ -17,6 +17,7 @@ const firestoreUrl = new URL(`http://${process.env.FIRESTORE_EMULATOR_HOST || '1
 app.setPath('userData', testData);
 // Real clients are foreground apps: keep every simulated client unthrottled so they race as fast as real ones.
 for (const s of ['use-fake-device-for-media-stream', 'use-fake-ui-for-media-stream', 'disable-backgrounding-occluded-windows', 'disable-renderer-backgrounding', 'disable-background-timer-throttling']) app.commandLine.appendSwitch(s);
+app.commandLine.appendSwitch('disable-features', 'IntensiveWakeUpThrottling');
 app.on('window-all-closed', () => {});
 const settings = { idleSeconds: 0, idleState: 'active', activity: null, settings: { shareActivity: true, autoAwayMinutes: 5, startup: { supported: true, enabled: false, registered: false } }, startupLaunch: false };
 for (const [n, h] of Object.entries({
@@ -24,7 +25,7 @@ for (const [n, h] of Object.entries({
   'update:get-config': () => ({ repoUrl: 'https://github.com/rafaelmingroni/mingrx-app', autoCheck: false, autoDownload: false, currentVersion: require('../package.json').version }),
   'update:get-state': () => ({ status: 'idle', phase: 'idle', progress: 0 }), 'banana-updater:get-state': () => ({ status: 'idle', phase: 'idle', percent: 0 }),
   'banana-updater:get-version': () => require('../package.json').version, 'banana-updater:check': () => ({ ok: true }), 'clipboard:write': () => true,
-  'ptt:configure': () => ({ ok: true }), 'rtc:configuration': () => ({ iceServers: [], relayAvailable: false }), 'voice:background-active': () => true
+  'ptt:configure': () => ({ ok: true }), 'rtc:configuration': () => ({ iceServers: [], relayAvailable: false }), 'voice:background-active': (event, active) => { event.sender.setBackgroundThrottling(!active); return true; } // same as main.js
 })) ipcMain.handle(n, h);
 require('../e2ee-main'); require('../auth-vault').install();
 
@@ -111,6 +112,16 @@ app.whenReady().then(async () => {
   let departureOk = false;
   for (const p of people) { await join(p).catch(e => failures.push(`departure join ${p.name}: ${e.message}`)); await wait(300); }
   for (let i = 0; i < 200; i++) { const snap = await Promise.all(people.map(states)); if (snap.every(x => x.length === people.length - 1 && x.every(y => y === 'connected'))) break; await wait(100); }
+  // Speaking is detected locally from received audio (the fake microphone beeps) and is never
+  // written to the voice slots that every community member can read; slots carry no avatar either.
+  let heard = false;
+  for (let i = 0; i < 80 && !heard; i++) { heard = await first.w.webContents.executeJavaScript('[...state.voice.peers.values()].some(p => p.speaking)'); if (!heard) await wait(100); }
+  console.log(`RACE speaking: ${heard ? 'detected locally' : 'NOT DETECTED'}`);
+  if (!heard) failures.push('speaking was not detected from received audio');
+  const slots = await first.w.webContents.executeJavaScript("JSON.stringify(Object.values(window.BananaCloudSocket.__voiceTrees.get(window.BananaCloudSocket.voice.serverId)?.[window.BananaCloudSocket.voice.channelId] || {}).map(x => ({ speaking: x.speaking, avatar: (x.user?.avatar || '').length })))");
+  const slotData = JSON.parse(slots);
+  console.log(`RACE slots: ${slots}`);
+  if (!slotData.length || slotData.some(x => x.speaking || x.avatar)) failures.push('voice slots still carry speaking state or avatars: ' + slots);
   const leaver = people[1];
   const leaverSid = await leaver.w.webContents.executeJavaScript('window.BananaCloudSocket?.id || ""');
   await run(first.w, "const orig=socket.receive.bind(socket);socket.receive=function(ev,p){if(ev==='voice:user-left')return;return orig(ev,p);};");
@@ -124,6 +135,6 @@ app.whenReady().then(async () => {
   for (const p of people) await run(p.w, 'await leaveVoice();await sleep(200);');
   console.log(`RACE RESULT ${ok}/${ROUNDS} rounds fully connected`);
   for (const f of failures) console.log('RACE FAIL ' + f);
-  const passed = ok === ROUNDS && departureOk;
+  const passed = ok === ROUNDS && departureOk && heard && slotData.length > 0 && !slotData.some(x => x.speaking || x.avatar);
   done(passed ? 0 : 1, passed ? 'voice join race: OK' : 'voice join race: FAILED');
 }).catch(e => done(1, e.stack || String(e)));

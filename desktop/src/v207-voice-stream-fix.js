@@ -136,11 +136,11 @@
   const DEPARTED_GRACE_MS = 5000;
   function pruneDepartedPeers() {
     const channelId = state.voice?.channelId;
-    if (!channelId || !state.voice.peers?.size) return;
+    if (!channelId || !state.voice.peers) return 'no-call';
     const socket = state.socket;
-    if (socket?.voice?.directPeerId || state.voice.serverId !== state.selectedServer?.id) return;
+    if (socket?.voice?.directPeerId || state.voice.serverId !== state.selectedServer?.id) return 'not-here';
     const entries = state.voicePresence?.get(channelId);
-    if (!Array.isArray(entries) || !entries.some(e => e.socketId === socket?.id)) return;
+    if (!Array.isArray(entries) || !entries.some(e => e.socketId === socket?.id)) return 'no-presence';
     const here = new Set(entries.map(e => e.socketId));
     const now = Date.now();
     for (const peer of [...state.voice.peers.values()]) {
@@ -155,6 +155,7 @@
     }
   }
   setInterval(pruneDepartedPeers, 1000);
+  window.__mingrxPruneDeparted = pruneDepartedPeers;
 
   function patchSocket(socket) {
     if (!socket || socket.__bananaV207VoiceStreamPatched) return false;

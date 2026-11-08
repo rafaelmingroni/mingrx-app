@@ -245,7 +245,9 @@
       const room=collection(this.db,...base,'voiceSessions');
       const slots=Array.from({length:direct?2:5},(_,i)=>doc(room,String(i)));
       const profile=await this.publicUser(uid);
-      const user={id:uid,name:String(profile.name||'Usuário').slice(0,32),avatar:String(profile.avatar||'').slice(0,800000),status:profile.status||'online'};
+      // The avatar stays out of the voice slot: every lease refresh re-sent it to everyone watching the
+      // community's voice channels. Clients resolve it from the member/public profile instead.
+      const user={id:uid,name:String(profile.name||'Usuário').slice(0,32),avatar:'',status:profile.status||'online'};
       if(generation!==this.__voiceGeneration || !this.connected)return;
       const joinedAt=Math.max(now(),(this.__voiceLastJoinAt||0)+1);this.__voiceLastJoinAt=joinedAt;
       this.__voiceJoining=true;
@@ -317,7 +319,9 @@
     // That rejection is expected once the admission is gone; while still admitted it propagates.
     const slotWrite=async(socket,patch)=>{const current=socket.voice;if(!current)return;try{await updateDoc(current.slotRef,patch);}catch(error){if(socket.voice!==current)return;throw error;}};
     socket.voiceMedia=async function(value) {return slotWrite(this,{mediaState:media(value)});};
-    socket.voiceSpeaking=async function(value) {return slotWrite(this,{speaking:!!value.speaking});};
+    // Speaking is detected locally by each participant from the audio it receives (mingrx-voice-activity.js),
+    // so it is no longer written to the slot that every community member can read.
+    socket.voiceSpeaking=async function() {};
     socket.signal=async function(payload={}) {
       const current=this.voice;if(!current||!payload.targetSocketId)return;
       // The first person in a room learns about newcomers from the room listener,

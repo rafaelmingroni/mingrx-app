@@ -10,6 +10,7 @@
   let ringTimer = null;
   let ringStopTimer = null;
   let ringContext = null;
+  let acceptedIncoming = false;
   let directCallStartedAt = 0;
   let remoteEndInFlight = false;
 
@@ -111,6 +112,54 @@
     } catch {}
   }
 
+  let ringbackTimer = null;
+  let ringbackStartedAt = 0;
+  function soundLevel() {
+    const raw = Number(localStorage.getItem('banana.soundVolume'));
+    return Number.isFinite(raw) ? Math.min(1, Math.max(0, raw)) : 0.55;
+  }
+  function ringbackOnce() {
+    try {
+      const level = soundLevel();
+      if (!level) return;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!ringContext || ringContext.state === 'closed') ringContext = new AudioCtx();
+      ringContext.resume?.().catch?.(() => {});
+      const now = ringContext.currentTime;
+      const osc = ringContext.createOscillator();
+      const gain = ringContext.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(425, now);
+      const peak = 0.07 * level;
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(peak, now + 0.04);
+      gain.gain.setValueAtTime(peak, now + 0.95);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.05);
+      osc.connect(gain); gain.connect(ringContext.destination);
+      osc.start(now); osc.stop(now + 1.1);
+    } catch {}
+  }
+  function stopRingback() {
+    clearInterval(ringbackTimer); ringbackTimer = null;
+    ringbackStartedAt = 0;
+  }
+  function updateRingback(waiting) {
+    if (!waiting) { if (ringbackTimer) stopRingback(); return; }
+    if (ringbackTimer) {
+      if (Date.now() - ringbackStartedAt > 45000) {
+        stopRingback();
+        ringbackStartedAt = -1;
+        if (typeof toast === 'function') toast('Ninguém atendeu.', 3200);
+      }
+      return;
+    }
+    if (ringbackStartedAt === -1) return;
+    ringbackStartedAt = Date.now();
+    ringbackOnce();
+    ringbackTimer = setInterval(ringbackOnce, 4000);
+  }
+
   function stopRinging() {
     clearInterval(ringTimer); ringTimer = null;
     clearTimeout(ringStopTimer); ringStopTimer = null;
@@ -137,7 +186,7 @@
     seenNotifications.add(key);
     try {
       if ('Notification' in window) {
-        const note = new Notification('Chamada no Banana Cord', {
+        const note = new Notification('Chamada no Mingrx', {
           body: `${peer?.name || 'Um amigo'} está te ligando.`,
           silent: true
         });
@@ -179,6 +228,7 @@
   async function acceptIncomingCall() {
     const peerId = incomingPeerId;
     if (!peerId) return;
+    acceptedIncoming = true;
     const peer = peerFor(peerId);
     stopRinging();
     try { ipcRenderer.send('banana-call:focus'); } catch {}
@@ -216,6 +266,9 @@
     document.body.classList.toggle('v218-direct-call-active', direct);
     if (!direct) {
       directCallStartedAt = 0;
+      updateRingback(false);
+      ringbackStartedAt = 0;
+      acceptedIncoming = false;
       return;
     }
     if (!directCallStartedAt) directCallStartedAt = Date.now();
@@ -224,6 +277,8 @@
     const peerSpeaking = peers.some(p => !!p?.speaking && !p?.mediaState?.muted);
     const localSpeaking = !!state.voice.speaking && !state.voice.muted;
     const connected = peers.length > 0;
+    // The caller hears a ringback tone until the other person joins (the one answering never does).
+    updateRingback(!connected && !acceptedIncoming);
     let status = connected ? 'Conectados' : 'Chamando…';
     if (localSpeaking && peerSpeaking) status = 'Vocês estão falando';
     else if (localSpeaking) status = 'Você está falando';
