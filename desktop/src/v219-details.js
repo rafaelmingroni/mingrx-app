@@ -279,6 +279,8 @@
     event.preventDefault();
     event.stopImmediatePropagation();
     openServerSettings();
+    // Other modules (community photo, layout repair) hook here, since this handler stops the click.
+    document.dispatchEvent(new CustomEvent('mingrx:server-settings-open'));
   }, true);
 
   function formatMemberSince(value) {

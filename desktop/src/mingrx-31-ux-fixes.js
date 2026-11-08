@@ -176,6 +176,7 @@
   }
 
   document.getElementById('serverSettingsBtn')?.addEventListener('click', scheduleCommunityRepair, true);
+  document.addEventListener('mingrx:server-settings-open', scheduleCommunityRepair);
 
   const modalBody = document.getElementById('modalBody');
   if (modalBody) {

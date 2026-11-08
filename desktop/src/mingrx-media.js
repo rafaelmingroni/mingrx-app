@@ -310,16 +310,18 @@
     actions.append(choose, remove, input);
     copy.append(title, note, actions);
     card.append(preview, copy);
-    const heading = settings.querySelector('h2');
+    const heading = settings.querySelector(':scope > h2');
     if (heading?.nextSibling) settings.insertBefore(card, heading.nextSibling);
     else settings.prepend(card);
   }
 
-  document.getElementById('serverSettingsBtn')?.addEventListener('click', () => {
+  const scheduleCommunityPhotoCard = () => {
     queueMicrotask(injectCommunityPhotoCard);
     setTimeout(injectCommunityPhotoCard, 80);
     setTimeout(injectCommunityPhotoCard, 220);
-  });
+  };
+  document.getElementById('serverSettingsBtn')?.addEventListener('click', scheduleCommunityPhotoCard);
+  document.addEventListener('mingrx:server-settings-open', scheduleCommunityPhotoCard);
 
   window.MingrxMedia = Object.freeze({
     parseMedia,
