@@ -86,6 +86,16 @@
     shell.classList.add('hidden');
   }
 
+  let installedVersion = '';
+  const parts = value => String(value || '').replace(/^v/i, '').split(/[.+-]/).slice(0, 3).map(n => Number.parseInt(n, 10) || 0);
+  const isNewer = (next, current) => {
+    if (!next) return false;
+    if (!current) return true;
+    const a = parts(next), b = parts(current);
+    for (let i = 0; i < 3; i++) if (a[i] !== b[i]) return a[i] > b[i];
+    return false;
+  };
+
   function setBadge(text, ready = false) {
     badge.textContent = text;
     badge.classList.remove('hidden');
@@ -132,7 +142,7 @@
       progress.style.width = '18%';
       percent.textContent = '';
       speed.textContent = '';
-      setBadge('Verificando atualização');
+      badge.classList.add('hidden');
       showCard();
       return;
     }
@@ -157,6 +167,7 @@
 
     if (phase === 'available') {
       clearAutoHide();
+      if (!isNewer(version, installedVersion)) { hideCard(); badge.classList.add('hidden'); return; }
       title.textContent = version ? `Mingrx ${version} disponível` : 'Nova atualização disponível';
       subtitle.textContent = 'O download automático está desligado.';
       progressWrap.classList.add('hidden');
@@ -198,7 +209,7 @@
       subtitle.textContent = 'Não deu para concluir agora. O app segue funcionando.';
       progressWrap.classList.add('hidden');
       retryWrap.classList.remove('hidden');
-      setBadge('Atualização pausada');
+      badge.classList.add('hidden');
       showCard();
     }
   }
@@ -231,13 +242,14 @@
   ipcRenderer.invoke('banana-updater:get-state').then(render).catch(() => {});
 
   ipcRenderer.invoke('banana-updater:get-version').then(currentVersion => {
+    installedVersion = String(currentVersion || '');
     const previousVersion = localStorage.getItem('banana.lastVersion') || '';
     localStorage.setItem('banana.lastVersion', String(currentVersion || ''));
     if (!previousVersion || !currentVersion || previousVersion === currentVersion) return;
     setTimeout(() => {
       if (currentState.phase !== 'idle') return;
-      title.textContent = `Atualizado para ${currentVersion} ✓`;
-      subtitle.textContent = 'Banana Cord atualizado com sucesso.';
+      title.textContent = `Mingrx atualizado para ${String(currentVersion).replace(/^(d+.d+).0$/, '$1')}`;
+      subtitle.textContent = 'Tudo pronto.';
       progressWrap.classList.add('hidden');
       actions.classList.add('hidden');
       retryWrap.classList.add('hidden');

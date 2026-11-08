@@ -75,7 +75,7 @@ async function click(id) {
 }
 
 async function phase(name, extra = {}) {
-  win.webContents.send('banana-updater:state', { phase: name, version: '3.1.99', percent: 0, ...extra });
+  win.webContents.send('banana-updater:state', { phase: name, version: '99.0.0', percent: 0, ...extra });
   await sleep(80);
   await pointAt('bananaUpdaterTitle');
 }

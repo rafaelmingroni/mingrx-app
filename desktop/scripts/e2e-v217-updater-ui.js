@@ -45,6 +45,16 @@ app.whenReady().then(async () => {
   await win.loadFile(path.join(__dirname, '..', 'src', 'index.html'));
   await new Promise(resolve => setTimeout(resolve, 180));
 
+  // The header badge only appears for a real, newer update: never while checking, on errors,
+  // or for an "available" version that is not newer than the installed one.
+  const badgeHidden = () => inspect(win, "document.getElementById('updateBadge')?.classList.contains('hidden')");
+  if (!(await badgeHidden())) return fail('update badge visible at startup without an update');
+  for (const fake of [{ phase: 'checking' }, { phase: 'error', error: 'offline' }, { phase: 'available', version: '2.0.17' }, { phase: 'idle' }]) {
+    win.webContents.send('banana-updater:state', fake); win.webContents.send('update:state', { ...fake, status: fake.phase });
+    await new Promise(resolve => setTimeout(resolve, 120));
+    if (!(await badgeHidden())) return fail('update badge visible without a newer update: ' + JSON.stringify(fake));
+  }
+
   updaterState = {
     phase: 'downloading', version: '2.0.18', percent: 42,
     bytesPerSecond: 3145728, transferred: 44040192, total: 104857600, error: ''

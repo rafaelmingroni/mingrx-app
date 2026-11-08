@@ -17,9 +17,9 @@
 Ele reúne comunidades, canais de texto e voz, mensagens privadas, webcam, compartilhamento de tela, presença e perfis em um único aplicativo para Windows. O projeto nasceu como Banana Cord e evoluiu para Mingrx preservando o caminho de atualização dos usuários existentes.
 
 <!-- mingrx-version:begin -->
-> **Mingrx 3.2.3** · Versão técnica: `3.2.3`
+> **Mingrx 3.2.4** · Versão técnica: `3.2.4`
 >
-> [Notas desta versão](RELEASE_NOTES-3.2.3.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
+> [Notas desta versão](RELEASE_NOTES-3.2.4.md) · [Última versão publicada](https://github.com/rafaelmingroni/mingrx-app/releases/latest)
 >
 > Projeto pessoal de **Rafael Mingroni**.
 <!-- mingrx-version:end -->
@@ -40,14 +40,16 @@ O Mingrx prioriza:
 
 ## Novidades desta versão
 
-- chamadas que ficavam presas em "conectando" com a primeira pessoa da sala foram corrigidas, com reenvio automático de ofertas sem resposta;
-- o indicador de quem está falando continua funcionando com o app minimizado ou atrás do jogo;
-- detecção de voz mais leve (20 leituras por segundo) e sem pausa em segundo plano apenas durante chamadas;
-- valores padrão corretos de compartilhamento de tela, volume e sons em instalações novas;
-- novo visual alinhado ao site: navy e violeta, tipografia Satoshi e ícones desenhados no lugar de emojis;
-- remoção do antigo modo de servidor local e das dependências que só ele usava.
+- quem sai da chamada não fica mais preso no centro da tela: a grade é conferida com a presença real da chamada;
+- o anel verde de quem está falando aparece só na chamada em que você está;
+- donos e administradores voltam a conseguir trocar a foto da comunidade;
+- novo logo com o M da arte do Mingrx, login e cadastro com a arte do site e atualizador nas cores do tema;
+- emojis com Fluent Emoji 3D nas mensagens e reações;
+- configurações, perfil, convite e tela de chamada com textos curtos e sem caixa alta;
+- o botão de atualização só aparece quando há uma versão mais nova;
+- o rodapé das configurações mostra a versão instalada.
 
-Veja as [notas da 3.2.3](RELEASE_NOTES-3.2.3.md) e a [revisão de segurança](docs/SECURITY-3.2.md).
+Veja as [notas da 3.2.4](RELEASE_NOTES-3.2.4.md) e a [revisão de segurança](docs/SECURITY-3.2.md).
 
 ## Base Firebase gratuita
 
@@ -74,7 +76,7 @@ O aplicativo **não depende de Firebase Storage**.
 ### Identidade Mingrx
 
 - marca **Mingrx** em toda a experiência visível;
-- símbolo e ícone próprios;
+- logo vetorial com o M da arte do Mingrx e brilho 3D, usado no app, no ícone do Windows e no site;
 - direção visual navy e violeta compartilhada com o site, tipografia Satoshi e ícones desenhados;
 - temas de aparência;
 - layout de comunidades horizontal e compacto;
@@ -117,7 +119,7 @@ O protocolo antigo `bananacord://` também continua aceito por compatibilidade, 
 - mensagens privadas;
 - edição e exclusão;
 - respostas;
-- reações;
+- reações e emojis com Fluent Emoji 3D;
 - menções;
 - indicadores de não lidas;
 - E2EE em mensagens privadas compatíveis.
@@ -125,7 +127,7 @@ O protocolo antigo `bananacord://` também continua aceito por compatibilidade, 
 ### Voz e vídeo
 
 - voz por WebRTC;
-- indicador de fala;
+- indicador de fala, visível apenas para quem está na mesma chamada;
 - mute e deafen;
 - push-to-talk;
 - volume individual;
