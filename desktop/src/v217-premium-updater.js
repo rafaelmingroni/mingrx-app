@@ -10,13 +10,13 @@
   shell.innerHTML = `
     <div class="banana-updater-card" role="status" aria-live="polite">
       <div class="banana-updater-head">
-        <div class="banana-updater-logo"><img src="../assets/banana-cord.png" alt=""></div>
+        <div class="banana-updater-logo"><img src="../assets/mingrx.svg" alt=""></div>
         <div class="banana-updater-title-wrap">
-          <span class="banana-updater-kicker">BANANA CORD UPDATE</span>
-          <strong id="bananaUpdaterTitle">Atualizando Banana Cord</strong>
+          <span class="banana-updater-kicker">Atualização</span>
+          <strong id="bananaUpdaterTitle">Atualizando o Mingrx</strong>
           <small id="bananaUpdaterSubtitle">Preparando...</small>
         </div>
-        <button id="bananaUpdaterClose" class="banana-updater-close" type="button" title="Minimizar">×</button>
+        <button id="bananaUpdaterClose" class="banana-updater-close" type="button" title="Minimizar" aria-label="Minimizar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       </div>
       <div id="bananaUpdaterProgressWrap" class="banana-updater-progress-wrap">
         <div class="banana-updater-progress-track"><div id="bananaUpdaterProgress" class="banana-updater-progress"></div></div>
@@ -41,10 +41,10 @@
   overlay.className = 'banana-updater-overlay hidden';
   overlay.innerHTML = `
     <div class="banana-updater-installing">
-      <div class="banana-updater-install-logo"><img src="../assets/banana-cord.png" alt="Banana Cord"></div>
-      <span class="banana-updater-kicker">BANANA CORD</span>
+      <div class="banana-updater-install-logo"><img src="../assets/mingrx.svg" alt="Mingrx"></div>
+      <span class="banana-updater-kicker">Mingrx</span>
       <h2>Aplicando atualização...</h2>
-      <p>Estamos fechando sua sessão com segurança. O Banana Cord vai abrir novamente já atualizado.</p>
+      <p>O Mingrx vai reabrir em instantes, já atualizado.</p>
       <div class="banana-updater-install-line"><span></span></div>
     </div>
   `;
@@ -128,25 +128,25 @@
 
     if (phase === 'checking') {
       title.textContent = 'Verificando atualização';
-      subtitle.textContent = 'Procurando a versão mais recente...';
+      subtitle.textContent = 'Procurando a versão mais recente.';
       progress.style.width = '18%';
       percent.textContent = '';
       speed.textContent = '';
-      setBadge('↻ Verificando...');
+      setBadge('Verificando atualização');
       showCard();
       return;
     }
 
     if (phase === 'downloading') {
-      title.textContent = version ? `Baixando Banana Cord ${version}` : 'Baixando atualização';
+      title.textContent = version ? `Baixando o Mingrx ${version}` : 'Baixando atualização';
       const transferred = formatBytes(currentState.transferred);
       const total = formatBytes(currentState.total);
-      subtitle.textContent = transferred && total ? `${transferred} de ${total} · você pode continuar usando normalmente` : 'Baixando em segundo plano · você pode continuar usando normalmente';
+      subtitle.textContent = transferred && total ? `${transferred} de ${total} · pode continuar usando o app` : 'Baixando em segundo plano.';
       progress.style.width = `${pct}%`;
       percent.textContent = `${pct}%`;
       const rate = formatBytes(currentState.bytesPerSecond);
       speed.textContent = rate ? `${rate}/s` : '';
-      setBadge(`↓ ${pct}%`);
+      setBadge(`Atualizando · ${pct}%`);
       if (!downloadNoticeShown) {
         downloadNoticeShown = true;
         showCard();
@@ -158,29 +158,29 @@
     if (phase === 'available') {
       clearAutoHide();
       title.textContent = version ? `Mingrx ${version} disponível` : 'Nova atualização disponível';
-      subtitle.textContent = 'O download automático está desativado. Você pode iniciar o download aqui.';
+      subtitle.textContent = 'O download automático está desligado.';
       progressWrap.classList.add('hidden');
       downloadActions.classList.remove('hidden');
-      setBadge('↓ Atualização disponível');
+      setBadge('Atualização disponível');
       showCard();
       return;
     }
 
     if (phase === 'ready') {
       clearAutoHide();
-      title.textContent = version ? `Banana Cord ${version} está pronto` : 'Atualização pronta';
+      title.textContent = version ? `Mingrx ${version} pronto` : 'Atualização pronta';
       subtitle.textContent = currentState.installDeferReason === 'user'
-        ? 'A atualização será aplicada automaticamente ao sair do Mingrx.'
+        ? 'Será instalada quando você fechar o Mingrx.'
         : currentState.installDeferReason === 'activity'
-          ? 'A atualização está pronta. O Mingrx aguardará a chamada e o texto em edição antes de reiniciar.'
+          ? 'Reinicia depois da chamada e do texto em edição.'
         : currentState.autoInstallPending
-          ? 'O Mingrx reiniciará automaticamente. Se houver chamada ou texto em edição, ele aguardará.'
-          : 'Reinicie quando quiser. A aplicação será feita silenciosamente.';
-      progress.style.width = '100%';
+          ? 'Reinicia sozinho, sem interromper chamadas.'
+          : 'Reinicie quando quiser.';
+      progressWrap.classList.add('hidden');
       percent.textContent = '100%';
-      speed.textContent = 'Pronto para reiniciar';
+      speed.textContent = '';
       actions.classList.remove('hidden');
-      setBadge('✓ Atualização pronta', true);
+      setBadge('Reiniciar para atualizar', true);
       showCard();
       return;
     }
@@ -195,10 +195,10 @@
     if (phase === 'error') {
       clearAutoHide();
       title.textContent = 'Atualização pausada';
-      subtitle.textContent = 'Não foi possível concluir agora. Você pode continuar usando o Banana Cord normalmente.';
+      subtitle.textContent = 'Não deu para concluir agora. O app segue funcionando.';
       progressWrap.classList.add('hidden');
       retryWrap.classList.remove('hidden');
-      setBadge('! Atualização');
+      setBadge('Atualização pausada');
       showCard();
     }
   }

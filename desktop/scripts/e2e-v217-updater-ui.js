@@ -79,7 +79,7 @@ app.whenReady().then(async () => {
   }))()`);
   if (!ready.actionsVisible) return fail('ready actions are hidden');
   if (ready.installText !== 'Atualizar agora' || ready.laterText !== 'Depois') return fail('ready action labels are incorrect');
-  if (!ready.badge.includes('Atualização pronta')) return fail(`ready badge missing: ${ready.badge}`);
+  if (!ready.badge.includes('Reiniciar para atualizar')) return fail(`ready badge missing: ${ready.badge}`);
 
   await inspect(win, `document.getElementById('bananaUpdaterLater').click(); true`);
   await new Promise(resolve => setTimeout(resolve, 50));

@@ -187,3 +187,57 @@ body.mingrx-ui .mingrx-brand .mingrx-inline-mark img{width:auto;height:22px;filt
 body.mingrx-ui .cloud-brand .mingrx-auth-brand>div{text-align:center;display:grid;justify-items:center;gap:4px}
 body.mingrx-ui .cloud-brand .mingrx-auth-brand .mingrx-inline-mark{width:auto!important;height:44px!important;background:none!important;box-shadow:none!important}
 body.mingrx-ui .cloud-brand .mingrx-auth-brand .mingrx-inline-mark img{width:auto;height:44px;filter:drop-shadow(0 8px 22px #7c3aed66)}
+/* Auth: art panel from mingrx.site on the left, form column on the right. */
+html body.mingrx-ui .cloud-gate{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(440px,560px);align-items:stretch;justify-items:stretch;padding:0!important;background:var(--mx-bg)!important}
+html body.mingrx-ui .cloud-gate::before{content:"";margin:14px 0 14px 14px;border-radius:22px;background:linear-gradient(180deg,transparent 55%,#060812cc),url(../assets/mingrx-orbit.webp) center 38%/cover no-repeat,#0b0f22;box-shadow:inset 0 0 0 1px #ffffff12}
+html body.mingrx-ui .cloud-gate.hidden,html body.mingrx-ui .cloud-gate[hidden]{display:none!important}
+html body.mingrx-ui .cloud-shell{align-self:center;justify-self:center;width:min(380px,calc(100% - 64px))!important;display:grid;gap:22px}
+html body.mingrx-ui .cloud-brand{margin:0!important}
+html body.mingrx-ui .cloud-brand .mingrx-auth-brand,html body.mingrx-ui .cloud-brand .mingrx-auth-brand>div{justify-items:start!important;text-align:left!important}
+html body.mingrx-ui .cloud-brand .mingrx-auth-brand{gap:18px!important}
+html body.mingrx-ui .cloud-brand .mingrx-auth-brand .mingrx-inline-mark,html body.mingrx-ui .cloud-brand .mingrx-auth-brand .mingrx-inline-mark img{height:34px!important}
+html body.mingrx-ui .cloud-brand h1{font-size:30px!important;font-weight:800!important;letter-spacing:-.04em!important}
+html body.mingrx-ui .cloud-brand p{font-size:14px!important;margin-top:6px!important;color:var(--mx-muted)!important}
+html body.mingrx-ui .cloud-panel{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;width:100%!important;max-width:none!important}
+html body.mingrx-ui .cloud-panel h2{font-size:20px!important;letter-spacing:-.02em!important;margin:0 0 6px!important}
+html body.mingrx-ui .cloud-tabs{border-radius:12px!important;padding:4px!important;margin-bottom:22px!important;border:1px solid var(--mx-line)!important}
+html body.mingrx-ui .cloud-tabs button{border-radius:9px!important;font-weight:600!important;height:36px!important}
+html body.mingrx-ui .cloud-form{gap:0!important}
+html body.mingrx-ui .cloud-form label{text-transform:none!important;letter-spacing:0!important;font-size:13px!important;font-weight:600!important;margin:0 0 7px!important}
+html body.mingrx-ui .cloud-form input{height:46px!important;border-radius:12px!important;padding:0 14px!important;font-size:14.5px!important;margin:0 0 16px!important}
+html body.mingrx-ui .cloud-form button.primary,html body.mingrx-ui .cloud-actions .primary{height:46px!important;border-radius:12px!important;font-weight:700!important;font-size:14.5px!important;margin-top:6px!important;box-shadow:0 10px 28px -12px var(--mx-accent)!important}
+html body.mingrx-ui .cloud-form .link-button,html body.mingrx-ui #cloudVerifyLogout{margin-top:14px!important;color:var(--mx-muted)!important;font-size:13px!important;background:none!important}
+html body.mingrx-ui .cloud-form .link-button:hover,html body.mingrx-ui #cloudVerifyLogout:hover{color:var(--mx-text)!important}
+html body.mingrx-ui .cloud-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:10px!important;margin-top:18px!important}
+html body.mingrx-ui .cloud-actions button{height:44px!important;border-radius:12px!important;margin:0!important}
+html body.mingrx-ui .cloud-error{border-radius:10px!important;font-size:13px!important;margin-top:14px!important}
+@media (max-width:900px){html body.mingrx-ui .cloud-gate{grid-template-columns:1fr}html body.mingrx-ui .cloud-gate::before{display:none}}
+/* Updater: theme tokens instead of the legacy yellow, compact card. */
+html body.mingrx-ui .banana-updater{width:min(372px,calc(100vw - 40px))!important;right:18px!important;bottom:18px!important}
+html body.mingrx-ui .banana-updater-card{background:color-mix(in srgb,var(--mx-panel) 94%,transparent)!important;backdrop-filter:blur(14px);border:1px solid var(--mx-line)!important;border-radius:16px!important;padding:14px 14px 13px!important;box-shadow:0 22px 50px -18px #000c,inset 0 1px 0 #ffffff0d!important;color:var(--mx-text)!important}
+html body.mingrx-ui .banana-updater-head{gap:12px!important;align-items:center!important}
+html body.mingrx-ui .banana-updater-logo{width:40px!important;height:40px!important;border-radius:11px!important;background:none!important;border:0!important;box-shadow:none!important}
+html body.mingrx-ui .banana-updater-logo img,html body.mingrx-ui .banana-updater-logo .mingrx-inline-mark{width:40px!important;height:40px!important}
+html body.mingrx-ui .banana-updater-kicker{color:var(--mx-muted)!important;text-transform:none!important;letter-spacing:0!important;font-size:12px!important;font-weight:600!important}
+html body.mingrx-ui #bananaUpdaterTitle{font-size:14.5px!important;font-weight:700!important;letter-spacing:-.01em!important;color:var(--mx-text)!important}
+html body.mingrx-ui #bananaUpdaterSubtitle{font-size:12.5px!important;color:var(--mx-muted)!important;line-height:1.4!important}
+html body.mingrx-ui .banana-updater-close{width:28px!important;height:28px!important;border-radius:8px!important;display:grid!important;place-items:center!important;background:none!important;border:0!important;color:var(--mx-muted)!important;align-self:flex-start}
+html body.mingrx-ui .banana-updater-close svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+html body.mingrx-ui .banana-updater-close:hover{background:var(--mx-panel-2)!important;color:var(--mx-text)!important}
+html body.mingrx-ui .banana-updater-progress-wrap{margin-top:13px!important}
+html body.mingrx-ui .banana-updater-progress-track{height:4px!important;border-radius:99px!important;background:var(--mx-panel-3,#ffffff14)!important}
+html body.mingrx-ui .banana-updater-progress{background:linear-gradient(90deg,#7c3aed,#a78bfa)!important;border-radius:99px!important;box-shadow:0 0 12px #8b5cf688!important}
+html body.mingrx-ui .banana-updater-progress-meta{color:var(--mx-muted)!important;font-size:11.5px!important;font-variant-numeric:tabular-nums;margin-top:7px!important}
+html body.mingrx-ui .banana-updater-actions{gap:8px!important;margin-top:13px!important}
+html body.mingrx-ui .banana-updater-primary{background:var(--mx-accent)!important;color:#fff!important;border:0!important;border-radius:10px!important;font-weight:700!important;height:36px!important}
+html body.mingrx-ui .banana-updater-primary:hover{background:var(--mx-accent-hover)!important}
+html body.mingrx-ui .banana-updater-secondary{background:var(--mx-panel-2)!important;color:var(--mx-text-2)!important;border:1px solid var(--mx-line)!important;border-radius:10px!important;height:36px!important}
+html body.mingrx-ui .banana-updater-overlay{background:color-mix(in srgb,var(--mx-bg) 92%,transparent)!important;backdrop-filter:blur(10px)}
+html body.mingrx-ui .banana-updater-installing{background:none!important;border:0!important;box-shadow:none!important;color:var(--mx-text)!important}
+html body.mingrx-ui .banana-updater-install-logo{background:none!important;border:0!important;box-shadow:none!important}
+html body.mingrx-ui .banana-updater-installing p{color:var(--mx-muted)!important}
+html body.mingrx-ui .banana-updater-install-line span{background:linear-gradient(90deg,#7c3aed,#a78bfa)!important}
+html body.mingrx-ui .update-badge{background:var(--mx-panel-2)!important;color:var(--mx-text-2)!important;border:1px solid var(--mx-line)!important}
+html body.mingrx-ui .update-badge.ready{background:var(--mx-accent)!important;color:#fff!important;border-color:transparent!important}
+html body.mingrx-ui .cloud-brand{display:block!important;text-align:left!important;padding:0!important;width:100%!important}
+html body.mingrx-ui .cloud-brand .mingrx-auth-brand{width:100%!important;margin:0!important;padding:0!important}
