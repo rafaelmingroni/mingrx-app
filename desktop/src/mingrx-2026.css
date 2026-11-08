@@ -277,7 +277,7 @@ html body.mingrx-ui .v219-role-hero p{font-size:13px!important;color:var(--mx-mu
 html body.mingrx-ui .v219-role-settings label.v219-field-label{display:block;text-transform:none!important;letter-spacing:0!important;font-size:13px!important;font-weight:600!important;color:var(--mx-text-2)!important;margin:0 0 -14px!important}
 html body.mingrx-ui .v219-role-settings .channel-section-title{padding:0!important;margin:0 0 4px!important;font-size:13px!important;color:var(--mx-text-2)!important}
 html body.mingrx-ui .v219-settings-help{font-size:12.5px!important;color:var(--mx-muted)!important;margin:0 0 10px!important}
-html body.mingrx-ui .v219-permission-stack{display:grid;gap:0;border:1px solid var(--mx-line);border-radius:14px;overflow:hidden}
+html body.mingrx-ui .v219-permission-stack{display:grid;gap:0;border:1px solid var(--mx-line);border-radius:14px}
 html body.mingrx-ui .v219-permission-card{display:flex!important;align-items:center;gap:12px;padding:12px 14px!important;margin:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important}
 html body.mingrx-ui .v219-permission-card+.v219-permission-card{border-top:1px solid var(--mx-line)!important}
 html body.mingrx-ui .v219-permission-card>div{flex:1;min-width:0}
@@ -292,7 +292,7 @@ html body.mingrx-ui .v219-color-control input[type=color]::-webkit-color-swatch-
 html body.mingrx-ui .v219-color-control input[type=color]::-webkit-color-swatch{border:0;border-radius:50%}
 html body.mingrx-ui .v219-color-control:hover input[type=color]{border-color:color-mix(in srgb,var(--mx-text) 45%,transparent)!important}
 html body.mingrx-ui .v219-color-preview{width:14px!important;height:14px!important;border-radius:50%!important}
-html body.mingrx-ui .v219-role-table{display:grid;gap:0;border:1px solid var(--mx-line);border-radius:14px;overflow:hidden}
+html body.mingrx-ui .v219-role-table{display:grid;gap:0;border:1px solid var(--mx-line);border-radius:14px}
 html body.mingrx-ui .v219-role-table .v219-role-row{margin:0!important;border:0!important;border-radius:0!important;background:none!important;padding:10px 14px!important}
 html body.mingrx-ui .v219-role-table .v219-role-row+.v219-role-row{border-top:1px solid var(--mx-line)!important}
 html body.mingrx-ui .mingrx-community-photo-card{border-radius:14px!important}
@@ -329,8 +329,8 @@ html body.mingrx-ui #settingsArea .settings-card-head p{font-size:12.5px!importa
 html body.mingrx-ui #settingsArea button.action,html body.mingrx-ui #settingsArea #saveProfile{font-size:13.5px!important;font-weight:700!important;min-height:38px!important;height:auto!important;padding:0 18px!important;border-radius:10px!important}
 html body.mingrx-ui #settingsArea .settings-kicker{font-size:12px!important;letter-spacing:0!important;color:var(--mx-muted)!important}
 /* Selects: one drawn chevron instead of the platform arrow. */
-html body.mingrx-ui select:not([multiple]):not(#settingsArea select){-webkit-appearance:none!important;appearance:none!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 12px center!important;background-size:15px!important;padding-right:38px!important;cursor:pointer}
-html body.mingrx-ui select:not([multiple]):not(#settingsArea select):focus{outline:none;border-color:var(--mx-accent-border)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--mx-accent) 14%,transparent)!important}
+html body.mingrx-ui select:not([multiple]){-webkit-appearance:none!important;appearance:none!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 12px center!important;background-size:15px!important;padding-right:38px!important;cursor:pointer}
+html body.mingrx-ui select:not([multiple]):focus{outline:none;border-color:var(--mx-accent-border)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--mx-accent) 14%,transparent)!important}
 html body.mingrx-ui select option{background:var(--mx-panel);color:var(--mx-text)}
 html body.mingrx-ui .mingrx-temp-row select{font-size:14px!important;font-weight:500!important}
 html body.mingrx-ui .v21-role-chevron{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.7;flex:0 0 14px}
@@ -373,3 +373,39 @@ html body.mingrx-ui .mingrx-social-empty,html body.mingrx-ui .mingrx-social-list
 html body.mingrx-ui .mingrx-theme-intro,html body.mingrx-ui .mingrx-theme-note{display:none!important}
 /* Mic test: the record button reads as a secondary action, not a grey slab. */
 html body.mingrx-ui #settingsArea #testMicBtn{background:var(--mx-panel-2)!important;border:1px solid var(--mx-line)!important;color:var(--mx-text)!important;font-size:13.5px!important;font-weight:650!important;height:40px!important;border-radius:10px!important}
+
+/* Lists keep rounded ends without clipping the role menu that opens inside them. */
+html body.mingrx-ui .v219-role-table>.v219-role-row:first-child,html body.mingrx-ui .v219-permission-stack>.v219-permission-card:first-child{border-radius:13px 13px 0 0!important}
+html body.mingrx-ui .v219-role-table>.v219-role-row:last-child,html body.mingrx-ui .v219-permission-stack>.v219-permission-card:last-child{border-radius:0 0 13px 13px!important}
+html body.mingrx-ui .v219-role-table>.v219-role-row:only-child{border-radius:13px!important}
+html body.mingrx-ui .v21-role-menu{z-index:400!important;background:var(--mx-panel)!important;border-color:var(--mx-line)!important}
+html body.mingrx-ui .v21-role-menu.mx-open-up{top:auto!important;bottom:calc(100% + 5px)!important}
+/* The community bar is horizontal now: no vertical scrollbar beside the window controls. */
+html body.mingrx-ui .servers{overflow-y:hidden!important;overflow-x:auto!important;scrollbar-width:none!important}
+html body.mingrx-ui .servers::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+
+/* Settings scroll area: no scroll anchoring, so late layout changes never move the reading position. */
+html body.mingrx-ui .settings-content,html body.mingrx-ui #settingsArea{overflow-anchor:none!important}
+/* Sliders: violet filled part, dark empty track, round thumb (the fill follows --mx-fill). */
+html body.mingrx-ui input[type=range]{-webkit-appearance:none!important;appearance:none!important;background:transparent!important;height:20px;padding:0!important;border:0!important;cursor:pointer}
+html body.mingrx-ui input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:99px;background:linear-gradient(90deg,var(--mx-accent) var(--mx-fill,50%),color-mix(in srgb,var(--mx-text) 14%,transparent) var(--mx-fill,50%))}
+html body.mingrx-ui input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-6px;border-radius:50%;background:#fff;border:0;box-shadow:0 0 0 3px color-mix(in srgb,var(--mx-accent) 55%,transparent),0 2px 6px #0006;transition:transform .12s}
+html body.mingrx-ui input[type=range]:hover::-webkit-slider-thumb,html body.mingrx-ui input[type=range]:focus-visible::-webkit-slider-thumb{transform:scale(1.12)}
+html body.mingrx-ui input[type=range]:focus-visible{outline:2px solid var(--mx-accent);outline-offset:4px;border-radius:6px}
+/* Readable minimum: nothing the user needs to read below 11px. */
+html body.mingrx-ui .v219-mini-role,html body.mingrx-ui #myStatusText,html body.mingrx-ui #ping,html body.mingrx-ui .voice-user-icons,
+html body.mingrx-ui .mingrx-settings-version,html body.mingrx-ui .peer-stats,html body.mingrx-ui .connection-state,
+html body.mingrx-ui .mingrx-social-tab-count,html body.mingrx-ui .v219-profile-status{font-size:11px!important}
+html body.mingrx-ui #settingsArea small,html body.mingrx-ui #settingsArea .settings-field small{font-size:11.5px!important}
+html body.mingrx-ui #settingsSubtitle{font-size:12.5px!important}
+html body.mingrx-ui #settingsArea label.switch-line,html body.mingrx-ui #settingsArea .switch-line{font-size:13px!important}
+html body.mingrx-ui #settingsArea button.secondary{font-size:13px!important;font-weight:600!important;min-height:34px!important;padding:0 14px!important;border-radius:9px!important}
+html body.mingrx-ui .mingrx-stop-watching{font-size:12px!important}
+html body.mingrx-ui .settings-nav b,html body.mingrx-ui .settings-nav button{font-size:13px!important}
+html body.mingrx-ui .settings-nav small,html body.mingrx-ui .mx-settings-brand small,html body.mingrx-ui .settings-brand small{font-size:11px!important}
+html body.mingrx-ui .v219-date-divider span{font-size:11.5px!important}
+html body.mingrx-ui .voice-user-row span,html body.mingrx-ui .v219-member-meta,html body.mingrx-ui .v219-member-meta span{font-size:11px!important}
+html body.mingrx-ui .video-card small,html body.mingrx-ui .mingrx-community-photo-card small,html body.mingrx-ui .modal small{font-size:11.5px!important}
+html body.mingrx-ui .settings-help,html body.mingrx-ui .settings-help b{font-size:12px!important}
+html body.mingrx-ui #settingsArea .settings-card-head .settings-kicker,html body.mingrx-ui .v219-mini-role{font-size:11px!important}
+html body.mingrx-ui #settingsArea .settings-help,html body.mingrx-ui #settingsArea .settings-help b{font-size:12px!important}

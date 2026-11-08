@@ -62,7 +62,7 @@ async function open(js, key, show, inject) {
     const t = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json', '.woff2': 'font/woff2' };
     try { return new Response(fs.readFileSync(p), { headers: { 'Content-Type': t[path.extname(p)] || 'application/octet-stream' } }); } catch { return new Response('Not found', { status: 404 }); } });
   const w = new BrowserWindow({ show, width: 1440, height: 900, useContentSize: true, webPreferences: { session: ses, preload: path.join(root, 'preload.js'), nodeIntegration: false, contextIsolation: true, sandbox: true, backgroundThrottling: false } });
-  wins.push(w); if (inject) { await w.loadURL('about:blank'); w.webContents.debugger.attach('1.3'); await w.webContents.debugger.sendCommand('Page.enable'); await w.webContents.debugger.sendCommand('Page.addScriptToEvaluateOnNewDocument', { source: inject }); } await w.loadFile(path.join(root, 'src/index.html')); return w;
+  wins.push(w); w.webContents.on('console-message', (...args) => { const d = args[1]; const level = typeof d === 'object' ? d.level : args[1]; const msg = typeof d === 'object' ? d.message : args[2]; if (level === 'error' || level === 3 || level === 'warning' || level === 2) { const list = consoleErrors.get(w) || []; if (list.length < 30) list.push(String(level) + ': ' + String(msg).slice(0, 200)); consoleErrors.set(w, list); } }); if (inject) { await w.loadURL('about:blank'); w.webContents.debugger.attach('1.3'); await w.webContents.debugger.sendCommand('Page.enable'); await w.webContents.debugger.sendCommand('Page.addScriptToEvaluateOnNewDocument', { source: inject }); } await w.loadFile(path.join(root, 'src/index.html')); return w;
 }
 async function login(w, email, password) {
   await w.webContents.executeJavaScript(`(()=>{document.getElementById('cloudLoginEmail').value=${JSON.stringify(email)};document.getElementById('cloudLoginPassword').value=${JSON.stringify(password)};document.getElementById('cloudLoginForm').requestSubmit();})()`);
@@ -70,7 +70,20 @@ async function login(w, email, password) {
   throw new Error('login timeout');
 }
 const run = (w, code) => w.webContents.executeJavaScript(`(async()=>{const socket=window.BananaCloudSocket,sleep=ms=>new Promise(r=>setTimeout(r,ms));${code}})()`);
-const shot = async (w, name) => { await wait(800); fs.writeFileSync(path.join(OUT, name + '.png'), (await w.webContents.capturePage()).toPNG()); if (process.env.UI_DUMP) fs.writeFileSync(path.join(OUT, name + '.html'), await w.webContents.executeJavaScript("document.body.outerHTML.replace(/data:[^\"')]{80,}/g,'data:…')")); console.log('SNAP ' + name); };
+// UI_AUDIT=1 also records, per scene, controls without an accessible name, images without alt,
+// text under 11px and renderer console errors into audit.json.
+const AUDIT = process.env.UI_AUDIT ? {} : null;
+const consoleErrors = new Map();
+const AUDIT_JS = `(() => {
+  const vis = el => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none' && !el.closest('.hidden,[hidden],[aria-hidden="true"]'); };
+  const sel = el => el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (typeof el.className === 'string' && el.className.trim() ? '.' + el.className.trim().split(' ').slice(0, 2).join('.') : '');
+  const nameOf = el => (el.getAttribute('aria-label') || (el.getAttribute('aria-labelledby') || '').split(' ').map(id => document.getElementById(id)?.textContent || '').join(' ') || el.getAttribute('title') || el.textContent || (el.id && document.querySelector('label[for="' + el.id + '"]')?.textContent) || el.closest('label')?.textContent || el.getAttribute('placeholder') || el.querySelector?.('img[alt]')?.alt || '').trim();
+  const unnamed = [...document.querySelectorAll('button,[role=button],a[href],input:not([type=hidden]),select,textarea')].filter(vis).filter(el => !nameOf(el)).map(sel);
+  const noAlt = [...document.querySelectorAll('img:not([alt])')].filter(vis).map(el => sel(el) + ' ' + (el.getAttribute('src') || '').slice(0, 40));
+  const tiny = [...document.querySelectorAll('body *')].filter(el => el.childNodes.length && [...el.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim()) && vis(el) && parseFloat(getComputedStyle(el).fontSize) < 11).map(el => sel(el) + ' ' + Math.round(parseFloat(getComputedStyle(el).fontSize) * 10) / 10 + 'px "' + el.textContent.trim().slice(0, 24) + '"');
+  return { nodes: document.querySelectorAll('*').length, unnamed: [...new Set(unnamed)], noAlt: [...new Set(noAlt)], tiny: [...new Set(tiny)].slice(0, 40) };
+})()`;
+const shot = async (w, name) => { await wait(800); fs.writeFileSync(path.join(OUT, name + '.png'), (await w.webContents.capturePage()).toPNG()); if (AUDIT) { AUDIT[name] = { ...(await w.webContents.executeJavaScript(AUDIT_JS)), errors: [...(consoleErrors.get(w) || [])] }; consoleErrors.set(w, []); fs.writeFileSync(path.join(OUT, 'audit.json'), JSON.stringify(AUDIT, null, 1)); } if (process.env.UI_DUMP) fs.writeFileSync(path.join(OUT, name + '.html'), await w.webContents.executeJavaScript("document.body.outerHTML.replace(/data:[^\"')]{80,}/g,'data:…')")); console.log('SNAP ' + name); };
 const avatar = key => { const f = AVATARS && path.join(AVATARS, key + '.jpg'); return f && fs.existsSync(f) ? 'data:image/jpeg;base64,' + fs.readFileSync(f).toString('base64') : ''; };
 const q = JSON.stringify;
 app.whenReady().then(async () => {
