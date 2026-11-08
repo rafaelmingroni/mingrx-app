@@ -144,7 +144,7 @@
     const open = link => {
       opener = link;
       const source = link.querySelector('img') || link.closest('figure')?.querySelector('img');
-      image.alt = source?.alt || (link.href.includes('call') ? 'Chamada real no Mingrx com contas de demonstração.' : 'Conversa e comunidade reais no Mingrx com conteúdo de demonstração.');
+      image.alt = source?.alt || (link.href.includes('call') ? 'Chamada de voz no Mingrx com uma tela compartilhada.' : 'Conversa e comunidade no Mingrx.');
       status.textContent = 'Carregando captura…';
       image.src = link.href;
       originalLink.href = link.href;
