@@ -135,7 +135,7 @@ app.whenReady().then(async()=>{
   win.setContentSize(1440,1000);await win.loadURL(origin+'/');
   await js('document.fonts.ready');
   await js("scrollTo(0,document.querySelector('.orbit-hero').offsetHeight*.4);void 0");await wait(150);
-  assert(await js("(()=>{const img=document.querySelector('.orbit-art img'),s=getComputedStyle(img),header=getComputedStyle(document.querySelector('.site-header'));return s.animationName==='hero-drift'&&String(s.animationTimeline).includes('scroll')&&header.animationName==='header-glass'&&!document.querySelector('.orbit-art').classList.contains('parallax-active')})()"),'Desktop hero depth and header must run on scroll timelines, not scroll listeners');
+  assert(await js("(()=>{const img=document.querySelector('.orbit-art img'),s=getComputedStyle(img),header=getComputedStyle(document.querySelector('.site-header .header-inner'));return s.animationName==='hero-drift'&&String(s.animationTimeline).includes('scroll')&&header.animationName==='pill-glass'&&!document.querySelector('.orbit-art').classList.contains('parallax-active')})()"),'Desktop hero depth and header must run on scroll timelines, not scroll listeners');
   await js("window.__revealCount=0;const card=document.querySelector('.feature-card');card.addEventListener('animationstart',event=>{if(event.target===card&&event.animationName==='scroll-arrive')window.__revealCount++});card.scrollIntoView({block:'center'});void 0");await wait(600);
   assert.equal(await js('window.__revealCount'),1,'A card must receive one real reveal animation');
   await js('scrollTo(0,0);void 0');await wait(100);
