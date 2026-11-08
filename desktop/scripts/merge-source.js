@@ -31,4 +31,3 @@ mergeIfNeeded(path.join(desktopDir, 'src'), 'v1.js');
 mergeIfNeeded(path.join(desktopDir, 'src'), 'styles.css');
 mergeIfNeeded(path.join(desktopDir, 'src'), 'v1.css');
 mergeIfNeeded(path.join(desktopDir, 'src'), 'index.html');
-mergeIfNeeded(path.join(desktopDir, 'server'), 'server.js');

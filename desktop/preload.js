@@ -4,7 +4,7 @@ const invoke = new Set(['auth-vault:operation','banana-updater:check','banana-up
   'clipboard:write','e2ee:decrypt','e2ee:encrypt','e2ee:ensure-keypair','e2ee:status',
   'invite:code-for-server','invite:create-temporary','invite:resolve-short',
   'update:check','update:download','update:get-config','update:get-state','update:install','update:save-config','update:defer',
-  'external:open','capture:sources','capture:select','capture:cancel','ptt:configure','rtc:configuration']);
+  'external:open','capture:sources','capture:select','capture:cancel','ptt:configure','rtc:configuration','voice:background-active']);
 const outgoing = new Set(['banana-call:attention','banana-call:focus','banana-updater:install']);
 const incoming = new Set(['auth-vault:changed','host:status','banana-updater:state','banana-v21:system-state','invite:deep-link',
   'shortcut:deafen','shortcut:mute','shortcut:screen','update:state','ptt:state']);

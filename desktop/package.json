@@ -14,7 +14,6 @@
     "predist:portable": "npm run prepare:source && npm run smoke:mingrx && npm run smoke:ui && npm run smoke:rendezvous && npm run smoke:cloud",
     "dist:portable": "electron-builder --win portable",
     "smoke:mingrx": "node scripts/smoke-mingrx-rebrand.js && node scripts/smoke-mingrx-polish.js && node scripts/smoke-mingrx-media.js && node scripts/smoke-mingrx-obsidian.js && node scripts/smoke-mingrx-obsidian-settings.js",
-    "smoke:v1": "node scripts/smoke-v1.js",
     "smoke:ui": "node scripts/smoke-ui.js",
     "smoke:rendezvous": "node scripts/smoke-rendezvous.js",
     "smoke:parity": "node scripts/smoke-cloud-parity.js",
@@ -28,13 +27,10 @@
     "smoke:members-invites": "electron scripts/e2e-members-invites.js",
     "smoke:security": "node scripts/test-security-hardening.js && node scripts/security-source-audit.js && npm run release:check",
     "release:next": "node scripts/release-version.js --next",
-    "release:check": "node scripts/release-version.js --check"
+    "release:check": "node scripts/release-version.js --check",
+    "perf:probe": "firebase emulators:exec --project demo-mingrx-site --config ../firebase/firebase.json --only auth,firestore \"electron scripts/perf-probe.js\""
   },
   "dependencies": {
-    "cors": "2.8.6",
-    "express": "4.22.3",
-    "socket.io": "4.8.4",
-    "socket.io-client": "4.8.4",
     "electron-updater": "6.8.11",
     "firebase": "12.19.0",
     "nostr-tools": "2.25.2",
@@ -76,7 +72,6 @@
       "main.js",
       "screen-share-main-fix.js",
       "src/**/*",
-      "server/**/*",
       "cloud/**/*",
       "assets/**/*",
       "package.json",
