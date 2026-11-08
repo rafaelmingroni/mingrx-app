@@ -147,3 +147,34 @@ body.mingrx-ui .modal-card{background:linear-gradient(180deg,var(--mx-panel-2),v
 body.mingrx-ui .modal-card select,body.mingrx-ui .modal-card input:not([type=checkbox]):not([type=radio]){font-size:14px!important}
 body.mingrx-ui .mingrx312-nav-icon .mx-ico,body.mingrx-ui #channelIcon .mx-ico{width:18px;height:18px;color:var(--mx-muted)}
 body.mingrx-ui #channelIcon .mx-ico{color:var(--mx-text-2)}
+
+/* Dialog surfaces: one dark card everywhere (beats legacy per-dialog backgrounds). */
+html body.mingrx-ui .modal > .modal-card{background:linear-gradient(180deg,var(--mx-panel-2),var(--mx-panel))!important;border:1px solid var(--mx-line)!important;border-radius:18px!important;box-shadow:var(--mx-shadow)!important}
+html body.mingrx-ui .modal > .modal-card .modal-close{width:32px!important;height:32px!important;border-radius:9px!important;color:var(--mx-muted)!important;background:transparent!important}
+html body.mingrx-ui .modal > .modal-card .modal-close:hover{background:var(--mx-hover)!important;color:var(--mx-text)!important}
+
+/* Community settings */
+body.mingrx-ui .v219-role-settings input#serverNameEdit{height:42px!important;font-size:14px!important;border-radius:11px!important}
+body.mingrx-ui #saveServerName{height:42px!important;min-height:0!important;padding:0 18px!important;border-radius:11px!important;font-size:13.5px!important;font-weight:700!important;background:linear-gradient(135deg,#8a35fa,#6424df)!important;color:#fff!important;border:0!important;box-shadow:inset 0 1px #d8b9ff33!important}
+body.mingrx-ui .v219-role-row{display:grid!important;grid-template-columns:40px minmax(0,1fr) auto auto!important;align-items:center!important;gap:12px!important}
+body.mingrx-ui .v219-role-row .v219-role-static{justify-self:end;padding:4px 10px!important;border-radius:999px!important;border:1px solid color-mix(in srgb,var(--role-color,#f2c94c) 45%,transparent)!important;background:color-mix(in srgb,var(--role-color,#f2c94c) 12%,transparent)!important;color:var(--role-color,#f2c94c)!important;font-size:12px!important;font-weight:700!important}
+body.mingrx-ui .v21-role-button{height:36px!important;border-radius:10px!important;font-size:13px!important;background:var(--mx-panel-3)!important;border:1px solid var(--mx-line)!important}
+body.mingrx-ui .v219-role-row button.danger,body.mingrx-ui .v219-role-row [data-remove]{height:36px!important;border-radius:10px!important;font-size:12.5px!important}
+
+/* Message menu: reaction row + icon actions */
+body.mingrx-ui .v21-context-menu{min-width:200px;padding:6px!important;border-radius:14px!important;background:var(--mx-float)!important;border:1px solid var(--mx-line)!important;box-shadow:var(--mx-shadow)!important}
+body.mingrx-ui .v21-context-reactions{display:flex;gap:4px;padding:2px 2px 6px;margin-bottom:4px;border-bottom:1px solid var(--mx-line-soft)}
+body.mingrx-ui .v21-context-reactions button{flex:1;height:36px;display:grid;place-items:center;border-radius:9px!important;background:transparent!important;border:0!important;font-size:18px!important;padding:0!important;transition:background .12s ease,transform .12s var(--mx-ease)}
+body.mingrx-ui .v21-context-reactions button:hover{background:var(--mx-hover)!important;transform:translateY(-1px)}
+body.mingrx-ui .v21-context-menu > button{display:flex!important;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px!important;border-radius:9px!important;font-size:13.5px!important;font-weight:600;color:var(--mx-text-2)!important;background:transparent!important}
+body.mingrx-ui .v21-context-menu > button:hover{background:var(--mx-hover)!important;color:var(--mx-text)!important}
+body.mingrx-ui .v21-context-menu > button.danger{color:var(--mx-danger)!important}
+body.mingrx-ui .v21-context-menu > button.danger:hover{background:var(--mx-danger-soft)!important}
+body.mingrx-ui .v21-context-menu .mx-ico{width:17px;height:17px}
+
+/* Profile card: content-sized */
+body.mingrx-ui .v219-profile-card{border-radius:16px;overflow:hidden}
+
+/* Profile bar: latency only when there is a measurement. */
+body.mingrx-ui #ping:empty{display:none}
+body.mingrx-ui #ping:not(:empty)::before{content:"· "}

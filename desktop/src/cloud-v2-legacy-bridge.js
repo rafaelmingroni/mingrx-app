@@ -59,7 +59,7 @@
           return;
         }
         const rtt = await voiceRttMs();
-        if (els.ping) els.ping.textContent = rtt == null ? '-- ms' : `${rtt} ms`;
+        if (els.ping) els.ping.textContent = rtt == null ? '' : `${rtt} ms`;
       };
       update();
       cloudPingTimer = setInterval(update, 3000);

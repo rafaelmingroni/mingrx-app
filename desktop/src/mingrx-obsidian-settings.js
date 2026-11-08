@@ -112,6 +112,10 @@
 
   function decorateSettings() {
     const shell = document.querySelector('.settings-shell');
+    // The modal card is reused by other dialogs (profiles, invites); only settings keep the fixed height.
+    for (const card of document.querySelectorAll('.modal-card')) {
+      if (!card.querySelector('.settings-shell') && card.style.getPropertyValue('height')) card.style.removeProperty('height');
+    }
     if (!shell) return;
     const modal = shell.closest('.settings-modal');
     if (modal) modal.style.setProperty('height', 'min(620px, calc(100vh - 56px))', 'important');

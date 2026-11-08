@@ -305,24 +305,31 @@
     closeFloating();
     const menu = document.createElement('div');
     menu.className = 'v21-context-menu';
-    const items = [
-      ['reply','↩',t('reply')],
-      ['react','👍','👍'],
-      ['react','😂','😂']
-    ];
-    if (canEditMessage(message, kind)) items.push(['edit','✎',t('edit')]);
-    if (canDeleteMessage(message, kind)) items.push(['delete','🗑',t('delete')]);
-    for (const [action, icon, label] of items) {
+    // Reactions sit in one compact row; actions follow with drawn icons (emoji stays for reactions).
+    const icon = (name, glyph) => window.MingrxIcons?.svg ? window.MingrxIcons.svg(name) : `<span>${glyph}</span>`;
+    const reactions = document.createElement('div');
+    reactions.className = 'v21-context-reactions';
+    for (const emoji of ['👍', '❤️', '😂', '👎']) {
+      const r = document.createElement('button');
+      r.type = 'button'; r.dataset.action = 'react'; r.title = `Reagir com ${emoji}`; r.setAttribute('aria-label', `Reagir com ${emoji}`);
+      r.textContent = emoji;
+      r.onclick = () => { menu.remove(); contextMenu = null; reactMessage(messageId, kind, emoji); };
+      reactions.appendChild(r);
+    }
+    menu.appendChild(reactions);
+    const items = [['reply', icon('reply', '↩'), t('reply')]];
+    if (canEditMessage(message, kind)) items.push(['edit', icon('edit', '✎'), t('edit')]);
+    if (canDeleteMessage(message, kind)) items.push(['delete', icon('trash', '🗑'), t('delete')]);
+    for (const [action, iconHtml, label] of items) {
       const b = document.createElement('button');
       b.type = 'button'; b.dataset.action = action;
       if (action === 'delete') b.classList.add('danger');
-      b.innerHTML = `<span>${icon}</span><span>${esc(label)}</span>`;
+      b.innerHTML = `${iconHtml}<span>${esc(label)}</span>`;
       b.onclick = () => {
         menu.remove(); contextMenu = null;
         if (action === 'reply') setReply({ kind, message });
         if (action === 'edit') startInlineEdit(messageId, kind);
         if (action === 'delete') requestDelete(messageId, kind);
-        if (action === 'react') reactMessage(messageId, kind, icon);
       };
       menu.appendChild(b);
     }

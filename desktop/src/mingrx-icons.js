@@ -27,6 +27,9 @@
     lock: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
     close: '<path d="M6 6l12 12M18 6 6 18"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    reply: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 6 6v4"/>',
+    edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m14 6 4 4"/>',
+    trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
     chat: '<path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-5 4v-4H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/>',
     users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 20a6.5 6.5 0 0 0-3-5.5"/>'
   };
@@ -35,7 +38,7 @@
     ['🎤', 'mic'], ['🎙', 'mic'], ['🔇', 'micOff'], ['🎧', 'headphones'], ['🔈', 'headphonesOff'], ['📹', 'video'], ['🎥', 'video'],
     ['🖥', 'screen'], ['💻', 'screen'], ['📞', 'hangup'], ['🔊', 'volume'], ['🔉', 'volume'], ['🔕', 'volumeOff'],
     ['🔗', 'link'], ['⚙', 'settings'], ['📌', 'pin'], ['⛶', 'maximize'], ['↻', 'refresh'], ['👁', 'eye'], ['▶', 'play'],
-    ['👑', 'crown'], ['💬', 'chat'], ['👥', 'users'], ['🔒', 'lock'], ['✕', 'close'], ['🍌', 'user']
+    ['👑', 'crown'], ['🗑', 'trash'], ['↩', 'reply'], ['✎', 'edit'], ['💬', 'chat'], ['👥', 'users'], ['🔒', 'lock'], ['✕', 'close'], ['🍌', 'user']
   ]);
   const SCOPE = 'button, .symbol, .voice-user-icons, .icon-btn, .secondary-mini, .avatar-video, .v208-watch-stream, .server-actions, .mingrx312-nav-icon, #channelIcon';
   // Settings render their own icon set and are measured while scrolling; leave them untouched.
