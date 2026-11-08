@@ -130,6 +130,32 @@
     for (const peer of state.voice.peers.values()) try { addRemoteCard(peer); } catch {}
   }
 
+  // A missed "user left" event used to leave the departed person's card in the call grid forever.
+  // The channel presence (what the sidebar shows) is authoritative: once it is loaded for this call
+  // and includes us, a peer missing from it for a few seconds is removed.
+  const DEPARTED_GRACE_MS = 5000;
+  function pruneDepartedPeers() {
+    const channelId = state.voice?.channelId;
+    if (!channelId || !state.voice.peers?.size) return;
+    const socket = state.socket;
+    if (socket?.voice?.directPeerId || state.voice.serverId !== state.selectedServer?.id) return;
+    const entries = state.voicePresence?.get(channelId);
+    if (!Array.isArray(entries) || !entries.some(e => e.socketId === socket?.id)) return;
+    const here = new Set(entries.map(e => e.socketId));
+    const now = Date.now();
+    for (const peer of [...state.voice.peers.values()]) {
+      if (here.has(peer.socketId)) { delete peer._goneSince; continue; }
+      peer._goneSince ||= now;
+      if (now - peer._goneSince >= DEPARTED_GRACE_MS) { try { removePeer(peer.socketId); } catch {} }
+    }
+    // Cards whose peer is gone (including duplicate cards with the same id) leave the grid too.
+    for (const card of document.querySelectorAll('.video-card[id^="video-"]')) {
+      const sid = card.id.slice(6);
+      if (sid !== 'local' && !state.voice.peers.has(sid) && !here.has(sid)) card.remove();
+    }
+  }
+  setInterval(pruneDepartedPeers, 1000);
+
   function patchSocket(socket) {
     if (!socket || socket.__bananaV207VoiceStreamPatched) return false;
     // During Electron startup/tests BananaLegacy can briefly receive a transport-like

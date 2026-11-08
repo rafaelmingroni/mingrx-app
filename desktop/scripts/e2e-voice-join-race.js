@@ -106,7 +106,24 @@ app.whenReady().then(async () => {
     for (const p of people) await run(p.w, 'await leaveVoice();await sleep(200);');
     await wait(1500);
   }
+  // Departure: someone leaves while the first member never receives the "user left" event.
+  // Presence must still clear the departed person's card from the call grid.
+  let departureOk = false;
+  for (const p of people) { await join(p).catch(e => failures.push(`departure join ${p.name}: ${e.message}`)); await wait(300); }
+  for (let i = 0; i < 200; i++) { const snap = await Promise.all(people.map(states)); if (snap.every(x => x.length === people.length - 1 && x.every(y => y === 'connected'))) break; await wait(100); }
+  const leaver = people[1];
+  const leaverSid = await leaver.w.webContents.executeJavaScript('window.BananaCloudSocket?.id || ""');
+  await run(first.w, "const orig=socket.receive.bind(socket);socket.receive=function(ev,p){if(ev==='voice:user-left')return;return orig(ev,p);};");
+  await run(leaver.w, 'await leaveVoice();await sleep(200);');
+  for (let i = 0; i < 150 && !departureOk; i++) {
+    departureOk = await first.w.webContents.executeJavaScript(`!state.voice.peers.has(${JSON.stringify(leaverSid)}) && !document.getElementById(${JSON.stringify('video-' + leaverSid)}) && state.voice.peers.size === ${people.length - 2}`);
+    if (!departureOk) await wait(100);
+  }
+  console.log(`RACE departure: ${departureOk ? 'card cleared without the leave event' : 'STALE CARD'}`);
+  if (!departureOk) failures.push('departed member card stayed in the call grid');
+  for (const p of people) await run(p.w, 'await leaveVoice();await sleep(200);');
   console.log(`RACE RESULT ${ok}/${ROUNDS} rounds fully connected`);
   for (const f of failures) console.log('RACE FAIL ' + f);
-  done(ok === ROUNDS ? 0 : 1, ok === ROUNDS ? 'voice join race: OK' : 'voice join race: FAILED');
+  const passed = ok === ROUNDS && departureOk;
+  done(passed ? 0 : 1, passed ? 'voice join race: OK' : 'voice join race: FAILED');
 }).catch(e => done(1, e.stack || String(e)));
