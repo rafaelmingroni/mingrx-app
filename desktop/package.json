@@ -42,7 +42,7 @@
     "electron": "45.1.0",
     "electron-builder": "26.18.0",
     "esbuild": "0.28.2",
-    "firebase": "12.19.0",
+    "firebase": "13.2.0",
     "firebase-tools": "15.34.2",
     "sharp": "0.35.5"
   },
