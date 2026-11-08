@@ -281,7 +281,7 @@
       if (name) name.textContent = user.name || 'Amigo';
       const avatar = row.querySelector('.avatar');
       if (avatar && typeof avatarStyle === 'function') avatarStyle(avatar, user);
-      row.title = `${user.name || 'Amigo'}${entry.speaking ? ' está falando' : ''}`;
+      row.title = `${user.name || 'Amigo'}${entry.speaking && channelId === state.voice.channelId ? ' está falando' : ''}`;
     });
   }
 

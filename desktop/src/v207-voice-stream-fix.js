@@ -246,7 +246,7 @@
         const entry = cached.find(e => e.socketId === payload.socketId && e.channelId === payload.channelId);
         if (entry) {
           entry.mediaState = { ...entry.mediaState, ...(payload.mediaState || {}) };
-          if (state.selectedServer?.id === targetServerId) {
+          if (state.selectedServer?.id === targetServerId && payload.channelId === state.voice.channelId) {
             applyCachedPresence(targetServerId);
             renderChannels();
           }
@@ -260,7 +260,7 @@
         const entry = cached.find(e => e.socketId === payload.socketId && e.channelId === payload.channelId);
         if (entry) {
           entry.speaking = !!payload.speaking;
-          if (state.selectedServer?.id === targetServerId) {
+          if (state.selectedServer?.id === targetServerId && payload.channelId === state.voice.channelId) {
             applyCachedPresence(targetServerId);
             renderChannels();
           }

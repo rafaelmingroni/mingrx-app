@@ -128,6 +128,19 @@ app.whenReady().then(async () => {
       const voiceEntries=state.voicePresence.get('voice')||[];
       if(voiceEntries[0]?.user?.name!=='Rafael' || voiceEntries[1]?.user?.name!=='Gustavo') failures.push('voice presence cache kept stale community labels');
 
+      // The speaking ring is only visible inside your own call, never for someone else's call.
+      const savedVoice={channelId:state.voice.channelId,serverId:state.voice.serverId};
+      state.voicePresence.set('voice',(state.voicePresence.get('voice')||[]).map(e=>({...e,speaking:true})));
+      state.voice.channelId=null; state.voice.serverId=null;
+      const otherCall=document.createElement('div'); renderVoiceUsers(otherCall,'voice');
+      if(otherCall.querySelector('.voice-user-row.speaking')) failures.push('speaking ring shown for a call you are not in');
+      if([...otherCall.querySelectorAll('.voice-user-row')].some(r=>/falando/.test(r.title))) failures.push('speaking tooltip shown for a call you are not in');
+      state.voice.channelId='voice'; state.voice.serverId=server.id;
+      const ownCall=document.createElement('div'); renderVoiceUsers(ownCall,'voice');
+      if(!ownCall.querySelector('.voice-user-row.speaking')) failures.push('speaking ring missing inside your own call');
+      state.voice.channelId=savedVoice.channelId; state.voice.serverId=savedVoice.serverId;
+      state.voicePresence.set('voice',(state.voicePresence.get('voice')||[]).map(e=>({...e,speaking:false})));
+
       // Watching a stream must expose an explicit stop control and return to normal grid mode.
       const fakeCard=document.createElement('div');
       fakeCard.id='video-peer-e2e';
