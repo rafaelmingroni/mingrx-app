@@ -54,7 +54,7 @@ async function open(js, key, show, inject) {
   ses.webRequest.onBeforeRequest((d, cb) => { const u = new URL(d.url); cb({ cancel: ['http:', 'https:', 'ws:', 'wss:'].includes(u.protocol) && !['localhost', '127.0.0.1'].includes(u.hostname) }); });
   await ses.protocol.handle('file', async req => { const p = fileURLToPath(req.url);
     if (p === path.join(root, 'src/cloud-browser/cloud-v2-all.browser.js')) return new Response(js, { headers: { 'Content-Type': 'application/javascript' } });
-    const t = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json' };
+    const t = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json', '.woff2': 'font/woff2' };
     try { return new Response(fs.readFileSync(p), { headers: { 'Content-Type': t[path.extname(p)] || 'application/octet-stream' } }); } catch { return new Response('Not found', { status: 404 }); } });
   const w = new BrowserWindow({ show, width: 1440, height: 900, webPreferences: { session: ses, preload: path.join(root, 'preload.js'), nodeIntegration: false, contextIsolation: true, sandbox: true, backgroundThrottling: true } });
   wins.push(w); if (inject) { await w.loadURL('about:blank'); w.webContents.debugger.attach('1.3'); await w.webContents.debugger.sendCommand('Page.enable'); await w.webContents.debugger.sendCommand('Page.addScriptToEvaluateOnNewDocument', { source: inject }); } await w.loadFile(path.join(root, 'src/index.html')); return w;

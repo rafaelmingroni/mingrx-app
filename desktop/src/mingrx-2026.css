@@ -1,0 +1,133 @@
+/* Mingrx 2026: the website's visual language in the app. Loaded last; restyles the default
+   (midnight / system-dark) theme and the shared components. Other user themes keep their
+   colors and inherit the typography, icons and component shapes. */
+
+@font-face{font-family:"Satoshi";src:url("fonts/satoshi-variable.woff2") format("woff2");font-weight:300 900;font-style:normal;font-display:swap}
+
+:root{
+  --mx-font-ui:"Satoshi","Segoe UI Variable","Segoe UI",system-ui,sans-serif;
+  --mx-ok:#3ddc97;--mx-danger:#ff5d73;--mx-danger-soft:#2a1220;--mx-danger-line:#5a2236;
+  --mx-radius-sm:8px;--mx-radius-md:12px;--mx-radius-lg:16px;
+  --mx-ease:cubic-bezier(.16,1,.3,1);
+}
+html[data-mingrx-theme="midnight"],html[data-mingrx-theme="system"][data-mingrx-system="dark"],html:not([data-mingrx-theme]){
+  --mx-bg:#070b17;--mx-top:#080c19;--mx-panel:#0a0f1e;--mx-panel-2:#0f1528;--mx-panel-3:#151c33;
+  --mx-hover:#161e37;--mx-line:#1f2742;--mx-line-soft:#171e35;--mx-text:#f4f2ff;--mx-text-2:#c9c8de;
+  --mx-muted:#8d8faa;--mx-accent:#8b5cf6;--mx-accent-hover:#9d74ff;--mx-accent-soft:#1f1844;--mx-accent-border:#4a3a8c;
+  --mx-input:#0d1325;--mx-float:#121933;--mx-success-bg:#0e2a20;--mx-danger-bg:var(--mx-danger-soft);--mx-scroll:#252d4b;
+  --mx-on-accent:#ffffff;--mx-shadow:0 24px 60px -24px #000c,0 2px 8px #0006;
+}
+
+/* Typography and browser surfaces */
+body.mingrx-ui{font-family:var(--mx-font-ui)!important;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:.005em}
+body.mingrx-ui button,body.mingrx-ui input,body.mingrx-ui select,body.mingrx-ui textarea{font-family:inherit!important}
+body.mingrx-ui ::selection{background:#8b5cf6;color:#fff}
+body.mingrx-ui{accent-color:var(--mx-accent);caret-color:#b894ff;scrollbar-color:var(--mx-scroll) transparent}
+body.mingrx-ui :focus-visible{outline:2px solid #b894ff!important;outline-offset:2px}
+
+/* Icons */
+.mx-ico{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;pointer-events:none}
+.mx-ico-play{fill:currentColor;stroke:none;width:12px;height:12px;vertical-align:-1px}
+.mx-has-ico{display:inline-flex!important;align-items:center;justify-content:center;gap:7px}
+.channel .symbol .mx-ico{width:16px;height:16px;color:var(--mx-muted)}
+
+/* Top bar: brand and communities */
+body.mingrx-ui .app .servers{background:linear-gradient(180deg,#0a0f21,#080c19)!important;border-bottom:1px solid var(--mx-line-soft)!important;gap:10px!important}
+body.mingrx-ui .servers .server-icon{border-radius:12px!important;transition:transform .18s var(--mx-ease),box-shadow .18s var(--mx-ease)}
+body.mingrx-ui .servers .server-icon:hover{transform:translateY(-1px)}
+body.mingrx-ui .servers .server-icon.active{box-shadow:0 0 0 2px var(--mx-bg),0 0 0 4px var(--mx-accent)!important}
+body.mingrx-ui .servers .server-icon.add{border:1px dashed var(--mx-line)!important;background:transparent!important;color:var(--mx-muted)!important}
+body.mingrx-ui .servers .server-icon.add:hover{border-color:var(--mx-accent-border)!important;color:var(--mx-text)!important}
+
+/* Sidebar */
+body.mingrx-ui .sidebar{background:var(--mx-panel)!important}
+body.mingrx-ui .server-title{border-bottom:1px solid var(--mx-line-soft)!important}
+body.mingrx-ui .server-title strong{font-weight:750;letter-spacing:-.01em}
+body.mingrx-ui .icon-btn{color:var(--mx-muted)!important;border-radius:9px!important}
+body.mingrx-ui .icon-btn:hover{color:var(--mx-text)!important;background:var(--mx-hover)!important}
+body.mingrx-ui .channel{border-radius:9px!important;padding:7px 10px!important;color:var(--mx-text-2)!important;font-weight:550;transition:background .14s ease,color .14s ease}
+body.mingrx-ui .channel:hover{background:var(--mx-hover)!important;color:var(--mx-text)!important}
+body.mingrx-ui .channel.active,body.mingrx-ui .v21-channel-row.active .channel{background:var(--mx-accent-soft)!important;color:var(--mx-text)!important}
+body.mingrx-ui .channel .symbol{color:var(--mx-muted)!important;font-weight:600}
+body.mingrx-ui .channel-section-title,body.mingrx-ui .v21-channel-head{color:var(--mx-muted)!important;letter-spacing:.06em}
+
+/* Voice members under a channel */
+body.mingrx-ui .voice-user-row{border-radius:9px!important}
+body.mingrx-ui .voice-user-row .avatar{transition:box-shadow .16s ease}
+body.mingrx-ui .voice-user-row.speaking .avatar{box-shadow:0 0 0 2px var(--mx-panel),0 0 0 4px var(--mx-ok)!important}
+body.mingrx-ui .voice-user-icons{color:var(--mx-muted)}
+body.mingrx-ui .voice-user-icons .mx-ico{width:15px;height:15px}
+body.mingrx-ui .v208-watch-stream{color:#b894ff!important;font-weight:650}
+
+/* Call dock in the sidebar */
+body.mingrx-ui .voice-controls{margin:8px!important;padding:12px!important;border:1px solid var(--mx-line)!important;border-radius:14px!important;background:linear-gradient(180deg,var(--mx-panel-2),var(--mx-panel))!important;box-shadow:0 18px 40px -26px #000}
+body.mingrx-ui .voice-state b{color:var(--mx-ok)!important;font-weight:700}
+body.mingrx-ui .control-row{gap:6px!important}
+body.mingrx-ui .control-row button{height:38px!important;min-width:0!important;border-radius:10px!important;background:var(--mx-panel-3)!important;color:var(--mx-text-2)!important;border:1px solid transparent!important;transition:background .14s ease,color .14s ease,transform .12s var(--mx-ease)}
+body.mingrx-ui .control-row button:hover{background:var(--mx-hover)!important;color:var(--mx-text)!important}
+body.mingrx-ui .control-row button:active{transform:scale(.96)}
+body.mingrx-ui .control-row button.danger{background:var(--mx-danger-soft)!important;color:var(--mx-danger)!important;border-color:var(--mx-danger-line)!important}
+body.mingrx-ui .control-row button.danger:hover{background:#3a1529!important}
+body.mingrx-ui .control-row button .mx-ico{width:19px;height:19px}
+
+/* Profile bar */
+body.mingrx-ui .profile-bar{border-top:1px solid var(--mx-line-soft)!important;background:var(--mx-panel)!important}
+body.mingrx-ui .profile-text b{font-weight:700}
+
+/* Main header and chat */
+body.mingrx-ui .main{background:var(--mx-bg)!important}
+body.mingrx-ui .connection-badge{border-radius:999px!important;background:var(--mx-success-bg)!important;color:var(--mx-ok)!important;border:1px solid #1d4a37!important;font-weight:650}
+body.mingrx-ui .mingrx-members-toggle{border-radius:10px!important;font-weight:650}
+body.mingrx-ui .message{border-radius:12px!important;transition:background .12s ease}
+body.mingrx-ui .message:hover{background:color-mix(in srgb,var(--mx-panel-2) 70%,transparent)!important}
+body.mingrx-ui .msg-head{gap:8px}
+body.mingrx-ui .msg-head b,body.mingrx-ui .msg-head strong{font-weight:700;letter-spacing:-.005em}
+body.mingrx-ui .msg-head time,body.mingrx-ui .msg-head small{color:var(--mx-muted)!important;font-size:12px!important;font-weight:500}
+body.mingrx-ui .msg-text{color:var(--mx-text-2)!important;line-height:1.55!important}
+body.mingrx-ui .v219-date-divider{color:var(--mx-muted)!important}
+
+/* Composer */
+body.mingrx-ui .composer{border-top:0!important}
+body.mingrx-ui .composer input,body.mingrx-ui .composer textarea{background:var(--mx-input)!important;border:1px solid var(--mx-line)!important;border-radius:12px!important;transition:border-color .14s ease,box-shadow .14s ease}
+body.mingrx-ui .composer input:focus,body.mingrx-ui .composer textarea:focus{border-color:var(--mx-accent-border)!important;box-shadow:0 0 0 3px #8b5cf622!important;outline:none!important}
+body.mingrx-ui .composer button{border-radius:11px!important;background:linear-gradient(135deg,#8a35fa,#6424df)!important;color:#fff!important;font-weight:700;box-shadow:inset 0 1px #d8b9ff33,0 8px 20px -12px #7131eb}
+body.mingrx-ui .composer button:hover{filter:brightness(1.08)}
+
+/* Members */
+body.mingrx-ui .members{background:var(--mx-panel)!important;border-color:var(--mx-line)!important}
+body.mingrx-ui .v219-member-group-title{color:var(--mx-muted)!important;letter-spacing:.06em}
+body.mingrx-ui .v219-member-row{border-radius:10px!important}
+body.mingrx-ui .v219-member-row:hover{background:var(--mx-hover)!important}
+body.mingrx-ui .v219-member-name{font-weight:650}
+body.mingrx-ui .v219-mini-role{background:transparent!important;border:0!important;padding:0!important;color:var(--mx-muted)!important;font-weight:550!important}
+body.mingrx-ui .role-owner .v219-mini-role,body.mingrx-ui .v219-member-row .v219-mini-role.role-owner{color:#f5c76b!important}
+body.mingrx-ui .v219-hierarchy-mark{opacity:.55}
+
+/* Voice stage */
+body.mingrx-ui .voice-view{background:radial-gradient(70% 60% at 50% 0%,#120d2e 0%,var(--mx-bg) 70%)!important}
+body.mingrx-ui .voice-top h2{font-weight:750;letter-spacing:-.02em}
+body.mingrx-ui .voice-top p{color:var(--mx-muted)!important}
+body.mingrx-ui .voice-top-actions{gap:8px!important}
+body.mingrx-ui .voice-top-actions .secondary-mini{height:36px!important;padding:0 14px!important;border-radius:10px!important;font-size:13px!important;font-weight:650!important;background:var(--mx-panel-2)!important;border:1px solid var(--mx-line)!important;color:var(--mx-text-2)!important}
+body.mingrx-ui .voice-top-actions .secondary-mini:hover{background:var(--mx-hover)!important;color:var(--mx-text)!important}
+body.mingrx-ui #joinVoiceBtn{height:36px!important;padding:0 16px!important;border-radius:10px!important;font-size:13px!important;font-weight:700!important}
+body.mingrx-ui .voice-view:not(.hidden) #joinVoiceBtn{background:var(--mx-danger-soft)!important;color:var(--mx-danger)!important;border:1px solid var(--mx-danger-line)!important}
+body.mingrx-ui .video-card{border-radius:16px!important;border:1px solid var(--mx-line)!important;background:linear-gradient(180deg,var(--mx-panel-2),var(--mx-panel))!important;box-shadow:0 20px 50px -30px #000;overflow:hidden}
+body.mingrx-ui .video-card.speaking{border-color:var(--mx-ok)!important;box-shadow:0 0 0 1px var(--mx-ok),0 18px 44px -24px #3ddc9766!important}
+body.mingrx-ui .video-label{background:#070b17cc!important;border:1px solid #ffffff14!important;border-radius:999px!important;padding:5px 12px!important;font-weight:650!important;backdrop-filter:blur(10px)}
+body.mingrx-ui .peer-volume{background:#070b17cc!important;border:1px solid #ffffff14!important;border-radius:999px!important;backdrop-filter:blur(10px)}
+body.mingrx-ui .pin-btn,body.mingrx-ui .expand-btn{width:32px!important;height:32px!important;border-radius:9px!important;background:#070b17b3!important;border:1px solid #ffffff14!important;color:var(--mx-text-2)!important;opacity:0;transition:opacity .16s ease}
+body.mingrx-ui .video-card:hover .pin-btn,body.mingrx-ui .video-card:hover .expand-btn,body.mingrx-ui .video-card:focus-within .pin-btn,body.mingrx-ui .video-card:focus-within .expand-btn{opacity:1}
+body.mingrx-ui .pin-btn .mx-ico,body.mingrx-ui .expand-btn .mx-ico{width:16px;height:16px}
+body.mingrx-ui .avatar-video{box-shadow:0 0 0 1px #ffffff14,0 16px 40px -18px #000}
+body.mingrx-ui .video-card.speaking .avatar-video{box-shadow:0 0 0 3px var(--mx-ok),0 16px 40px -18px #3ddc9799}
+
+/* Buttons shared across dialogs */
+body.mingrx-ui .primary,body.mingrx-ui .modal-card .action{border-radius:11px!important}
+
+@media(prefers-reduced-motion:reduce){body.mingrx-ui *{transition:none!important}}
+
+/* Refinements after first capture */
+body.mingrx-ui .composer{background:var(--mx-bg)!important;box-shadow:none!important}
+body.mingrx-ui .v219-hierarchy-mark{background:var(--mx-line)!important;opacity:1!important}
+body.mingrx-ui .audio-unlock{background:linear-gradient(135deg,#8a35fa,#6424df)!important;color:#fff!important;border:0!important;border-radius:999px!important;padding:9px 18px!important;font-weight:700!important;box-shadow:0 12px 30px -14px #7131eb!important}

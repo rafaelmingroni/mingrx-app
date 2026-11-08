@@ -6,7 +6,7 @@
   "main": "main-v120.js",
   "author": "Rafael Mingroni",
   "scripts": {
-    "prepare:source": "node scripts/merge-source.js && node scripts/generate-icons.js && node scripts/build-cloud-browser.js",
+    "prepare:source": "node scripts/merge-source.js && node scripts/prepare-fonts.js && node scripts/generate-icons.js && node scripts/build-cloud-browser.js",
     "prestart": "npm run prepare:source",
     "start": "electron .",
     "predist:win": "npm run prepare:source && npm run smoke:mingrx && npm run smoke:ui && npm run smoke:rendezvous && npm run smoke:cloud",
@@ -28,7 +28,8 @@
     "smoke:security": "node scripts/test-security-hardening.js && node scripts/security-source-audit.js && npm run release:check",
     "release:next": "node scripts/release-version.js --next",
     "release:check": "node scripts/release-version.js --check",
-    "perf:probe": "firebase emulators:exec --project demo-mingrx-site --config ../firebase/firebase.json --only auth,firestore \"electron scripts/perf-probe.js\""
+    "perf:probe": "firebase emulators:exec --project demo-mingrx-site --config ../firebase/firebase.json --only auth,firestore \"electron scripts/perf-probe.js\"",
+    "ui:snapshot": "firebase emulators:exec --project demo-mingrx-site --config ../firebase/firebase.json --only auth,firestore \"electron scripts/ui-snapshot.js\""
   },
   "dependencies": {
     "electron-updater": "6.8.11",
