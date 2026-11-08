@@ -119,9 +119,9 @@
         placeholder.style.display = 'grid';
         placeholder.innerHTML = `
           <div class="self-share-placeholder">
-            <span class="self-share-icon">🖥️</span>
+            <span class="self-share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2.5"/><path d="M8 20h8M12 16v4"/></svg></span>
             <b>Você está compartilhando sua tela</b>
-            <small>A prévia local foi pausada para evitar efeito espelho, zoom recursivo e uso desnecessário de GPU. Seus amigos continuam recebendo a transmissão normalmente.</small>
+            <small>Seus amigos estão vendo sua tela. A prévia fica pausada aqui para não criar efeito espelho.</small>
           </div>`;
       }
       expand?.classList.add('hidden');

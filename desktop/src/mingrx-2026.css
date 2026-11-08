@@ -343,3 +343,16 @@ html body.mingrx-ui .mingrx-invite-link-card .mingrx-invite-copy-link{display:no
 html body.mingrx-ui .mingrx-invite-head p{font-size:13px!important;color:var(--mx-muted)!important}
 html body.mingrx-ui .mingrx-invite-actions button,html body.mingrx-ui .mingrx-temp-row button{font-size:13px!important;font-weight:650!important;height:36px!important;padding:0 16px!important;border-radius:10px!important}
 html body.mingrx-ui .mingrx-temp-card small{font-size:12.5px!important;color:var(--mx-muted)!important}
+/* Connection badge only speaks up when something is wrong. */
+html body.mingrx-ui .connection-badge:not(.offline){display:none!important}
+html body.mingrx-ui .connection-badge.offline{background:var(--mx-danger-bg)!important;color:#ffb7bd!important;border:1px solid #ff6b7a44!important;border-radius:999px!important;font-size:12px!important;font-weight:600!important;padding:3px 10px!important}
+/* Self screen-share placeholder: drawn icon, quieter copy. */
+html body.mingrx-ui .self-share-icon{display:grid;place-items:center;width:52px;height:52px;border-radius:14px;background:color-mix(in srgb,var(--mx-accent) 16%,transparent);color:#c4b5fd;margin:0 auto 4px;font-size:0}
+html body.mingrx-ui .self-share-icon svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html body.mingrx-ui .self-share-placeholder small{max-width:360px;font-size:12.5px!important;color:var(--mx-muted)!important;line-height:1.5!important}
+/* Private home: recent list empty state as plain text, not a dashed box. */
+html body.mingrx-ui .mingrx312-private-sidebar .v1-dm-empty,html body.mingrx-ui .mingrx312-private-sidebar .mingrx312-empty,html body.mingrx-ui .mingrx312-private-sidebar [class*="empty"]{border:0!important;background:none!important;padding:6px 10px!important;text-align:left!important;font-size:12.5px!important;color:var(--mx-muted)!important}
+html body.mingrx-ui .main>header .mingrx-members-toggle{margin-left:auto!important}
+html body.mingrx-ui .main>header .connection-badge.offline~.mingrx-members-toggle{margin-left:10px!important}
+html body.mingrx-ui .connection-badge.offline{margin-left:auto!important}
+html body.mingrx-ui .channel-section-title.v1-recent-title,html body.mingrx-ui .v214-private-section-title{letter-spacing:0!important;font-size:12px!important}

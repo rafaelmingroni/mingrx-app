@@ -217,7 +217,7 @@
     els.cameraBtn?.classList.toggle('hidden', direct); els.screenBtn?.classList.toggle('hidden', direct);
     if (direct) {
       const peer = dmPeer(peerId); els.voiceChannelName.textContent = `Privado · ${peer?.name || 'Amigo'}`;
-      els.voiceSubtitle.textContent = `${state.voice.peers.size + 1} conectado(s) · chamada privada`;
+      els.voiceSubtitle.textContent = `${state.voice.peers.size + 1} na chamada privada`;
     }
     renderDirectCallButton();
   };

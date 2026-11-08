@@ -195,6 +195,8 @@
     ['Sair','Leave','Salir'],
     ['Perfil e configurações','Profile and settings','Perfil y configuración'],
     ['Conversa do servidor','Server conversation','Conversación del servidor'],
+    ['Canal de texto','Text channel','Canal de texto'],
+    ['Canal de voz','Voice channel','Canal de voz'],
     ['conectado','connected','conectado'],
     ['Crie ou entre em um servidor pelo botão +.','Create or join a server using the + button.','Crea o únete a un servidor con el botón +.'],
     ['Mensagem','Message','Mensaje'],
