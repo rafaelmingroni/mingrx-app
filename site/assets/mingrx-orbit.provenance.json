@@ -4,10 +4,10 @@
   "notProductEvidence": true,
   "content": "Fictional person in a hoodie with headphones and a backpack sitting on a rooftop above a night city, under a violet moon and the Milky Way. No screenshot, testimonial or real user depicted.",
   "original": "1536x864 WebP supplied by the user",
-  "transformations": "AI super-resolution with UpscalerJS ESRGAN legacy GANS 4x (1536x864 to 6144x3456), then Lanczos downscale with light sharpening: desktop 2560x1440 WebP q92, high-density 3840x2160 WebP q88, mobile 1280x720 WebP q88.",
+  "transformations": "AI super-resolution with Real-ESRGAN (realesrgan-ncnn-vulkan v0.2.5.0, realesrgan-x4plus model; 1536x864 to 6144x3456), then Lanczos downscale with light sharpening: desktop 2560x1440 WebP q92, high-density 3840x2160 WebP q90, mobile 1280x720 WebP q88.",
   "files": {
-    "mingrx-rooftop-hd.webp": "8958370a43c119e81df62ecc128161e0f62c777b1133fd397785adc32aabbaa8",
-    "mingrx-rooftop-hd-2x.webp": "db0ba1d6b38d97e2d256ec78177e289d55f07347634c46a9e1eba5c65ff50f52",
-    "mingrx-rooftop-hd-small.webp": "839ab5f8759d619f2fd712e84ec059e1c3d3fff50a9d725a6fe507dac127774a"
+    "mingrx-rooftop-x.webp": "5e3385d6f2faa7c1cfa18a333fd6c779a824a7e3025b78fb10ad75cafffd42f5",
+    "mingrx-rooftop-x-2x.webp": "2df9c921968fe63847f40f0359846858d362970a7a93c77144b98cda0e59ec64",
+    "mingrx-rooftop-x-small.webp": "db8f6d31ca9f416bcaf48874e05013ba1c5f983c01789e6b55cf391973a49316"
   }
 }
