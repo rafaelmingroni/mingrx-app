@@ -319,7 +319,7 @@ button,input{caret-color:var(--accent)}
 .orbit-home .feature-card:hover{border-color:#6c5694;background-color:#171d35}
 .orbit-home .scene-tabs button[aria-selected='true']{color:#e5d5ff}
 .orbit-home .download-panel{background:linear-gradient(145deg,#181830,#10192d)}
-.premium-home.orbit-home .closing{background:linear-gradient(90deg,#0e1025f0,#10142bf5),url('./assets/mingrx-rooftop-hero-small.webp') right center/cover;border-color:var(--line)}
+.premium-home.orbit-home .closing{background:linear-gradient(90deg,#0e1025f0,#10142bf5),url('./assets/mingrx-rooftop-small.webp') right center/cover;border-color:var(--line)}
 @media(prefers-reduced-motion:no-preference){
  .orbit-copy h1{animation:premium-arrive var(--duration-reveal) var(--ease-out) both}
  .orbit-copy .hero-description{animation:premium-arrive var(--duration-reveal) 50ms var(--ease-out) both}
@@ -439,7 +439,7 @@ html{scroll-padding-top:96px}
 }
 @keyframes header-glass{from{background-color:#070b17}to{background-color:#070b17b3;border-bottom-color:#2a3150}}
 @keyframes stage-rise{from{opacity:.35;transform:translate3d(0,48px,0);clip-path:inset(0 4% round 14px)}to{opacity:1;transform:none;clip-path:inset(0 0 round 14px)}}
-@keyframes hero-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,60px,0) scale(1.03)}}
+@keyframes hero-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,60px,0)}}
 @keyframes hero-recede{to{opacity:.15;transform:translate3d(0,-40px,0);filter:blur(3px)}}
 
 /* Page transitions between site pages (Chromium: Chrome, Edge, Brave). */
@@ -476,7 +476,7 @@ html{scrollbar-color:#2f2858 var(--bg);accent-color:#8b5cf6;caret-color:#b894ff}
 .feature-messages img,.feature-voice img{border-radius:12px;border:1px solid #ffffff12;box-shadow:0 18px 40px -26px #000}
 .download-section,.site-footer{border-top:1px solid transparent;border-image:linear-gradient(90deg,transparent,#2b3152 18%,#2b3152 82%,transparent) 1}
 .premium-home.orbit-home .closing{position:relative;overflow:hidden;isolation:isolate;border:0;padding-block:128px 120px;background:radial-gradient(80% 100% at 50% 110%,#2a1670 0%,#110d33 42%,#070b17 100%)}
-.premium-home.orbit-home .closing::before{content:'';position:absolute;inset:0;z-index:-1;background:url('./assets/mingrx-rooftop-hero-small.webp') center 18%/cover no-repeat;opacity:.32;-webkit-mask-image:radial-gradient(48% 58% at 50% 58%,#000 25%,transparent);mask-image:radial-gradient(48% 58% at 50% 58%,#000 25%,transparent)}
+.premium-home.orbit-home .closing::before{content:'';position:absolute;inset:0;z-index:-1;background:url('./assets/mingrx-rooftop-small.webp') center 18%/cover no-repeat;opacity:.32;-webkit-mask-image:radial-gradient(48% 58% at 50% 58%,#000 25%,transparent);mask-image:radial-gradient(48% 58% at 50% 58%,#000 25%,transparent)}
 .premium-home .closing-inner{flex-direction:column;justify-content:center;text-align:center;gap:32px}
 .premium-home .closing h2{max-width:none;text-wrap:balance}
 .premium-home .closing-inner>div{display:flex;flex-direction:column;align-items:center}
@@ -492,16 +492,27 @@ html{scrollbar-color:#2f2858 var(--bg);accent-color:#8b5cf6;caret-color:#b894ff}
   .site-header .header-inner{animation:pill-glass linear both;animation-timeline:scroll(root);animation-range:0 160px}
  }
 }
-@keyframes pill-glass{from{background-color:#0a0d1d4d;border-color:#ffffff0f}to{background-color:#0a0d1df2;border-color:#ffffff1f}}
+@keyframes pill-glass{from{background-color:#0a0d1dbf;border-color:#ffffff0f}to{background-color:#0a0d1df2;border-color:#ffffff1f}}
 @media(prefers-reduced-motion:reduce){.site-header .header-inner{animation:none!important}}
-/* Rooftop panorama: the whole picture is shown, anchored right, never cropped or stretched past its size.
-   Its left, top and bottom edges dissolve into the hero background behind the copy. */
+/* Rooftop panorama: always the whole picture, edge to edge, at its own 16:9 shape. The hero grows
+   to fit it on very wide screens, while the copy stays centred in the first screenful. */
 @media(min-width:851px){
- .premium-home .orbit-art{inset:0 0 0 auto;width:auto;max-width:100%;height:100%;aspect-ratio:16/9;overflow:hidden;-webkit-mask-image:none;mask-image:none}
- .premium-home .orbit-art::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(46% 42% at 18% 58%,#060914cc 0%,#06091480 50%,#06091400 100%)}
- .premium-home .orbit-art img{position:absolute;right:0;bottom:0;width:100%;height:auto;max-height:100%;aspect-ratio:16/9;object-fit:cover;transform-origin:right bottom;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%),linear-gradient(180deg,transparent 0,#000 8%,#000 84%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 14%),linear-gradient(180deg,transparent 0,#000 8%,#000 84%,transparent 100%);mask-composite:intersect}
+ .orbit-home .orbit-hero{min-height:max(min(900px,100svh),56.25vw)}
+ .premium-home .orbit-art{inset:auto 0 0 0;width:100%;height:auto;max-width:none;aspect-ratio:16/9;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 88%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 88%,transparent 100%)}
+ .premium-home .orbit-art::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(42% 46% at 22% 50%,#060914b8 0%,#06091470 50%,#06091400 100%)}
+ .premium-home .orbit-art img{position:static;width:100%;height:100%;max-height:none;object-fit:cover;object-position:center;transform-origin:center bottom}
 }
 @media(min-width:851px) and (prefers-reduced-motion:no-preference){.premium-home .orbit-art img{transform:translate3d(0,var(--orbit-parallax,0px),0)}}
+/* Screens wider than the picture: keep it whole and full height on the right, and extend the scene
+   to the left with a soft, blurred copy of itself so nothing looks cut or empty. */
+@media(min-width:851px) and (min-aspect-ratio:16/9){
+ .orbit-home .orbit-hero{min-height:min(900px,100svh)}
+ .orbit-home .orbit-hero::before{content:'';position:absolute;inset:-80px;z-index:-2;background:url('./assets/mingrx-rooftop-small.webp') 38% 70%/cover no-repeat;filter:blur(64px) brightness(.5) saturate(1.1);pointer-events:none}
+ .premium-home .orbit-art{inset:0 0 0 auto;width:auto;height:100%;aspect-ratio:16/9;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 9%),linear-gradient(180deg,#000 0,#000 90%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 9%),linear-gradient(180deg,#000 0,#000 90%,transparent 100%);mask-composite:intersect}
+ .premium-home .orbit-art::after{background:none}
+ .orbit-home .orbit-hero .orbit-copy{position:relative}
+ .orbit-home .orbit-hero .orbit-copy::before{content:'';position:absolute;inset:-18% -22% -18% -30%;z-index:-1;background:radial-gradient(closest-side,#060914b3,#06091400);pointer-events:none}
+}
 @media(max-width:850px){
  .premium-home .orbit-art{aspect-ratio:16/9}
  .premium-home .orbit-art img{object-fit:contain;object-position:center}
