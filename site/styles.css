@@ -439,7 +439,7 @@ html{scroll-padding-top:96px}
 }
 @keyframes header-glass{from{background-color:#070b17}to{background-color:#070b17b3;border-bottom-color:#2a3150}}
 @keyframes stage-rise{from{opacity:.35;transform:translate3d(0,48px,0);clip-path:inset(0 4% round 14px)}to{opacity:1;transform:none;clip-path:inset(0 0 round 14px)}}
-@keyframes hero-drift{from{transform:translate3d(0,0,0) scale(1.02)}to{transform:translate3d(0,80px,0) scale(1.06)}}
+@keyframes hero-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,60px,0) scale(1.03)}}
 @keyframes hero-recede{to{opacity:.15;transform:translate3d(0,-40px,0);filter:blur(3px)}}
 
 /* Page transitions between site pages (Chromium: Chrome, Edge, Brave). */
@@ -494,13 +494,15 @@ html{scrollbar-color:#2f2858 var(--bg);accent-color:#8b5cf6;caret-color:#b894ff}
 }
 @keyframes pill-glass{from{background-color:#0a0d1d4d;border-color:#ffffff0f}to{background-color:#0a0d1df2;border-color:#ffffff1f}}
 @media(prefers-reduced-motion:reduce){.site-header .header-inner{animation:none!important}}
-/* Rooftop panorama: the art spans the whole hero, the copy sits on a dark left scrim. */
+/* Rooftop panorama: the whole picture is shown, anchored right, never cropped or stretched past its size.
+   Its left, top and bottom edges dissolve into the hero background behind the copy. */
 @media(min-width:851px){
- .premium-home .orbit-art{inset:0;width:100%;-webkit-mask-image:linear-gradient(0deg,transparent 0,#000 16%);mask-image:linear-gradient(0deg,transparent 0,#000 16%);-webkit-mask-composite:source-over;mask-composite:add}
- .premium-home .orbit-art::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(50% 40% at 22% 56%,#060914e6 0%,#060914b0 48%,#06091400 100%),radial-gradient(40% 30% at 14% 86%,#060914b3 0%,#06091400 100%)}
- .premium-home .orbit-art img{object-position:72% 40%}
+ .premium-home .orbit-art{inset:0 0 0 auto;width:auto;max-width:100%;height:100%;aspect-ratio:16/9;overflow:hidden;-webkit-mask-image:none;mask-image:none}
+ .premium-home .orbit-art::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(46% 42% at 18% 58%,#060914cc 0%,#06091480 50%,#06091400 100%)}
+ .premium-home .orbit-art img{position:absolute;right:0;bottom:0;width:100%;height:auto;max-height:100%;aspect-ratio:16/9;object-fit:cover;transform-origin:right bottom;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%),linear-gradient(180deg,transparent 0,#000 8%,#000 84%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 14%),linear-gradient(180deg,transparent 0,#000 8%,#000 84%,transparent 100%);mask-composite:intersect}
 }
+@media(min-width:851px) and (prefers-reduced-motion:no-preference){.premium-home .orbit-art img{transform:translate3d(0,var(--orbit-parallax,0px),0)}}
 @media(max-width:850px){
- .premium-home .orbit-art{aspect-ratio:16/10}
- .premium-home .orbit-art img{object-position:100% 50%}
+ .premium-home .orbit-art{aspect-ratio:16/9}
+ .premium-home .orbit-art img{object-fit:contain;object-position:center}
 }

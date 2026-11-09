@@ -4,9 +4,10 @@
   "notProductEvidence": true,
   "content": "Fictional person in a hoodie with headphones and a backpack sitting on a rooftop above a night city, under a violet moon and the Milky Way. No screenshot, testimonial or real user depicted.",
   "original": "1536x864 WebP supplied by the user",
-  "transformations": "Desktop: Lanczos upscale to 2560x1440 with light sharpening, WebP q80. Mobile: Lanczos resize to 1280x720 with light sharpening, WebP q84.",
+  "transformations": "Desktop: original 1536x864 resolution, WebP q88. High-density screens: Lanczos upscale to 2560x1440 with light sharpening, WebP q84. Mobile: Lanczos resize to 1280x720 with light sharpening, WebP q84.",
   "files": {
-    "mingrx-rooftop-hero.webp": "f9d23b5b23e9e2ce21807265f251af124e8e0c8fe7229b1ffb416d1f488b9582",
+    "mingrx-rooftop-hero.webp": "3f6eef1336d6c4fda71c69841aff4dd00919cf5d5ed084149b18344004ecf0c6",
+    "mingrx-rooftop-hero-2x.webp": "1d1051755d8e7e02af4b0082707989ab8d1417128389fbd203e172101a974df1",
     "mingrx-rooftop-hero-small.webp": "4583a061d66c17c98ee1db3ed89f692e8bb730f863a354518cbb81bf8bf57fbb"
   }
 }
