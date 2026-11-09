@@ -6,7 +6,7 @@
   "original": "1254x1254 WebP supplied by the user",
   "transformations": "Desktop: Lanczos upscale to 2048x2048 with light sharpening, WebP q90. Mobile: Lanczos resize to 900x900 with light sharpening, WebP q84.",
   "files": {
-    "mingrx-orbit-hero.webp": "0f9a0f5aa2720eebfce4e7010e02d51d2dc59ca6e2d3c35685d49d95a72f50fd",
-    "mingrx-orbit-hero-small.webp": "3ae139ad733f597f13db6493dda24d50731b919a74a67384c829f9906657557f"
+    "mingrx-night-hero.webp": "0f9a0f5aa2720eebfce4e7010e02d51d2dc59ca6e2d3c35685d49d95a72f50fd",
+    "mingrx-night-hero-small.webp": "3ae139ad733f597f13db6493dda24d50731b919a74a67384c829f9906657557f"
   }
 }

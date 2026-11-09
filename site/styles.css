@@ -319,7 +319,7 @@ button,input{caret-color:var(--accent)}
 .orbit-home .feature-card:hover{border-color:#6c5694;background-color:#171d35}
 .orbit-home .scene-tabs button[aria-selected='true']{color:#e5d5ff}
 .orbit-home .download-panel{background:linear-gradient(145deg,#181830,#10192d)}
-.premium-home.orbit-home .closing{background:linear-gradient(90deg,#0e1025f0,#10142bf5),url('./assets/mingrx-orbit-hero-small.webp') right center/cover;border-color:var(--line)}
+.premium-home.orbit-home .closing{background:linear-gradient(90deg,#0e1025f0,#10142bf5),url('./assets/mingrx-night-hero-small.webp') right center/cover;border-color:var(--line)}
 @media(prefers-reduced-motion:no-preference){
  .orbit-copy h1{animation:premium-arrive var(--duration-reveal) var(--ease-out) both}
  .orbit-copy .hero-description{animation:premium-arrive var(--duration-reveal) 50ms var(--ease-out) both}
@@ -476,7 +476,7 @@ html{scrollbar-color:#2f2858 var(--bg);accent-color:#8b5cf6;caret-color:#b894ff}
 .feature-messages img,.feature-voice img{border-radius:12px;border:1px solid #ffffff12;box-shadow:0 18px 40px -26px #000}
 .download-section,.site-footer{border-top:1px solid transparent;border-image:linear-gradient(90deg,transparent,#2b3152 18%,#2b3152 82%,transparent) 1}
 .premium-home.orbit-home .closing{position:relative;overflow:hidden;isolation:isolate;border:0;padding-block:128px 120px;background:radial-gradient(80% 100% at 50% 110%,#2a1670 0%,#110d33 42%,#070b17 100%)}
-.premium-home.orbit-home .closing::before{content:'';position:absolute;inset:0;z-index:-1;background:url('./assets/mingrx-orbit-hero-small.webp') center 18%/cover no-repeat;opacity:.32;-webkit-mask-image:radial-gradient(48% 58% at 50% 58%,#000 25%,transparent);mask-image:radial-gradient(48% 58% at 50% 58%,#000 25%,transparent)}
+.premium-home.orbit-home .closing::before{content:'';position:absolute;inset:0;z-index:-1;background:url('./assets/mingrx-night-hero-small.webp') center 18%/cover no-repeat;opacity:.32;-webkit-mask-image:radial-gradient(48% 58% at 50% 58%,#000 25%,transparent);mask-image:radial-gradient(48% 58% at 50% 58%,#000 25%,transparent)}
 .premium-home .closing-inner{flex-direction:column;justify-content:center;text-align:center;gap:32px}
 .premium-home .closing h2{max-width:none;text-wrap:balance}
 .premium-home .closing-inner>div{display:flex;flex-direction:column;align-items:center}
