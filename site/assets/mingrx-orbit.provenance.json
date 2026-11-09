@@ -1,12 +1,12 @@
 {
   "type": "decorative brand illustration",
-  "reference": "Illustration supplied by Rafael on 2026-11-08 to replace the astronaut artwork.",
+  "reference": "Illustration supplied by Rafael on 2026-11-08 for the home hero, replacing the earlier astronaut and planet-arc artwork.",
   "notProductEvidence": true,
-  "content": "Fictional person with headphones and a backpack sitting on a rock under a violet planet arc, with the Mingrx M glowing in the sky. No screenshot, testimonial or real user depicted.",
-  "original": "1254x1254 WebP supplied by the user",
-  "transformations": "Desktop: Lanczos upscale to 2048x2048 with light sharpening, WebP q90. Mobile: Lanczos resize to 900x900 with light sharpening, WebP q84.",
+  "content": "Fictional person in a hoodie with headphones and a backpack sitting on a rooftop above a night city, under a violet moon and the Milky Way. No screenshot, testimonial or real user depicted.",
+  "original": "1536x864 WebP supplied by the user",
+  "transformations": "Desktop: Lanczos upscale to 2560x1440 with light sharpening, WebP q80. Mobile: Lanczos resize to 1280x720 with light sharpening, WebP q84.",
   "files": {
-    "mingrx-night-hero.webp": "0f9a0f5aa2720eebfce4e7010e02d51d2dc59ca6e2d3c35685d49d95a72f50fd",
-    "mingrx-night-hero-small.webp": "3ae139ad733f597f13db6493dda24d50731b919a74a67384c829f9906657557f"
+    "mingrx-rooftop-hero.webp": "f9d23b5b23e9e2ce21807265f251af124e8e0c8fe7229b1ffb416d1f488b9582",
+    "mingrx-rooftop-hero-small.webp": "4583a061d66c17c98ee1db3ed89f692e8bb730f863a354518cbb81bf8bf57fbb"
   }
 }
