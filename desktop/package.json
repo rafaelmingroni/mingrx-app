@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "electron-updater": "6.8.11",
-    "nostr-tools": "2.25.2",
+    "nostr-tools": "2.26.0",
     "ws": "8.22.0"
   },
   "devDependencies": {
