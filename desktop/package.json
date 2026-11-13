@@ -35,7 +35,7 @@
   "dependencies": {
     "electron-updater": "6.8.11",
     "nostr-tools": "2.25.2",
-    "ws": "8.22.0"
+    "ws": "8.22.2"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "5.0.2",
